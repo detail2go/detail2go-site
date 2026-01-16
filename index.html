@@ -52,6 +52,11 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
+        .floating-socials {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+        }
     </style>
 </head>
 <body>
@@ -176,6 +181,19 @@
 
             return (
                 <div className="min-h-screen pb-44">
+                    {/* Botones Sociales Flotantes (Visibles siempre) */}
+                    <div className="fixed left-0 top-1/2 -translate-y-1/2 z-[60] flex flex-col gap-2 p-2 bg-slate-900/50 backdrop-blur-md rounded-r-2xl border border-white/10 border-l-0 shadow-2xl">
+                        <a href={MI_INSTAGRAM} target="_blank" className="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 via-pink-600 to-orange-500 flex items-center justify-center hover:scale-110 transition-transform shadow-lg">
+                            <Icon name="instagram" className="text-white w-5 h-5" />
+                        </a>
+                        <a href={MI_TIKTOK} target="_blank" className="w-10 h-10 rounded-xl bg-black flex items-center justify-center hover:scale-110 transition-transform shadow-lg border border-white/5">
+                            <Icon name="music" className="text-white w-5 h-5" />
+                        </a>
+                        <div className="flex items-center justify-center py-2">
+                             <span className="floating-socials text-[8px] font-black uppercase text-slate-500 tracking-widest pointer-events-none">RESULTADOS</span>
+                        </div>
+                    </div>
+
                     {/* Header */}
                     <nav className="p-5 border-b border-white/5 sticky top-0 bg-slate-950/90 backdrop-blur-md z-50 flex justify-between items-center">
                         <div className="flex flex-col">
@@ -307,28 +325,21 @@
                             </div>
                         )}
 
-                        {/* Redes Sociales - Confianza */}
-                        <section className="mt-12 mb-20 text-center">
-                            <h2 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mb-6">Nuestra Comunidad</h2>
-                            <div className="flex justify-center gap-6">
-                                <a href={MI_INSTAGRAM} target="_blank" className="group flex flex-col items-center gap-2">
-                                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-purple-600 via-pink-600 to-orange-500 flex items-center justify-center shadow-lg transition-transform group-active:scale-90">
-                                        <Icon name="instagram" className="text-white w-7 h-7" />
-                                    </div>
-                                    <span className="text-[9px] font-black uppercase text-white tracking-widest italic">Resultados Reales</span>
-                                    <span className="text-[7px] text-slate-500 font-bold uppercase">@detail2.go</span>
+                        {/* Banner de Confianza Final */}
+                        <section className="mt-12 mb-20 text-center bg-slate-900/40 p-8 rounded-[2.5rem] border border-white/5">
+                            <h2 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mb-4">Comunidad Detail2Go</h2>
+                            <p className="text-sm font-black italic uppercase text-white mb-6 tracking-tight">
+                                ¿Dudas sobre el acabado? <br/>
+                                <span className="text-blue-500">Mira nuestros últimos trabajos</span>
+                            </p>
+                            <div className="flex justify-center gap-4">
+                                <a href={MI_INSTAGRAM} target="_blank" className="px-6 py-3 rounded-xl bg-white/5 border border-white/10 text-[10px] font-black uppercase italic tracking-widest flex items-center gap-2 hover:bg-white/10 transition-colors">
+                                    <Icon name="instagram" className="w-4 h-4 text-pink-500" /> Instagram
                                 </a>
-                                <a href={MI_TIKTOK} target="_blank" className="group flex flex-col items-center gap-2">
-                                    <div className="w-14 h-14 rounded-2xl bg-black flex items-center justify-center shadow-lg transition-transform group-active:scale-90 border border-white/10">
-                                        <Icon name="music" className="text-white w-7 h-7" />
-                                    </div>
-                                    <span className="text-[9px] font-black uppercase text-white tracking-widest italic">Mira el Proceso</span>
-                                    <span className="text-[7px] text-slate-500 font-bold uppercase">@detail2go__</span>
+                                <a href={MI_TIKTOK} target="_blank" className="px-6 py-3 rounded-xl bg-white/5 border border-white/10 text-[10px] font-black uppercase italic tracking-widest flex items-center gap-2 hover:bg-white/10 transition-colors">
+                                    <Icon name="music" className="w-4 h-4 text-white" /> TikTok
                                 </a>
                             </div>
-                            <p className="mt-6 text-[10px] text-slate-500 font-medium px-10 leading-relaxed italic">
-                                "La confianza se construye con resultados. Revisa nuestro Instagram y TikTok para ver cómo transformamos cada vehículo."
-                            </p>
                         </section>
                     </main>
 
