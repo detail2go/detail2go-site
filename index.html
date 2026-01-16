@@ -79,6 +79,8 @@
             const [hasSpun, setHasSpun] = useState(false);
 
             const MI_WHATSAPP = "51937631302";
+            const MI_INSTAGRAM = "https://www.instagram.com/detail2go.aqp/"; // Enlace sugerido
+            const MI_FACEBOOK = "https://www.facebook.com/detail2go.aqp/";
 
             const services = [
                 { id: 'ext', name: 'Solo Exterior', Auto: 40, SUV: 50, icon: 'car' },
@@ -93,7 +95,6 @@
                 { id: 'ranura', name: 'Detallado de Ranuras', price: 15, icon: 'shield-check' }
             ];
 
-            // Premios Ajustados: Solo descuentos y cosas básicas que no superen los 10 soles
             const prizes = [
                 "S/ 10.00 de Descuento HOY",
                 "S/ 8.00 de Descuento HOY",
@@ -216,7 +217,7 @@
                                     <p className="text-slate-400 text-sm mt-4 font-bold tracking-tight">Lo mejor que vas a encontrar. <span className="text-white">Transformación</span> total a domicilio.</p>
                                 </div>
 
-                                {/* Ruleta Re-diseñada */}
+                                {/* Ruleta */}
                                 <section className="mb-10">
                                     <div className={`bg-slate-900 border border-white/10 p-6 rounded-[2.5rem] flex items-center justify-between shadow-2xl relative overflow-hidden ${prize ? 'border-blue-500/50 shadow-blue-900/20' : ''}`}>
                                         <div className="z-10 flex-1 pr-2">
@@ -303,17 +304,32 @@
                                         </div>
                                     ))}
                                 </div>
-                                
-                                <div className="mt-8 p-6 bg-slate-900/50 border border-white/5 rounded-[2rem] text-center">
-                                    <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Todos los planes incluyen</p>
-                                    <div className="flex justify-around text-[9px] font-black text-white uppercase italic">
-                                        <span>Prioridad Go</span>
-                                        <span>Ahorro Fijo</span>
-                                        <span>Full Detail</span>
-                                    </div>
-                                </div>
                             </div>
                         )}
+
+                        {/* Redes Sociales - Confianza */}
+                        <section className="mt-12 mb-20 text-center">
+                            <h2 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mb-6">Nuestra Comunidad</h2>
+                            <div className="flex justify-center gap-6">
+                                <a href={MI_INSTAGRAM} target="_blank" className="group flex flex-col items-center gap-2">
+                                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-purple-600 via-pink-600 to-orange-500 flex items-center justify-center shadow-lg transition-transform group-active:scale-90">
+                                        <Icon name="instagram" className="text-white w-7 h-7" />
+                                    </div>
+                                    <span className="text-[9px] font-black uppercase text-white tracking-widest italic">Mira los Resultados</span>
+                                    <span className="text-[7px] text-slate-500 font-bold uppercase">Detail2Go.aqp</span>
+                                </a>
+                                <a href={MI_FACEBOOK} target="_blank" className="group flex flex-col items-center gap-2">
+                                    <div className="w-14 h-14 rounded-2xl bg-blue-700 flex items-center justify-center shadow-lg transition-transform group-active:scale-90">
+                                        <Icon name="facebook" className="text-white w-7 h-7" />
+                                    </div>
+                                    <span className="text-[9px] font-black uppercase text-white tracking-widest italic">Síguenos</span>
+                                    <span className="text-[7px] text-slate-500 font-bold uppercase">Detail2Go Arequipa</span>
+                                </a>
+                            </div>
+                            <p className="mt-6 text-[10px] text-slate-500 font-medium px-10 leading-relaxed italic">
+                                "La confianza se construye con resultados. Revisa nuestro Instagram para ver cómo transformamos cada vehículo."
+                            </p>
+                        </section>
                     </main>
 
                     {/* Footer Booking (Solo visible en vista booking) */}
