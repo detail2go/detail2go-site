@@ -1,1 +1,286 @@
+import React, { useState, useMemo } from 'react';
+import { 
+  Zap, 
+  Droplet, 
+  Star, 
+  ShieldCheck, 
+  CheckCircle2, 
+  Instagram,
+  MessageCircle,
+  LayoutGrid,
+  ChevronRight,
+  Gift,
+  RotateCw,
+  Info,
+  Car,
+  Sparkles,
+  Ticket
+} from 'lucide-react';
 
+const App = () => {
+  const [vehicle, setVehicle] = useState('SUV');
+  const [baseService, setBaseService] = useState(null);
+  const [selectedExtras, setSelectedExtras] = useState([]);
+  const [prize, setPrize] = useState(null);
+  const [isSpinning, setIsSpinning] = useState(false);
+  const [hasSpun, setHasSpun] = useState(false);
+  const [showDetails, setShowDetails] = useState(null);
+
+  const MI_WHATSAPP = "51937631302"; 
+
+  const TextLogo = () => (
+    <div className="flex flex-col -space-y-1.5 select-none">
+      <div className="flex items-baseline italic uppercase">
+        <span className="text-2xl font-[1000] tracking-tighter text-white">
+          DETAIL
+        </span>
+        <span className="text-2xl font-[1000] tracking-tighter text-blue-500 ml-1">
+          2GO
+        </span>
+      </div>
+      <div className="flex items-center gap-2">
+        <div className="h-[1px] flex-1 bg-blue-500/30"></div>
+        <span className="text-[7px] font-black tracking-[0.5em] text-slate-500 uppercase">Arequipa</span>
+      </div>
+    </div>
+  );
+
+  // --- PREMIOS AJUSTADOS (Máx S/ 5) ---
+  const prizes = [
+    "S/ 5.00 de Descuento HOY",
+    "S/ 3.00 de Descuento HOY",
+    "S/ 5.00 Descuento Próximo Lavado",
+    "S/ 4.00 Descuento Próximo Lavado",
+    "S/ 2.00 de Descuento HOY"
+  ];
+
+  const services = {
+    standard: [
+      { 
+        id: 'ext', 
+        name: 'Solo Exterior', 
+        Auto: 40, 
+        SUV: 50, 
+        icon: <Car className="w-5 h-5" />,
+        features: [
+          "Lavado con espuma activa (Snow Foam)",
+          "Limpieza profunda de aros y guardafangos",
+          "Hidratación de neumáticos (Gel)",
+          "Limpieza de vidrios exteriores",
+          "Secado técnico (Sin rayas)"
+        ]
+      },
+      { 
+        id: 'int', 
+        name: 'Solo Interior', 
+        Auto: 40, 
+        SUV: 50, 
+        icon: <LayoutGrid className="w-5 h-5" />,
+        features: [
+          "Aspirado profundo (Asientos, alfombras, maletera)",
+          "Limpieza de tablero, consola y puertas",
+          "Limpieza de vidrios interiores",
+          "Limpieza de marcos de puertas",
+          "Aromatización (Cortesía)"
+        ]
+      },
+      { 
+        id: 'full', 
+        name: 'Combo Full (Int + Ext)', 
+        Auto: 70, 
+        SUV: 80, 
+        icon: <Star className="w-5 h-5" />,
+        features: [
+          "✅ TODO lo del servicio Exterior",
+          "✅ TODO lo del servicio Interior",
+          "Renovador de plásticos exteriores",
+          "Aromatización Premium (Cortesía)"
+        ]
+      },
+    ],
+    memberships: [
+      { 
+        id: 'm_ready', 
+        name: 'Ready2Go', 
+        Auto: 130, 
+        SUV: 150, 
+        desc: '1 MES: 2 Lavados Full',
+        features: ["2 Servicios 'Combo Full' al mes", "Prioridad en agenda"]
+      },
+      { 
+        id: 'm_shine', 
+        name: 'Shine2Go', 
+        Auto: 170, 
+        SUV: 190, 
+        desc: '1 MES: 2 Full + 2 Ceras',
+        features: ["2 Servicios 'Combo Full'", "2 Aplicaciones de Cera Premium"]
+      }
+    ]
+  };
+
+  const extras = [
+    { id: 'cera', name: 'Cera Premium', price: 25, icon: <Star className="w-4 h-4" /> },
+    { id: 'motor', name: 'Lavado de Motor', price: 25, icon: <Zap className="w-4 h-4" /> },
+    { id: 'nutri', name: 'Nutrición Interiores', price: 20, icon: <Droplet className="w-4 h-4" /> },
+    { id: 'ranura', name: 'Detallado de Ranuras', price: 15, icon: <ShieldCheck className="w-4 h-4" /> },
+  ];
+
+  const spinWheel = () => {
+    if (hasSpun) return;
+    setIsSpinning(true);
+    setTimeout(() => {
+      setPrize(prizes[Math.floor(Math.random() * prizes.length)]);
+      setIsSpinning(false);
+      setHasSpun(true);
+    }, 1500);
+  };
+
+  const toggleExtra = (extra) => {
+    if (selectedExtras.find(e => e.id === extra.id)) {
+      setSelectedExtras(selectedExtras.filter(e => e.id !== extra.id));
+    } else {
+      setSelectedExtras([...selectedExtras, extra]);
+    }
+  };
+
+  const totalPrice = useMemo(() => {
+    let total = baseService ? baseService[vehicle] : 0;
+    total += selectedExtras.reduce((acc, curr) => acc + curr.price, 0);
+    
+    // Aplicar descuento inmediato si el premio es "HOY"
+    if (prize && prize.includes("HOY")) {
+      const discount = parseInt(prize.match(/\d+/)[0]);
+      total = Math.max(0, total - discount);
+    }
+    
+    return total;
+  }, [baseService, vehicle, selectedExtras, prize]);
+
+  const sendWhatsApp = () => {
+    if (!baseService) return;
+    let message = `*RESERVA DETAIL2GO*%0A*Vehículo:* ${vehicle}%0A*Servicio:* ${baseService.name}%0A`;
+    if (selectedExtras.length > 0) message += `*Extras:* ${selectedExtras.map(e => e.name).join(', ')}%0A`;
+    if (prize) message += `*🎁 PREMIO:* ${prize}%0A`;
+    message += `*Total Final:* S/ ${totalPrice}`;
+    window.open(`https://wa.me/${MI_WHATSAPP}?text=${message}`, '_blank');
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-950 text-slate-100 pb-44 font-sans selection:bg-blue-500 tracking-tight">
+      
+      {/* --- NAVBAR --- */}
+      <nav className="px-6 py-5 border-b border-white/5 sticky top-0 bg-slate-950/90 backdrop-blur-xl z-[100] flex justify-between items-center">
+        <TextLogo />
+        <div className="flex bg-slate-900 p-1 rounded-lg border border-white/5">
+          {['Auto', 'SUV'].map(v => (
+            <button key={v} onClick={() => setVehicle(v)} className={`px-4 py-1.5 rounded-md text-[10px] font-black uppercase transition-all ${vehicle === v ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-500'}`}>{v}</button>
+          ))}
+        </div>
+      </nav>
+
+      <main className="max-w-xl mx-auto px-5 pt-8">
+        
+        {/* --- HERO --- */}
+        <div className="text-center mb-10">
+          <h1 className="text-4xl font-[1000] mb-2 tracking-tighter italic uppercase">
+            Brillo <span className="text-blue-500">Extremo</span>
+          </h1>
+          <p className="text-slate-400 text-sm tracking-wide">Detailing profesional a domicilio en Arequipa.</p>
+        </div>
+
+        {/* --- RULETA DE DESCUENTOS --- */}
+        <section className="mb-10">
+          <div className="bg-gradient-to-br from-blue-600/10 to-transparent p-6 rounded-[2rem] border border-blue-500/20 flex items-center justify-between shadow-xl">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <Ticket className="w-4 h-4 text-blue-400" />
+                <h3 className="text-xs font-black text-white uppercase tracking-widest">Sorteo de Descuento</h3>
+              </div>
+              {!prize ? (
+                <button onClick={spinWheel} disabled={isSpinning} className="text-sm font-bold text-blue-400 hover:text-blue-300 transition-colors">
+                  {isSpinning ? 'Calculando...' : 'Toca para descontar S/ 5'}
+                </button>
+              ) : (
+                <div className="text-sm font-bold text-green-400 flex items-center gap-2 animate-in zoom-in">
+                  <Sparkles className="w-4 h-4" /> ¡{prize}!
+                </div>
+              )}
+            </div>
+            <div onClick={spinWheel} className={`w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center cursor-pointer shadow-lg shadow-blue-600/20 transition-transform active:scale-95 ${isSpinning ? 'animate-spin' : 'hover:scale-105'}`}>
+              <RotateCw className="text-white w-7 h-7" />
+            </div>
+          </div>
+        </section>
+
+        {/* --- SERVICIOS --- */}
+        <div className="space-y-10">
+          <section>
+            <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mb-5 pl-2">Elige tu Plan</h3>
+            <div className="space-y-3">
+              {services.standard.map(s => (
+                <div 
+                  key={s.id} 
+                  onClick={() => setBaseService(s)}
+                  className={`p-6 rounded-[2rem] cursor-pointer border-2 transition-all duration-300 ${baseService?.id === s.id ? 'bg-blue-600/5 border-blue-500 shadow-[0_0_20px_rgba(59,130,246,0.1)]' : 'bg-slate-900 border-transparent hover:border-slate-800'}`}
+                >
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-4">
+                      <div className={`p-3 rounded-2xl ${baseService?.id === s.id ? 'bg-blue-600 text-white' : 'bg-slate-950 text-slate-500'}`}>{s.icon}</div>
+                      <div>
+                        <span className="font-bold text-base block tracking-tight">{s.name}</span>
+                        <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Servicio Unitario</span>
+                      </div>
+                    </div>
+                    <span className="font-black italic text-lg tracking-tighter">S/ {s[vehicle]}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* EXTRAS */}
+          <section className="pb-10">
+            <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mb-5 pl-2">Potencia el brillo</h3>
+            <div className="grid grid-cols-2 gap-3">
+              {extras.map((extra) => (
+                <div 
+                  key={extra.id} 
+                  onClick={() => toggleExtra(extra)}
+                  className={`p-5 rounded-[1.8rem] border-2 transition-all cursor-pointer flex flex-col justify-between h-28 ${selectedExtras.find(e => e.id === extra.id) ? 'bg-blue-600 border-blue-400 text-white shadow-lg' : 'bg-slate-900 border-transparent text-slate-400 hover:border-slate-800'}`}
+                >
+                  <div className="flex justify-between items-start">
+                    <div className={`p-2 rounded-xl ${selectedExtras.find(e => e.id === extra.id) ? 'bg-white/20' : 'bg-slate-950'}`}>
+                      {extra.icon}
+                    </div>
+                    <span className={`text-[11px] font-black italic ${selectedExtras.find(e => e.id === extra.id) ? 'text-blue-100' : 'text-blue-500'}`}>+ S/ {extra.price}</span>
+                  </div>
+                  <div className="text-xs font-bold leading-tight uppercase tracking-tight">{extra.name}</div>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
+      </main>
+
+      {/* --- FOOTER FIXED --- */}
+      <div className="fixed bottom-0 left-0 w-full p-6 z-[150] bg-gradient-to-t from-slate-950 via-slate-950/95 to-transparent pt-12">
+        <div className="max-w-xl mx-auto bg-slate-900/80 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] p-5 flex items-center justify-between shadow-2xl">
+          <div className="pl-3">
+            <div className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-0.5">Monto Final</div>
+            <div className="text-3xl font-[1000] text-white italic tracking-tighter leading-none">S/ {totalPrice}</div>
+          </div>
+          <button 
+            disabled={!baseService}
+            onClick={sendWhatsApp}
+            className={`px-10 py-5 rounded-[1.8rem] font-black text-xs uppercase italic tracking-widest transition-all active:scale-95 ${baseService ? 'bg-blue-600 hover:bg-blue-500 text-white shadow-xl shadow-blue-600/20' : 'bg-slate-800 text-slate-600'}`}
+          >
+            Reservar <ChevronRight className="inline w-4 h-4 ml-1" />
+          </button>
+        </div>
+      </div>
+
+    </div>
+  );
+};
+
+export default App;
