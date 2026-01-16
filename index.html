@@ -1,286 +1,345 @@
-import React, { useState, useMemo } from 'react';
-import { 
-  Zap, 
-  Droplet, 
-  Star, 
-  ShieldCheck, 
-  CheckCircle2, 
-  Instagram,
-  MessageCircle,
-  LayoutGrid,
-  ChevronRight,
-  Gift,
-  RotateCw,
-  Info,
-  Car,
-  Sparkles,
-  Ticket
-} from 'lucide-react';
-
-const App = () => {
-  const [vehicle, setVehicle] = useState('SUV');
-  const [baseService, setBaseService] = useState(null);
-  const [selectedExtras, setSelectedExtras] = useState([]);
-  const [prize, setPrize] = useState(null);
-  const [isSpinning, setIsSpinning] = useState(false);
-  const [hasSpun, setHasSpun] = useState(false);
-  const [showDetails, setShowDetails] = useState(null);
-
-  const MI_WHATSAPP = "51937631302"; 
-
-  const TextLogo = () => (
-    <div className="flex flex-col -space-y-1.5 select-none">
-      <div className="flex items-baseline italic uppercase">
-        <span className="text-2xl font-[1000] tracking-tighter text-white">
-          DETAIL
-        </span>
-        <span className="text-2xl font-[1000] tracking-tighter text-blue-500 ml-1">
-          2GO
-        </span>
-      </div>
-      <div className="flex items-center gap-2">
-        <div className="h-[1px] flex-1 bg-blue-500/30"></div>
-        <span className="text-[7px] font-black tracking-[0.5em] text-slate-500 uppercase">Arequipa</span>
-      </div>
-    </div>
-  );
-
-  // --- PREMIOS AJUSTADOS (Máx S/ 5) ---
-  const prizes = [
-    "S/ 5.00 de Descuento HOY",
-    "S/ 3.00 de Descuento HOY",
-    "S/ 5.00 Descuento Próximo Lavado",
-    "S/ 4.00 Descuento Próximo Lavado",
-    "S/ 2.00 de Descuento HOY"
-  ];
-
-  const services = {
-    standard: [
-      { 
-        id: 'ext', 
-        name: 'Solo Exterior', 
-        Auto: 40, 
-        SUV: 50, 
-        icon: <Car className="w-5 h-5" />,
-        features: [
-          "Lavado con espuma activa (Snow Foam)",
-          "Limpieza profunda de aros y guardafangos",
-          "Hidratación de neumáticos (Gel)",
-          "Limpieza de vidrios exteriores",
-          "Secado técnico (Sin rayas)"
-        ]
-      },
-      { 
-        id: 'int', 
-        name: 'Solo Interior', 
-        Auto: 40, 
-        SUV: 50, 
-        icon: <LayoutGrid className="w-5 h-5" />,
-        features: [
-          "Aspirado profundo (Asientos, alfombras, maletera)",
-          "Limpieza de tablero, consola y puertas",
-          "Limpieza de vidrios interiores",
-          "Limpieza de marcos de puertas",
-          "Aromatización (Cortesía)"
-        ]
-      },
-      { 
-        id: 'full', 
-        name: 'Combo Full (Int + Ext)', 
-        Auto: 70, 
-        SUV: 80, 
-        icon: <Star className="w-5 h-5" />,
-        features: [
-          "✅ TODO lo del servicio Exterior",
-          "✅ TODO lo del servicio Interior",
-          "Renovador de plásticos exteriores",
-          "Aromatización Premium (Cortesía)"
-        ]
-      },
-    ],
-    memberships: [
-      { 
-        id: 'm_ready', 
-        name: 'Ready2Go', 
-        Auto: 130, 
-        SUV: 150, 
-        desc: '1 MES: 2 Lavados Full',
-        features: ["2 Servicios 'Combo Full' al mes", "Prioridad en agenda"]
-      },
-      { 
-        id: 'm_shine', 
-        name: 'Shine2Go', 
-        Auto: 170, 
-        SUV: 190, 
-        desc: '1 MES: 2 Full + 2 Ceras',
-        features: ["2 Servicios 'Combo Full'", "2 Aplicaciones de Cera Premium"]
-      }
-    ]
-  };
-
-  const extras = [
-    { id: 'cera', name: 'Cera Premium', price: 25, icon: <Star className="w-4 h-4" /> },
-    { id: 'motor', name: 'Lavado de Motor', price: 25, icon: <Zap className="w-4 h-4" /> },
-    { id: 'nutri', name: 'Nutrición Interiores', price: 20, icon: <Droplet className="w-4 h-4" /> },
-    { id: 'ranura', name: 'Detallado de Ranuras', price: 15, icon: <ShieldCheck className="w-4 h-4" /> },
-  ];
-
-  const spinWheel = () => {
-    if (hasSpun) return;
-    setIsSpinning(true);
-    setTimeout(() => {
-      setPrize(prizes[Math.floor(Math.random() * prizes.length)]);
-      setIsSpinning(false);
-      setHasSpun(true);
-    }, 1500);
-  };
-
-  const toggleExtra = (extra) => {
-    if (selectedExtras.find(e => e.id === extra.id)) {
-      setSelectedExtras(selectedExtras.filter(e => e.id !== extra.id));
-    } else {
-      setSelectedExtras([...selectedExtras, extra]);
-    }
-  };
-
-  const totalPrice = useMemo(() => {
-    let total = baseService ? baseService[vehicle] : 0;
-    total += selectedExtras.reduce((acc, curr) => acc + curr.price, 0);
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Detail2Go | Transformación y Membresías</title>
     
-    // Aplicar descuento inmediato si el premio es "HOY"
-    if (prize && prize.includes("HOY")) {
-      const discount = parseInt(prize.match(/\d+/)[0]);
-      total = Math.max(0, total - discount);
-    }
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     
-    return total;
-  }, [baseService, vehicle, selectedExtras, prize]);
+    <!-- React y Dependencias -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
 
-  const sendWhatsApp = () => {
-    if (!baseService) return;
-    let message = `*RESERVA DETAIL2GO*%0A*Vehículo:* ${vehicle}%0A*Servicio:* ${baseService.name}%0A`;
-    if (selectedExtras.length > 0) message += `*Extras:* ${selectedExtras.map(e => e.name).join(', ')}%0A`;
-    if (prize) message += `*🎁 PREMIO:* ${prize}%0A`;
-    message += `*Total Final:* S/ ${totalPrice}`;
-    window.open(`https://wa.me/${MI_WHATSAPP}?text=${message}`, '_blank');
-  };
-
-  return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 pb-44 font-sans selection:bg-blue-500 tracking-tight">
-      
-      {/* --- NAVBAR --- */}
-      <nav className="px-6 py-5 border-b border-white/5 sticky top-0 bg-slate-950/90 backdrop-blur-xl z-[100] flex justify-between items-center">
-        <TextLogo />
-        <div className="flex bg-slate-900 p-1 rounded-lg border border-white/5">
-          {['Auto', 'SUV'].map(v => (
-            <button key={v} onClick={() => setVehicle(v)} className={`px-4 py-1.5 rounded-md text-[10px] font-black uppercase transition-all ${vehicle === v ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-500'}`}>{v}</button>
-          ))}
-        </div>
-      </nav>
-
-      <main className="max-w-xl mx-auto px-5 pt-8">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap');
         
-        {/* --- HERO --- */}
-        <div className="text-center mb-10">
-          <h1 className="text-4xl font-[1000] mb-2 tracking-tighter italic uppercase">
-            Brillo <span className="text-blue-500">Extremo</span>
-          </h1>
-          <p className="text-slate-400 text-sm tracking-wide">Detailing profesional a domicilio en Arequipa.</p>
-        </div>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #020617;
+            color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-        {/* --- RULETA DE DESCUENTOS --- */}
-        <section className="mb-10">
-          <div className="bg-gradient-to-br from-blue-600/10 to-transparent p-6 rounded-[2rem] border border-blue-500/20 flex items-center justify-between shadow-xl">
-            <div>
-              <div className="flex items-center gap-2 mb-1">
-                <Ticket className="w-4 h-4 text-blue-400" />
-                <h3 className="text-xs font-black text-white uppercase tracking-widest">Sorteo de Descuento</h3>
-              </div>
-              {!prize ? (
-                <button onClick={spinWheel} disabled={isSpinning} className="text-sm font-bold text-blue-400 hover:text-blue-300 transition-colors">
-                  {isSpinning ? 'Calculando...' : 'Toca para descontar S/ 5'}
-                </button>
-              ) : (
-                <div className="text-sm font-bold text-green-400 flex items-center gap-2 animate-in zoom-in">
-                  <Sparkles className="w-4 h-4" /> ¡{prize}!
-                </div>
-              )}
-            </div>
-            <div onClick={spinWheel} className={`w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center cursor-pointer shadow-lg shadow-blue-600/20 transition-transform active:scale-95 ${isSpinning ? 'animate-spin' : 'hover:scale-105'}`}>
-              <RotateCw className="text-white w-7 h-7" />
-            </div>
-          </div>
-        </section>
+        .font-black-italic {
+            font-weight: 900;
+            font-style: italic;
+        }
 
-        {/* --- SERVICIOS --- */}
-        <div className="space-y-10">
-          <section>
-            <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mb-5 pl-2">Elige tu Plan</h3>
-            <div className="space-y-3">
-              {services.standard.map(s => (
-                <div 
-                  key={s.id} 
-                  onClick={() => setBaseService(s)}
-                  className={`p-6 rounded-[2rem] cursor-pointer border-2 transition-all duration-300 ${baseService?.id === s.id ? 'bg-blue-600/5 border-blue-500 shadow-[0_0_20px_rgba(59,130,246,0.1)]' : 'bg-slate-900 border-transparent hover:border-slate-800'}`}
-                >
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-4">
-                      <div className={`p-3 rounded-2xl ${baseService?.id === s.id ? 'bg-blue-600 text-white' : 'bg-slate-950 text-slate-500'}`}>{s.icon}</div>
-                      <div>
-                        <span className="font-bold text-base block tracking-tight">{s.name}</span>
-                        <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Servicio Unitario</span>
-                      </div>
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-custom {
+            animation: spin-slow 0.8s linear infinite;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, #fff 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gold-gradient {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useMemo, useEffect } = React;
+
+        const Icon = ({ name, className }) => {
+            useEffect(() => {
+                if (window.lucide) {
+                    window.lucide.createIcons();
+                }
+            }, [name]);
+            return <i data-lucide={name} className={className}></i>;
+        };
+
+        const App = () => {
+            const [view, setView] = useState('booking'); // 'booking' o 'memberships'
+            const [vehicle, setVehicle] = useState('SUV');
+            const [baseService, setBaseService] = useState(null);
+            const [selectedExtras, setSelectedExtras] = useState([]);
+            const [prize, setPrize] = useState(null);
+            const [isSpinning, setIsSpinning] = useState(false);
+            const [hasSpun, setHasSpun] = useState(false);
+
+            const MI_WHATSAPP = "51937631302";
+
+            const services = [
+                { id: 'ext', name: 'Solo Exterior', Auto: 40, SUV: 50, icon: 'car' },
+                { id: 'int', name: 'Solo Interior', Auto: 40, SUV: 50, icon: 'layout-grid' },
+                { id: 'full', name: 'Combo Full (Int + Ext)', Auto: 70, SUV: 80, icon: 'star' }
+            ];
+
+            const extras = [
+                { id: 'cera', name: 'Cera Premium', price: 25, icon: 'sparkles' },
+                { id: 'motor', name: 'Lavado de Motor', price: 25, icon: 'zap' },
+                { id: 'nutri', name: 'Nutrición Interiores', price: 20, icon: 'droplet' },
+                { id: 'ranura', name: 'Detallado de Ranuras', price: 15, icon: 'shield-check' }
+            ];
+
+            // Premios RE-DISEÑADOS (Sin membresías, solo beneficios directos)
+            const prizes = [
+                "S/ 10.00 de Descuento HOY",
+                "S/ 8.00 de Descuento HOY",
+                "S/ 6.00 de Descuento HOY",
+                "S/ 5.00 de Descuento HOY",
+                "🎁 Lavado de Motor GRATIS",
+                "✨ Encerado Premium GRATIS",
+                "🧼 Detallado de Ranuras GRATIS",
+                "💧 Nutrición de Plásticos GRATIS"
+            ];
+
+            const memberships = [
+                { 
+                    id: 'ready', 
+                    name: 'Ready2Go', 
+                    period: '1 Mes', 
+                    desc: '2 Combos Full (Int + Ext)', 
+                    Auto: 130, SUV: 150, 
+                    bonus: 'Ahorro Inmediato' 
+                },
+                { 
+                    id: 'expert', 
+                    name: 'Expert2GO', 
+                    period: '3 Meses', 
+                    desc: '6 Combos Full (2 por mes)', 
+                    Auto: 360, SUV: 420, 
+                    bonus: 'Motor + Nutrición GRATIS' 
+                }
+            ];
+
+            const spinWheel = () => {
+                if (hasSpun || isSpinning) return;
+                setIsSpinning(true);
+                setTimeout(() => {
+                    const win = prizes[Math.floor(Math.random() * prizes.length)];
+                    setPrize(win);
+                    setIsSpinning(false);
+                    setHasSpun(true);
+                }, 1800);
+            };
+
+            const toggleExtra = (extra) => {
+                if (selectedExtras.find(e => e.id === extra.id)) {
+                    setSelectedExtras(selectedExtras.filter(e => e.id !== extra.id));
+                } else {
+                    setSelectedExtras([...selectedExtras, extra]);
+                }
+            };
+
+            const totalPrice = useMemo(() => {
+                let total = baseService ? baseService[vehicle] : 0;
+                total += selectedExtras.reduce((acc, curr) => acc + curr.price, 0);
+                if (prize && prize.includes("HOY") && prize.includes("S/")) {
+                    const discount = parseInt(prize.match(/\d+/)[0]);
+                    total = Math.max(0, total - discount);
+                }
+                return total;
+            }, [baseService, vehicle, selectedExtras, prize]);
+
+            const sendWhatsApp = (type, data = null) => {
+                let message = "";
+                if (type === 'booking') {
+                    if (!baseService) return;
+                    message = `*DETAIL2GO - TRANSFORMACIÓN SOLICITADA*%0A%0A`;
+                    message += `*Vehículo:* ${vehicle}%0A`;
+                    message += `*Servicio:* ${baseService.name}%0A`;
+                    if (selectedExtras.length > 0) message += `*Extras:* ${selectedExtras.map(e => e.name).join(', ')}%0A`;
+                    if (prize) message += `*🎁 Beneficio:* ${prize}%0A`;
+                    message += `*INVERSIÓN FINAL: S/ ${totalPrice}*%0A%0A`;
+                } else {
+                    message = `*INTERÉS EN MEMBRESÍA DETAIL2GO*%0A%0A`;
+                    message += `*Plan:* ${data.name}%0A`;
+                    message += `*Vehículo:* ${vehicle}%0A`;
+                    message += `*Precio:* S/ ${data[vehicle]}%0A%0A`;
+                    message += `_Hola, quiero unirme al club y mantener mi auto siempre impecable._`;
+                }
+                window.open(`https://wa.me/${MI_WHATSAPP}?text=${message}`, '_blank');
+            };
+
+            return (
+                <div className="min-h-screen pb-44">
+                    {/* Header */}
+                    <nav className="p-5 border-b border-white/5 sticky top-0 bg-slate-950/90 backdrop-blur-md z-50 flex justify-between items-center">
+                        <div className="flex flex-col">
+                            <div className="flex items-baseline font-black-italic uppercase text-2xl tracking-tighter">
+                                <span className="text-white">DETAIL</span>
+                                <span className="text-blue-500 ml-0.5">2GO</span>
+                            </div>
+                            <span className="text-[7px] font-black uppercase tracking-[0.5em] text-slate-500">Arequipa Elite</span>
+                        </div>
+                        <div className="flex bg-slate-900 p-1 rounded-xl border border-white/5">
+                            {['Auto', 'SUV'].map(v => (
+                                <button key={v} onClick={() => setVehicle(v)} className={`px-4 py-1.5 rounded-lg text-[10px] font-black uppercase transition-all ${vehicle === v ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-500'}`}>{v}</button>
+                            ))}
+                        </div>
+                    </nav>
+
+                    {/* Selector de Vista */}
+                    <div className="max-w-lg mx-auto p-6 flex gap-3">
+                        <button 
+                            onClick={() => setView('booking')}
+                            className={`flex-1 py-3 rounded-2xl text-[11px] font-black uppercase tracking-widest border-2 transition-all ${view === 'booking' ? 'border-blue-600 bg-blue-600/10 text-white' : 'border-slate-800 text-slate-500'}`}
+                        >
+                            Reservar Hoy
+                        </button>
+                        <button 
+                            onClick={() => setView('memberships')}
+                            className={`flex-1 py-3 rounded-2xl text-[11px] font-black uppercase tracking-widest border-2 transition-all ${view === 'memberships' ? 'border-amber-500 bg-amber-500/10 text-amber-500' : 'border-slate-800 text-slate-500'}`}
+                        >
+                            Membresías
+                        </button>
                     </div>
-                    <span className="font-black italic text-lg tracking-tighter">S/ {s[vehicle]}</span>
-                  </div>
+
+                    <main className="max-w-lg mx-auto px-6">
+                        {view === 'booking' ? (
+                            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                                {/* Hero Booking */}
+                                <div className="text-center mb-10 mt-4 px-2">
+                                    <h1 className="text-5xl font-black italic-force leading-[0.9] tracking-tighter uppercase hero-gradient">Nivel <br/> Superior</h1>
+                                    <p className="text-slate-400 text-sm mt-4 font-bold tracking-tight">Lo mejor que vas a encontrar. <span className="text-white">Transformación</span> total a domicilio.</p>
+                                </div>
+
+                                {/* Ruleta Re-diseñada */}
+                                <section className="mb-10">
+                                    <div className={`bg-slate-900 border border-white/10 p-6 rounded-[2.5rem] flex items-center justify-between shadow-2xl relative overflow-hidden ${prize ? 'border-blue-500/50 shadow-blue-900/20' : ''}`}>
+                                        <div className="z-10 flex-1 pr-2">
+                                            <h3 className="text-[10px] font-black text-blue-500 uppercase tracking-widest mb-1 italic">Suerte Detailer</h3>
+                                            {!prize ? (
+                                                <button onClick={spinWheel} disabled={isSpinning} className="text-left">
+                                                    <span className="text-lg font-black text-white leading-tight block uppercase">¡Gana un regalo VIP!</span>
+                                                    <span className="text-[9px] font-bold text-slate-500 uppercase underline">Toca para girar</span>
+                                                </button>
+                                            ) : (
+                                                <div className="animate-bounce">
+                                                    <div className="text-xl font-black text-white leading-none uppercase italic">{prize}</div>
+                                                </div>
+                                            )}
+                                        </div>
+                                        <div onClick={spinWheel} className={`w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center cursor-pointer shadow-lg active:scale-95 ${isSpinning ? 'animate-spin-custom' : ''}`}>
+                                            <Icon name="refresh-cw" className="text-white w-7 h-7" />
+                                        </div>
+                                    </div>
+                                </section>
+
+                                {/* Planes de Lavado */}
+                                <section className="space-y-4 mb-10">
+                                    <h2 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mb-4 flex items-center gap-2"><div className="w-1 h-1 bg-blue-500"></div> Planes de Impacto</h2>
+                                    {services.map(s => (
+                                        <div key={s.id} onClick={() => setBaseService(s)} className={`p-6 rounded-[2.5rem] border-2 transition-all ${baseService?.id === s.id ? 'bg-blue-600 border-blue-500 translate-x-1 shadow-lg' : 'bg-slate-900 border-transparent hover:border-slate-800'}`}>
+                                            <div className="flex justify-between items-center">
+                                                <div className="flex items-center gap-4">
+                                                    <div className={`p-3 rounded-xl ${baseService?.id === s.id ? 'bg-white text-blue-600' : 'bg-slate-950 text-slate-600'}`}><Icon name={s.icon} className="w-6 h-6" /></div>
+                                                    <div><span className="font-black text-lg uppercase italic block">{s.name}</span><span className="text-[9px] font-bold uppercase text-slate-500">Premium Detail</span></div>
+                                                </div>
+                                                <span className={`font-black-italic text-2xl ${baseService?.id === s.id ? 'text-white' : 'text-blue-500'}`}>S/ {s[vehicle]}</span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </section>
+
+                                {/* Adicionales */}
+                                <section className="mb-10">
+                                    <h2 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mb-4 flex items-center gap-2"><div className="w-1 h-1 bg-blue-500"></div> Potencia el Brillo</h2>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        {extras.map(e => (
+                                            <div key={e.id} onClick={() => toggleExtra(e)} className={`p-4 rounded-[2rem] border-2 transition-all flex flex-col justify-between h-32 ${selectedExtras.find(ex => ex.id === e.id) ? 'bg-blue-600 border-blue-400 text-white' : 'bg-slate-900 border-transparent text-slate-500'}`}>
+                                                <div className="flex justify-between items-start"><Icon name={e.icon} className="w-5 h-5" /><span className="text-[10px] font-black italic">+ S/ {e.price}</span></div>
+                                                <div className="text-[11px] font-black uppercase leading-tight italic">{e.name}</div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </section>
+                            </div>
+                        ) : (
+                            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 pb-10">
+                                {/* Hero Memberships */}
+                                <div className="text-center mb-10 mt-4 px-2">
+                                    <h1 className="text-5xl font-black italic-force leading-[0.9] tracking-tighter uppercase gold-gradient">Club Elite</h1>
+                                    <p className="text-slate-400 text-sm mt-4 font-bold tracking-tight">Mantén tu auto <span className="text-amber-500">perfecto todo el año</span> con planes exclusivos.</p>
+                                </div>
+
+                                {/* Cards Membresías */}
+                                <div className="space-y-6">
+                                    {memberships.map(m => (
+                                        <div key={m.id} className="bg-slate-900 border border-amber-500/20 p-8 rounded-[3rem] relative overflow-hidden shadow-2xl">
+                                            <div className="absolute top-0 right-0 bg-amber-500 text-slate-950 font-black px-6 py-2 rounded-bl-[1.5rem] text-[9px] uppercase tracking-widest italic">{m.period}</div>
+                                            <h3 className="text-3xl font-black-italic uppercase text-white mb-2">{m.name}</h3>
+                                            <p className="text-slate-400 text-sm mb-6 font-medium">{m.desc}</p>
+                                            
+                                            <div className="flex items-center gap-2 text-green-400 text-[10px] font-black uppercase tracking-widest mb-8">
+                                                <Icon name="check-circle" className="w-4 h-4" /> Beneficio: {m.bonus}
+                                            </div>
+
+                                            <div className="flex items-center justify-between">
+                                                <div>
+                                                    <span className="text-[9px] font-black text-slate-500 uppercase block tracking-widest">Inversión {vehicle}</span>
+                                                    <span className="text-3xl font-black text-white italic">S/ {m[vehicle]}</span>
+                                                </div>
+                                                <button 
+                                                    onClick={() => sendWhatsApp('membership', m)}
+                                                    className="bg-white text-slate-950 px-6 py-4 rounded-2xl font-black uppercase text-[10px] italic shadow-lg shadow-white/5 active:scale-95"
+                                                >
+                                                    Unirme al Club
+                                                </button>
+                                            </div>
+                                            <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-amber-500/5 blur-[50px]"></div>
+                                        </div>
+                                    ))}
+                                </div>
+                                
+                                <div className="mt-8 p-6 bg-slate-900/50 border border-white/5 rounded-[2rem] text-center">
+                                    <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Todos los planes incluyen</p>
+                                    <div className="flex justify-around text-[9px] font-black text-white uppercase italic">
+                                        <span>Prioridad Go</span>
+                                        <span>Ahorro Fijo</span>
+                                        <span>Full Detail</span>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </main>
+
+                    {/* Footer Booking (Solo visible en vista booking) */}
+                    {view === 'booking' && (
+                        <div className="fixed bottom-0 left-0 w-full p-6 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent pt-12 z-40">
+                            <div className="max-w-lg mx-auto bg-slate-900/90 backdrop-blur-2xl border border-white/10 rounded-[2.8rem] p-5 flex items-center justify-between shadow-2xl">
+                                <div className="pl-4">
+                                    <div className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">Monto Hoy</div>
+                                    <div className="text-4xl font-black-italic text-white tracking-tighter leading-none flex items-baseline"><span className="text-sm mr-1 not-italic text-blue-500">S/</span>{totalPrice}</div>
+                                </div>
+                                <button 
+                                    onClick={() => sendWhatsApp('booking')}
+                                    disabled={!baseService}
+                                    className={`px-8 py-5 rounded-[2rem] font-black uppercase text-[11px] italic tracking-widest transition-all shadow-xl active:scale-95 ${baseService ? 'bg-blue-600 text-white shadow-blue-600/20' : 'bg-slate-800 text-slate-700 cursor-not-allowed'}`}
+                                >
+                                    Agendar Cambio
+                                </button>
+                            </div>
+                        </div>
+                    )}
                 </div>
-              ))}
-            </div>
-          </section>
+            );
+        };
 
-          {/* EXTRAS */}
-          <section className="pb-10">
-            <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mb-5 pl-2">Potencia el brillo</h3>
-            <div className="grid grid-cols-2 gap-3">
-              {extras.map((extra) => (
-                <div 
-                  key={extra.id} 
-                  onClick={() => toggleExtra(extra)}
-                  className={`p-5 rounded-[1.8rem] border-2 transition-all cursor-pointer flex flex-col justify-between h-28 ${selectedExtras.find(e => e.id === extra.id) ? 'bg-blue-600 border-blue-400 text-white shadow-lg' : 'bg-slate-900 border-transparent text-slate-400 hover:border-slate-800'}`}
-                >
-                  <div className="flex justify-between items-start">
-                    <div className={`p-2 rounded-xl ${selectedExtras.find(e => e.id === extra.id) ? 'bg-white/20' : 'bg-slate-950'}`}>
-                      {extra.icon}
-                    </div>
-                    <span className={`text-[11px] font-black italic ${selectedExtras.find(e => e.id === extra.id) ? 'text-blue-100' : 'text-blue-500'}`}>+ S/ {extra.price}</span>
-                  </div>
-                  <div className="text-xs font-bold leading-tight uppercase tracking-tight">{extra.name}</div>
-                </div>
-              ))}
-            </div>
-          </section>
-        </div>
-      </main>
-
-      {/* --- FOOTER FIXED --- */}
-      <div className="fixed bottom-0 left-0 w-full p-6 z-[150] bg-gradient-to-t from-slate-950 via-slate-950/95 to-transparent pt-12">
-        <div className="max-w-xl mx-auto bg-slate-900/80 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] p-5 flex items-center justify-between shadow-2xl">
-          <div className="pl-3">
-            <div className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-0.5">Monto Final</div>
-            <div className="text-3xl font-[1000] text-white italic tracking-tighter leading-none">S/ {totalPrice}</div>
-          </div>
-          <button 
-            disabled={!baseService}
-            onClick={sendWhatsApp}
-            className={`px-10 py-5 rounded-[1.8rem] font-black text-xs uppercase italic tracking-widest transition-all active:scale-95 ${baseService ? 'bg-blue-600 hover:bg-blue-500 text-white shadow-xl shadow-blue-600/20' : 'bg-slate-800 text-slate-600'}`}
-          >
-            Reservar <ChevronRight className="inline w-4 h-4 ml-1" />
-          </button>
-        </div>
-      </div>
-
-    </div>
-  );
-};
-
-export default App;
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
