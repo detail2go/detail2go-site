@@ -1,61 +1,33 @@
-
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Detail2Go | Transformación y Membresías</title>
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- React y Dependencias -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail2Go - Arequipa</title>
+    <!-- React y Babel -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap');
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #020617;
-            color: #f8fafc;
-            -webkit-tap-highlight-color: transparent;
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #020617; 
         }
-
-        .font-black-italic {
-            font-weight: 900;
-            font-style: italic;
+        /* Clip-path para la ruleta */
+        .wheel-slice {
+            clip-path: polygon(50% 50%, 0 0, 100% 0);
         }
-
-        @keyframes spin-slow {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        input[type="date"], input[type="time"] {
+            color-scheme: dark;
         }
-        .animate-spin-custom {
-            animation: spin-slow 0.8s linear infinite;
-        }
-
-        ::-webkit-scrollbar {
-            display: none;
-        }
-
-        .hero-gradient {
-            background: linear-gradient(135deg, #fff 0%, #3b82f6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .gold-gradient {
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .floating-socials {
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
+        .instagram-gradient {
+            background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
         }
     </style>
 </head>
@@ -63,9 +35,10 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useMemo, useEffect } = React;
+        const { useState, useMemo, useRef, useEffect } = React;
 
         const Icon = ({ name, className }) => {
+            const iconRef = useRef(null);
             useEffect(() => {
                 if (window.lucide) {
                     window.lucide.createIcons();
@@ -75,86 +48,66 @@
         };
 
         const App = () => {
-            const [view, setView] = useState('booking');
             const [vehicle, setVehicle] = useState('SUV');
             const [baseService, setBaseService] = useState(null);
             const [selectedExtras, setSelectedExtras] = useState([]);
             const [prize, setPrize] = useState(null);
             const [isSpinning, setIsSpinning] = useState(false);
-            const [hasSpun, setHasSpun] = useState(false);
+            const [rotation, setRotation] = useState(0);
+            
+            const [clientData, setClientData] = useState({
+                firstName: '',
+                lastName: '',
+                date: '',
+                time: ''
+            });
 
-            const MI_WHATSAPP = "51937631302";
-            const MI_INSTAGRAM = "https://www.instagram.com/detail2.go/";
-            const MI_TIKTOK = "https://www.tiktok.com/@detail2go_"; // Corregido: un solo guion
+            const MI_WHATSAPP = "51937631302"; 
+            const INSTAGRAM_URL = "https://instagram.com/detail2go"; // Cambiar por el real
+            const TIKTOK_URL = "https://tiktok.com/@detail2go"; // Cambiar por el real
+
+            const prizes = [
+                { label: "S/ 5", value: 5, color: "#1e293b" },
+                { label: "S/ 10", value: 10, color: "#2563eb" },
+                { label: "S/ 6", value: 6, color: "#0f172a" },
+                { label: "S/ 8", value: 8, color: "#3b82f6" },
+                { label: "S/ 5", value: 5, color: "#1e293b" },
+                { label: "S/ 7", value: 7, color: "#1d4ed8" },
+            ];
 
             const services = [
                 { id: 'ext', name: 'Solo Exterior', Auto: 40, SUV: 50, icon: 'car' },
                 { id: 'int', name: 'Solo Interior', Auto: 40, SUV: 50, icon: 'layout-grid' },
-                { id: 'full', name: 'Combo Full (Int + Ext)', Auto: 70, SUV: 80, icon: 'star' }
+                { id: 'full', name: 'Combo Full (Int + Ext)', Auto: 70, SUV: 80, icon: 'star' },
             ];
 
             const extras = [
                 { id: 'cera', name: 'Cera Premium', price: 25, icon: 'sparkles' },
-                { id: 'motor', name: 'Lavado de Motor', price: 25, icon: 'zap' },
-                { id: 'nutri', name: 'Nutrición Interiores', price: 20, icon: 'droplet' },
-                { id: 'ranura', name: 'Detallado de Ranuras', price: 15, icon: 'shield-check' }
+                { id: 'motor', name: 'Lavado de Motor', price: 20, icon: 'zap' },
+                { id: 'nutri', name: 'Nutrición Interiores', price: 15, icon: 'droplet' },
+                { id: 'ranura', name: 'Detallado de Ranuras', price: 15, icon: 'shield-check' },
             ];
 
-            const prizes = [
-                "S/ 10.00 de Descuento HOY",
-                "S/ 8.00 de Descuento HOY",
-                "S/ 7.00 de Descuento HOY",
-                "S/ 6.00 de Descuento HOY",
-                "S/ 5.00 de Descuento HOY",
-                "🎁 Ambientador Premium GRATIS",
-                "✨ Silicona de Llantas GRATIS",
-                "🧼 Aplicación de Renovador GRATIS"
-            ];
-
-            const memberships = [
-                { 
-                    id: 'ready', 
-                    name: 'Ready2Go', 
-                    period: '1 Mes', 
-                    desc: '2 Combos Full (Int + Ext)', 
-                    Auto: 130, SUV: 150, 
-                    bonus: 'Ahorro Inmediato' 
-                },
-                { 
-                    id: 'shine', 
-                    name: 'Shine2GO', 
-                    period: '1 Mes', 
-                    desc: '2 Combos Full + 2 Cera Premium', 
-                    Auto: 170, SUV: 190, 
-                    bonus: 'Brillo Máximo' 
-                },
-                { 
-                    id: 'expert', 
-                    name: 'Expert2GO', 
-                    period: '3 Meses', 
-                    desc: '6 Combos Full (2 por mes)', 
-                    Auto: 360, SUV: 420, 
-                    bonus: 'Motor + Nutrición GRATIS' 
-                },
-                { 
-                    id: 'elite', 
-                    name: 'Elite2GO', 
-                    period: '3 Meses', 
-                    desc: '2 Full + Cera + Ranuras mensual', 
-                    Auto: 600, SUV: 650, 
-                    bonus: 'Nutrición Mensual GRATIS' 
-                }
-            ];
+            const handleInputChange = (e) => {
+                const { name, value } = e.target;
+                setClientData(prev => ({ ...prev, [name]: value }));
+            };
 
             const spinWheel = () => {
-                if (hasSpun || isSpinning) return;
+                if (isSpinning || prize) return;
                 setIsSpinning(true);
+                const extraSpins = 5 + Math.random() * 5;
+                const randomSector = Math.floor(Math.random() * prizes.length);
+                const sectorAngle = 360 / prizes.length;
+                const totalRotation = rotation + (extraSpins * 360) + (randomSector * sectorAngle);
+                setRotation(totalRotation);
+
                 setTimeout(() => {
-                    const win = prizes[Math.floor(Math.random() * prizes.length)];
-                    setPrize(win);
                     setIsSpinning(false);
-                    setHasSpun(true);
-                }, 1800);
+                    const actualSector = Math.floor(((totalRotation % 360) / sectorAngle));
+                    const winningIndex = (prizes.length - actualSector) % prizes.length;
+                    setPrize(prizes[winningIndex]);
+                }, 4000);
             };
 
             const toggleExtra = (extra) => {
@@ -168,216 +121,162 @@
             const totalPrice = useMemo(() => {
                 let total = baseService ? baseService[vehicle] : 0;
                 total += selectedExtras.reduce((acc, curr) => acc + curr.price, 0);
-                if (prize && prize.includes("HOY") && prize.includes("S/")) {
-                    const discount = parseInt(prize.match(/\d+/)[0]);
-                    total = Math.max(0, total - discount);
-                }
+                if (prize) total = Math.max(0, total - prize.value);
                 return total;
             }, [baseService, vehicle, selectedExtras, prize]);
 
-            const sendWhatsApp = (type, data = null) => {
-                let message = "";
-                if (type === 'booking') {
-                    if (!baseService) return;
-                    message = `*DETAIL2GO - TRANSFORMACIÓN SOLICITADA*%0A%0A`;
-                    message += `*Vehículo:* ${vehicle}%0A`;
-                    message += `*Servicio:* ${baseService.name}%0A`;
-                    if (selectedExtras.length > 0) message += `*Extras:* ${selectedExtras.map(e => e.name).join(', ')}%0A`;
-                    if (prize) message += `*🎁 Beneficio:* ${prize}%0A`;
-                    message += `*INVERSIÓN FINAL: S/ ${totalPrice}*%0A%0A`;
-                } else {
-                    message = `*INTERÉS EN MEMBRESÍA DETAIL2GO*%0A%0A`;
-                    message += `*Plan:* ${data.name}%0A`;
-                    message += `*Vehículo:* ${vehicle}%0A`;
-                    message += `*Precio:* S/ ${data[vehicle]}%0A%0A`;
-                    message += `_Hola, quiero unirme al club y mantener mi auto siempre impecable._`;
-                }
+            const isFormValid = clientData.firstName && clientData.lastName && clientData.date && clientData.time && baseService;
+
+            const sendWhatsApp = () => {
+                if (!isFormValid) return;
+                let message = `*NUEVA RESERVA DETAIL2GO*%0A`;
+                message += `*Cliente:* ${clientData.firstName} ${clientData.lastName}%0A`;
+                message += `*Fecha:* ${clientData.date}%0A`;
+                message += `*Hora:* ${clientData.time}%0A`;
+                message += `*--------------------------*%0A`;
+                message += `*Vehículo:* ${vehicle}%0A`;
+                message += `*Servicio:* ${baseService.name}%0A`;
+                if (selectedExtras.length > 0) message += `*Extras:* ${selectedExtras.map(e => e.name).join(', ')}%0A`;
+                if (prize) message += `*🎁 DESCUENTO:* S/ ${prize.value}%0A`;
+                message += `*Total Final:* S/ ${totalPrice}`;
                 window.open(`https://wa.me/${MI_WHATSAPP}?text=${message}`, '_blank');
             };
 
             return (
-                <div className="min-h-screen pb-44">
-                    {/* Socials Fixed Left */}
-                    <div className="fixed left-0 top-1/2 -translate-y-1/2 z-[60] flex flex-col gap-2 p-2 bg-slate-900/50 backdrop-blur-md rounded-r-2xl border border-white/10 border-l-0 shadow-2xl">
-                        <a href={MI_INSTAGRAM} target="_blank" className="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 via-pink-600 to-orange-500 flex items-center justify-center hover:scale-110 transition-transform shadow-lg">
-                            <Icon name="instagram" className="text-white w-5 h-5" />
-                        </a>
-                        <a href={MI_TIKTOK} target="_blank" className="w-10 h-10 rounded-xl bg-black flex items-center justify-center hover:scale-110 transition-transform shadow-lg border border-white/5">
-                            <Icon name="music" className="text-white w-5 h-5" />
-                        </a>
-                        <div className="flex items-center justify-center py-2">
-                             <span className="floating-socials text-[8px] font-black uppercase text-slate-500 tracking-widest pointer-events-none">RESULTADOS</span>
-                        </div>
-                    </div>
-
-                    {/* Header */}
-                    <nav className="p-5 border-b border-white/5 sticky top-0 bg-slate-950/90 backdrop-blur-md z-50 flex justify-between items-center">
-                        <div className="flex flex-col">
-                            <div className="flex items-baseline font-black-italic uppercase text-2xl tracking-tighter">
-                                <span className="text-white">DETAIL</span>
-                                <span className="text-blue-500 ml-0.5">2GO</span>
+                <div className="min-h-screen bg-slate-950 text-slate-100 pb-44 font-sans tracking-tight">
+                    <nav className="px-6 py-6 border-b border-white/5 bg-slate-950/50 backdrop-blur-xl sticky top-0 z-[100]">
+                        <div className="max-w-xl mx-auto flex flex-col items-center">
+                            <div className="flex flex-col items-center -space-y-1.5 select-none">
+                                <div className="flex items-baseline italic uppercase">
+                                    <span className="text-3xl font-[1000] tracking-tighter text-white">DETAIL</span>
+                                    <span className="text-3xl font-[1000] tracking-tighter text-blue-500 ml-1">2GO</span>
+                                </div>
+                                <span className="text-[8px] font-black tracking-[0.5em] text-slate-500 uppercase self-end">Arequipa</span>
                             </div>
-                            <span className="text-[7px] font-black uppercase tracking-[0.5em] text-slate-500">Arequipa Elite</span>
-                        </div>
-                        <div className="flex bg-slate-900 p-1 rounded-xl border border-white/5">
-                            {['Auto', 'SUV'].map(v => (
-                                <button key={v} onClick={() => setVehicle(v)} className={`px-4 py-1.5 rounded-lg text-[10px] font-black uppercase transition-all ${vehicle === v ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-500'}`}>{v}</button>
-                            ))}
                         </div>
                     </nav>
 
-                    {/* Navigation */}
-                    <div className="max-w-lg mx-auto p-6 flex gap-3">
-                        <button 
-                            onClick={() => setView('booking')}
-                            className={`flex-1 py-3 rounded-2xl text-[11px] font-black uppercase tracking-widest border-2 transition-all ${view === 'booking' ? 'border-blue-600 bg-blue-600/10 text-white' : 'border-slate-800 text-slate-500'}`}
-                        >
-                            Reservar Hoy
-                        </button>
-                        <button 
-                            onClick={() => setView('memberships')}
-                            className={`flex-1 py-3 rounded-2xl text-[11px] font-black uppercase tracking-widest border-2 transition-all ${view === 'memberships' ? 'border-amber-500 bg-amber-500/10 text-amber-500' : 'border-slate-800 text-slate-500'}`}
-                        >
-                            Membresías
-                        </button>
-                    </div>
-
-                    <main className="max-w-lg mx-auto px-6">
-                        {view === 'booking' ? (
-                            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                                {/* Hero */}
-                                <div className="text-center mb-10 mt-4 px-2">
-                                    <h1 className="text-5xl font-black italic leading-[0.9] tracking-tighter uppercase hero-gradient">Nivel <br/> Superior</h1>
-                                    <p className="text-slate-400 text-sm mt-4 font-bold tracking-tight">Lo mejor que vas a encontrar en Arequipa.</p>
-                                </div>
-
-                                {/* Lucky Spin */}
-                                <section className="mb-10">
-                                    <div className={`bg-slate-900 border border-white/10 p-6 rounded-[2.5rem] flex items-center justify-between shadow-2xl relative overflow-hidden ${prize ? 'border-blue-500/50 shadow-blue-900/20' : ''}`}>
-                                        <div className="z-10 flex-1 pr-2">
-                                            <h3 className="text-[10px] font-black text-blue-500 uppercase tracking-widest mb-1 italic">Suerte Detailer</h3>
-                                            {!prize ? (
-                                                <button onClick={spinWheel} disabled={isSpinning} className="text-left">
-                                                    <span className="text-lg font-black text-white leading-tight block uppercase">¡Gana un regalo VIP!</span>
-                                                    <span className="text-[9px] font-bold text-slate-500 uppercase underline">Toca para girar</span>
-                                                </button>
-                                            ) : (
-                                                <div className="animate-bounce">
-                                                    <div className="text-xl font-black text-white leading-none uppercase italic">{prize}</div>
-                                                </div>
-                                            )}
+                    <main className="max-w-xl mx-auto px-5 pt-8">
+                        {/* 1. SELECTOR */}
+                        <section className="mb-10">
+                            <div className="flex items-center gap-2 mb-4 justify-center">
+                                <h3 className="text-[10px] font-black text-blue-400 uppercase tracking-[0.3em]">1. Elige tu vehículo</h3>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                {['Auto', 'SUV'].map(type => (
+                                    <button key={type} onClick={() => setVehicle(type)} className={`p-6 rounded-[2.5rem] border-2 transition-all duration-500 ${vehicle === type ? 'bg-blue-600 border-blue-400 shadow-[0_0_30px_rgba(37,99,235,0.3)]' : 'bg-slate-900 border-white/5 text-slate-500'}`}>
+                                        <div className="flex flex-col items-center gap-2">
+                                            <Icon name={type === 'Auto' ? 'car' : 'layout-grid'} className="w-10 h-10" />
+                                            <span className="text-xs font-black uppercase">{type === 'Auto' ? 'Sedán' : 'SUV'}</span>
                                         </div>
-                                        <div onClick={spinWheel} className={`w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center cursor-pointer shadow-lg active:scale-95 ${isSpinning ? 'animate-spin-custom' : ''}`}>
-                                            <Icon name="refresh-cw" className="text-white w-7 h-7" />
-                                        </div>
-                                    </div>
-                                </section>
+                                    </button>
+                                ))}
+                            </div>
+                        </section>
 
-                                {/* Main Services */}
-                                <section className="space-y-4 mb-10">
-                                    <h2 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mb-4 flex items-center gap-2"><div className="w-1 h-1 bg-blue-500"></div> Planes de Impacto</h2>
-                                    {services.map(s => (
-                                        <div key={s.id} onClick={() => setBaseService(s)} className={`p-6 rounded-[2.5rem] border-2 transition-all ${baseService?.id === s.id ? 'bg-blue-600 border-blue-500 translate-x-1 shadow-lg' : 'bg-slate-900 border-transparent hover:border-slate-800'}`}>
-                                            <div className="flex justify-between items-center">
-                                                <div className="flex items-center gap-4">
-                                                    <div className={`p-3 rounded-xl ${baseService?.id === s.id ? 'bg-white text-blue-600' : 'bg-slate-950 text-slate-600'}`}><Icon name={s.icon} className="w-6 h-6" /></div>
-                                                    <div><span className="font-black text-lg uppercase italic block">{s.name}</span><span className="text-[9px] font-bold uppercase text-slate-500">Premium Detail</span></div>
-                                                </div>
-                                                <span className={`font-black-italic text-2xl ${baseService?.id === s.id ? 'text-white' : 'text-blue-500'}`}>S/ {s[vehicle]}</span>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </section>
-
-                                {/* Extras */}
-                                <section className="mb-10">
-                                    <h2 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mb-4 flex items-center gap-2"><div className="w-1 h-1 bg-blue-500"></div> Potencia el Brillo</h2>
-                                    <div className="grid grid-cols-2 gap-3">
-                                        {extras.map(e => (
-                                            <div key={e.id} onClick={() => toggleExtra(e)} className={`p-4 rounded-[2rem] border-2 transition-all flex flex-col justify-between h-32 ${selectedExtras.find(ex => ex.id === e.id) ? 'bg-blue-600 border-blue-400 text-white' : 'bg-slate-900 border-transparent text-slate-500'}`}>
-                                                <div className="flex justify-between items-start"><Icon name={e.icon} className="w-5 h-5" /><span className="text-[10px] font-black italic">+ S/ {e.price}</span></div>
-                                                <div className="text-[11px] font-black uppercase leading-tight italic">{e.name}</div>
+                        {/* 2. RULETA */}
+                        <section className="mb-10">
+                            <div className="flex items-center gap-2 mb-6 justify-center">
+                                <h3 className="text-[10px] font-black text-blue-400 uppercase tracking-[0.3em]">2. Tu Descuento Diario</h3>
+                            </div>
+                            <div className="bg-slate-900/50 rounded-[3rem] p-8 border border-white/5 flex flex-col items-center relative overflow-hidden">
+                                <div className="absolute top-6 left-1/2 -translate-x-1/2 z-20 w-6 h-6 bg-white shadow-xl" style={{clipPath: 'polygon(50% 100%, 0 0, 100% 0)'}}></div>
+                                <div className="relative w-48 h-48 mb-6">
+                                    <div style={{ transform: `rotate(${rotation}deg)`, transition: isSpinning ? 'transform 4s cubic-bezier(0.15, 0, 0.15, 1)' : 'none' }} className="w-full h-full rounded-full border-4 border-slate-800 relative overflow-hidden">
+                                        {prizes.map((p, i) => (
+                                            <div key={i} style={{ transform: `rotate(${i * 60}deg)`, backgroundColor: p.color }} className="absolute top-0 left-0 w-full h-full wheel-slice flex justify-center pt-4">
+                                                <span className="text-[10px] font-black text-white mt-2">{p.label}</span>
                                             </div>
                                         ))}
                                     </div>
-                                </section>
-                            </div>
-                        ) : (
-                            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 pb-10">
-                                {/* Hero Memberships */}
-                                <div className="text-center mb-10 mt-4 px-2">
-                                    <h1 className="text-5xl font-black italic leading-[0.9] tracking-tighter uppercase gold-gradient">Club Elite</h1>
-                                    <p className="text-slate-400 text-sm mt-4 font-bold tracking-tight">Mantén tu auto <span className="text-amber-500">impecable siempre</span>.</p>
                                 </div>
+                                {!prize ? (
+                                    <button onClick={spinWheel} disabled={isSpinning} className="bg-blue-600 text-white px-8 py-4 rounded-2xl font-black text-xs uppercase shadow-xl active:scale-95 transition-all">
+                                        {isSpinning ? 'Girando...' : 'Girar Ruleta'}
+                                    </button>
+                                ) : (
+                                    <div className="text-green-400 font-black text-xl italic uppercase animate-pulse">¡Ganaste S/ {prize.value}!</div>
+                                )}
+                            </div>
+                        </section>
 
-                                {/* Membership Cards */}
-                                <div className="space-y-6">
-                                    {memberships.map(m => (
-                                        <div key={m.id} className="bg-slate-900 border border-amber-500/20 p-8 rounded-[3rem] relative overflow-hidden shadow-2xl">
-                                            <div className="absolute top-0 right-0 bg-amber-500 text-slate-950 font-black px-6 py-2 rounded-bl-[1.5rem] text-[9px] uppercase tracking-widest italic">{m.period}</div>
-                                            <h3 className="text-3xl font-black-italic uppercase text-white mb-2">{m.name}</h3>
-                                            <p className="text-slate-400 text-sm mb-6 font-medium">{m.desc}</p>
-                                            
-                                            <div className="flex items-center gap-2 text-green-400 text-[10px] font-black uppercase tracking-widest mb-8">
-                                                <Icon name="check-circle" className="w-4 h-4" /> Beneficio: {m.bonus}
+                        {/* 3. PLANES */}
+                        <section className="mb-10">
+                            <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mb-6">3. Elige tu Plan</h3>
+                            <div className="space-y-4">
+                                {services.map(s => (
+                                    <div key={s.id} onClick={() => setBaseService(s)} className={`p-6 rounded-[2.5rem] border-2 cursor-pointer transition-all ${baseService?.id === s.id ? 'bg-blue-600/5 border-blue-500' : 'bg-slate-900 border-transparent'}`}>
+                                        <div className="flex justify-between items-center">
+                                            <div className="flex items-center gap-4">
+                                                <div className={`p-4 rounded-2xl ${baseService?.id === s.id ? 'bg-blue-600' : 'bg-slate-950'}`}><Icon name={s.icon} className="w-5 h-5" /></div>
+                                                <div><span className="font-bold text-lg">{s.name}</span></div>
                                             </div>
-
-                                            <div className="flex items-center justify-between">
-                                                <div>
-                                                    <span className="text-[9px] font-black text-slate-500 uppercase block tracking-widest">Inversión {vehicle}</span>
-                                                    <span className="text-3xl font-black text-white italic">S/ {m[vehicle]}</span>
-                                                </div>
-                                                <button 
-                                                    onClick={() => sendWhatsApp('membership', m)}
-                                                    className="bg-white text-slate-950 px-6 py-4 rounded-2xl font-black uppercase text-[10px] italic shadow-lg active:scale-95"
-                                                >
-                                                    Unirme
-                                                </button>
-                                            </div>
+                                            <span className="font-black italic text-xl">S/ {s[vehicle]}</span>
                                         </div>
-                                    ))}
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+
+                        {/* 4. EXTRAS */}
+                        <section className="mb-10">
+                            <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mb-6">4. Extras Premium</h3>
+                            <div className="grid grid-cols-2 gap-4">
+                                {extras.map(e => (
+                                    <div key={e.id} onClick={() => toggleExtra(e)} className={`p-5 rounded-[2rem] border-2 cursor-pointer h-32 flex flex-col justify-between transition-all ${selectedExtras.find(ex => ex.id === e.id) ? 'bg-blue-600 border-blue-400 text-white shadow-lg' : 'bg-slate-900 border-transparent'}`}>
+                                        <div className="flex justify-between items-start">
+                                            <div className="p-2.5 rounded-xl bg-slate-950/50"><Icon name={e.icon} className="w-4 h-4" /></div>
+                                            <span className="text-[11px] font-black italic">+ S/ {e.price}</span>
+                                        </div>
+                                        <span className="text-[10px] font-black uppercase leading-tight">{e.name}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+
+                        {/* SECCIÓN REDES SOCIALES */}
+                        <section className="mb-10">
+                            <h3 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mb-6 text-center">Mira nuestro trabajo</h3>
+                            <div className="grid grid-cols-2 gap-3">
+                                <a href={INSTAGRAM_URL} target="_blank" className="instagram-gradient p-4 rounded-3xl flex items-center justify-center gap-3 active:scale-95 transition-all">
+                                    <Icon name="instagram" className="w-5 h-5 text-white" />
+                                    <span className="text-[10px] font-black uppercase text-white">Instagram</span>
+                                </a>
+                                <a href={TIKTOK_URL} target="_blank" className="bg-black p-4 rounded-3xl flex items-center justify-center gap-3 border border-white/10 active:scale-95 transition-all">
+                                    <Icon name="music" className="w-5 h-5 text-white" />
+                                    <span className="text-[10px] font-black uppercase text-white">TikTok</span>
+                                </a>
+                            </div>
+                        </section>
+
+                        {/* 5. DATOS */}
+                        <section className="mb-24">
+                            <h3 className="text-[10px] font-black text-blue-400 uppercase tracking-[0.3em] mb-6 text-center">5. Datos de Reserva</h3>
+                            <div className="bg-slate-900/50 p-6 rounded-[2.5rem] border border-white/5 space-y-4">
+                                <div className="grid grid-cols-2 gap-4">
+                                    <input type="text" name="firstName" placeholder="Nombre" onChange={handleInputChange} className="w-full bg-slate-950 border border-white/10 rounded-2xl p-4 text-sm outline-none focus:border-blue-500"/>
+                                    <input type="text" name="lastName" placeholder="Apellido" onChange={handleInputChange} className="w-full bg-slate-950 border border-white/10 rounded-2xl p-4 text-sm outline-none focus:border-blue-500"/>
+                                </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <input type="date" name="date" onChange={handleInputChange} className="w-full bg-slate-950 border border-white/10 rounded-2xl p-4 text-sm outline-none focus:border-blue-500"/>
+                                    <input type="time" name="time" onChange={handleInputChange} className="w-full bg-slate-950 border border-white/10 rounded-2xl p-4 text-sm outline-none focus:border-blue-500"/>
                                 </div>
                             </div>
-                        )}
+                        </section>
                     </main>
 
-                    {/* Persistant Social Banner */}
-                    <section className="max-w-lg mx-auto px-6 mt-12 mb-20 text-center">
-                        <div className="bg-slate-900/40 p-8 rounded-[2.5rem] border border-white/5">
-                            <h2 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mb-4">Comunidad Detail2Go</h2>
-                            <p className="text-sm font-black italic uppercase text-white mb-6 tracking-tight">
-                                Mira nuestros últimos trabajos en <br/>
-                                <span className="text-blue-500">nuestras redes sociales</span>
-                            </p>
-                            <div className="flex justify-center gap-4">
-                                <a href={MI_INSTAGRAM} target="_blank" className="px-6 py-3 rounded-xl bg-white/5 border border-white/10 text-[10px] font-black uppercase italic tracking-widest flex items-center gap-2 hover:bg-white/10 transition-colors">
-                                    <Icon name="instagram" className="w-4 h-4 text-pink-500" /> Instagram
-                                </a>
-                                <a href={MI_TIKTOK} target="_blank" className="px-6 py-3 rounded-xl bg-white/5 border border-white/10 text-[10px] font-black uppercase italic tracking-widest flex items-center gap-2 hover:bg-white/10 transition-colors">
-                                    <Icon name="music" className="w-4 h-4 text-white" /> TikTok
-                                </a>
+                    {/* FOOTER */}
+                    <div className="fixed bottom-0 left-0 w-full p-6 z-[150] bg-gradient-to-t from-slate-950 via-slate-950 to-transparent pt-12">
+                        <div className="max-w-xl mx-auto bg-slate-900/90 backdrop-blur-2xl border border-white/10 rounded-[2.8rem] p-5 flex items-center justify-between shadow-2xl">
+                            <div className="pl-4">
+                                <div className="text-[9px] font-black text-slate-500 uppercase">Total Final</div>
+                                <div className="text-3xl font-[1000] text-white italic tracking-tighter">S/ {totalPrice}</div>
                             </div>
+                            <button disabled={!isFormValid} onClick={sendWhatsApp} className={`px-10 py-5 rounded-3xl font-black text-xs uppercase italic transition-all ${isFormValid ? 'bg-blue-600 text-white shadow-[0_0_20px_rgba(37,99,235,0.4)] active:scale-95' : 'bg-slate-800 text-slate-600'}`}>
+                                Reservar <Icon name="chevron-right" className="inline w-4 h-4 ml-1" />
+                            </button>
                         </div>
-                    </section>
-
-                    {/* Booking Footer */}
-                    {view === 'booking' && (
-                        <div className="fixed bottom-0 left-0 w-full p-6 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent pt-12 z-40">
-                            <div className="max-w-lg mx-auto bg-slate-900/90 backdrop-blur-2xl border border-white/10 rounded-[2.8rem] p-5 flex items-center justify-between shadow-2xl">
-                                <div className="pl-4">
-                                    <div className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">Monto Hoy</div>
-                                    <div className="text-4xl font-black-italic text-white tracking-tighter leading-none flex items-baseline"><span className="text-sm mr-1 not-italic text-blue-500">S/</span>{totalPrice}</div>
-                                </div>
-                                <button 
-                                    onClick={() => sendWhatsApp('booking')}
-                                    disabled={!baseService}
-                                    className={`px-8 py-5 rounded-[2rem] font-black uppercase text-[11px] italic tracking-widest transition-all shadow-xl active:scale-95 ${baseService ? 'bg-blue-600 text-white shadow-blue-600/20' : 'bg-slate-800 text-slate-700 cursor-not-allowed'}`}
-                                >
-                                    Agendar
-                                </button>
-                            </div>
-                        </div>
-                    )}
+                    </div>
                 </div>
             );
         };
