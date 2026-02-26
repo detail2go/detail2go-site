@@ -3,22 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detail2Go Arequipa - Reserva</title>
+    <title>Detail2Go Arequipa - Detallado a Domicilio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
+
+        :root {
+            --bg-deep: #050810;
+            --accent: #2563eb;
+            --highlight: #2563eb;
+            --orange: #f97316;
+            --turq: #06b6d4;
+        }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #020617;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-deep);
             color: #f1f5f9;
+            letter-spacing: -0.02em;
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(37, 99, 235, 0.08) 0%, transparent 25%),
+                radial-gradient(circle at 100% 100%, rgba(6, 182, 212, 0.05) 0%, transparent 25%);
+            background-attachment: fixed;
+        }
+
+        .carbon-bg {
+            background-image: linear-gradient(45deg, #0a0f1d 25%, transparent 25%), 
+                              linear-gradient(-45deg, #0a0f1d 25%, transparent 25%), 
+                              linear-gradient(45deg, transparent 75%, #0a0f1d 75%), 
+                              linear-gradient(-45deg, transparent 75%, #0a0f1d 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px 10px, 10px 0;
         }
 
         .wheel-container {
             position: relative;
-            width: 260px;
-            height: 260px;
+            width: 280px;
+            height: 280px;
             margin: 20px auto;
         }
 
@@ -26,26 +48,27 @@
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            border: 4px solid #1e293b;
+            border: 8px solid #111827;
             position: relative;
-            transition: transform 4s cubic-bezier(0.15, 0, 0.15, 1);
-            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+            transition: transform 5s cubic-bezier(0.1, 0, 0.1, 1);
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
         }
 
         .wheel-marker {
             position: absolute;
-            top: -10px;
+            top: -15px;
             left: 50%;
             transform: translateX(-50%);
-            z-index: 20;
-            width: 32px;
-            height: 32px;
-            background: white;
+            z-index: 40;
+            width: 35px;
+            height: 40px;
+            background: var(--accent);
             clip-path: polygon(50% 100%, 0 0, 100% 0);
-            filter: drop-shadow(0 4px 10px rgba(255, 255, 255, 0.3));
+            filter: drop-shadow(0 0 10px rgba(37, 99, 235, 0.5));
         }
 
         .prize-text {
@@ -54,159 +77,211 @@
             width: 100%;
             display: flex;
             justify-content: center;
-            font-weight: 900;
-            font-style: italic;
+            font-weight: 800;
             text-transform: uppercase;
-            font-size: 12px;
+            font-size: 13px;
             color: white;
-            padding-top: 25px;
+            padding-top: 35px;
             pointer-events: none;
         }
 
-        .center-dot {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 30px;
-            height: 30px;
-            background: #020617;
-            border: 4px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            z-index: 10;
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .card-active {
-            background: rgba(37, 99, 235, 0.05);
-            border-color: #2563eb !important;
-            box-shadow: 0 0 30px rgba(37, 99, 235, 0.2);
+            border-color: var(--accent) !important;
+            background: rgba(37, 99, 235, 0.08);
+            box-shadow: 0 0 40px rgba(37, 99, 235, 0.15);
+            transform: translateY(-5px);
         }
 
-        input[type="date"], input[type="time"] {
-            color-scheme: dark;
+        .price-strikethrough {
+            text-decoration: line-through;
+            color: #64748b;
+            font-size: 0.85em;
         }
 
-        .btn-primary {
-            background: #2563eb;
-            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.4);
+        .promo-tag {
+            background: var(--accent);
+            color: white;
+            font-size: 9px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-weight: 900;
+            text-transform: uppercase;
         }
 
-        .btn-primary:active {
-            transform: scale(0.95);
+        input {
+            background: #0a0f1d !important;
+            border: 1px solid rgba(255,255,255,0.1) !important;
+            color: white !important;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            border-color: var(--turq) !important;
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
+        }
+
+        .btn-gradient {
+            background: linear-gradient(135deg, var(--accent), #1d4ed8);
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.3);
+        }
+
+        .price-row {
+            white-space: nowrap;
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
         }
     </style>
 </head>
-<body class="pb-40">
+<body class="pb-44 carbon-bg">
 
-    <!-- Navegación -->
-    <nav class="px-6 py-8 border-b border-white/5 backdrop-blur-xl sticky top-0 z-[100] bg-slate-950/80">
+    <!-- Header / Nav -->
+    <nav class="px-8 py-10 sticky top-0 z-[100] bg-slate-950/80 backdrop-blur-xl border-b border-white/5">
         <div class="max-w-xl mx-auto flex flex-col items-center">
-            <div class="flex flex-col items-center -space-y-2 select-none">
+            <div class="flex flex-col items-center select-none relative">
                 <div class="flex items-baseline italic uppercase">
-                    <span class="text-4xl font-black tracking-tighter text-white">DETAIL</span>
-                    <span class="text-4xl font-black tracking-tighter text-blue-500 ml-1">2GO</span>
+                    <span class="text-4xl font-[900] tracking-tighter text-white">DETAIL</span>
+                    <span class="text-4xl font-[900] tracking-tighter text-blue-600 ml-1">2GO</span>
                 </div>
-                <span class="text-[10px] font-black tracking-[0.5em] text-slate-500 uppercase self-end mr-1">Arequipa</span>
+                <div class="flex items-center gap-3 mt-1">
+                    <span class="h-[2px] w-6 bg-blue-600"></span>
+                    <span class="text-[8px] font-black tracking-[0.6em] text-slate-400 uppercase">Arequipa Mobile Studio</span>
+                    <span class="h-[2px] w-6 bg-blue-600"></span>
+                </div>
+                <div class="absolute -top-4 -left-4 w-12 h-12 bg-blue-500/10 blur-2xl"></div>
             </div>
         </div>
     </nav>
 
-    <main class="max-w-xl mx-auto px-5 pt-10 space-y-16">
+    <main class="max-w-xl mx-auto px-6 pt-12 space-y-24">
 
-        <!-- 1. Vehículo -->
-        <section>
-            <div class="text-center mb-6">
-                <h3 class="text-[10px] font-black text-blue-400 uppercase tracking-[0.4em]">1. Elige tu vehículo</h3>
-            </div>
-            <div class="grid grid-cols-2 gap-4">
-                <div onclick="selectVehicle('Auto')" id="btn-auto" class="cursor-pointer p-8 rounded-[3rem] border-2 border-white/5 bg-slate-900 flex flex-col items-center gap-3 transition-all duration-300 text-slate-500">
-                    <i class="fa-solid fa-car text-3xl"></i>
-                    <span class="text-[10px] font-black uppercase tracking-widest">Auto Sedán</span>
+        <!-- Selección de Vehículo -->
+        <section class="space-y-6">
+            <h3 class="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] text-center italic">Selecciona tu categoría</h3>
+            <div class="grid grid-cols-2 gap-5">
+                <div onclick="selectVehicle('Auto')" id="btn-auto" class="glass-card cursor-pointer p-10 rounded-[2.5rem] flex flex-col items-center gap-4 card-active relative overflow-hidden">
+                    <i class="fa-solid fa-car text-3xl text-blue-500"></i>
+                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-white">Sedán</span>
                 </div>
-                <div onclick="selectVehicle('SUV')" id="btn-suv" class="cursor-pointer p-8 rounded-[3rem] border-2 border-white/5 bg-slate-900 flex flex-col items-center gap-3 transition-all duration-300 card-active text-white">
-                    <i class="fa-solid fa-truck-monster text-3xl"></i>
-                    <span class="text-[10px] font-black uppercase tracking-widest">SUV / Camioneta</span>
+                <div onclick="selectVehicle('SUV')" id="btn-suv" class="glass-card cursor-pointer p-10 rounded-[2.5rem] flex flex-col items-center gap-4 relative overflow-hidden">
+                    <i class="fa-solid fa-truck-pickup text-3xl text-slate-600"></i>
+                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">SUV / 4x4</span>
                 </div>
             </div>
         </section>
 
-        <!-- 2. Ruleta -->
-        <section>
-            <div class="text-center mb-6">
-                <h3 class="text-[10px] font-black text-blue-400 uppercase tracking-[0.4em]">2. Tu Descuento Diario</h3>
-            </div>
-            <div class="bg-slate-900/50 rounded-[3.5rem] p-10 border border-white/5 flex flex-col items-center relative">
+        <!-- Ruleta -->
+        <section class="relative">
+            <div class="bg-gradient-to-b from-slate-900/50 to-transparent rounded-[4rem] p-12 border border-white/5 flex flex-col items-center relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-500/30 to-transparent"></div>
+                
+                <h3 class="text-[11px] font-black text-white uppercase tracking-[0.5em] mb-12 text-center relative z-10">
+                    Sorteo de Cortesía <br>
+                    <span class="text-blue-500 text-[9px] mt-2 block italic tracking-normal font-bold">¡Desbloquea tu tarifa especial!</span>
+                </h3>
+                
                 <div class="wheel-marker"></div>
                 <div class="wheel-container">
-                    <div id="wheel">
-                        <!-- Sectores generados por JS -->
-                    </div>
-                    <div class="center-dot"></div>
+                    <div id="wheel"></div>
                 </div>
 
-                <div id="prize-display" class="hidden mb-4 text-center">
-                    <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Premio Ganado</p>
-                    <div class="text-green-400 font-black text-2xl italic bg-green-500/10 px-6 py-2 rounded-2xl border border-green-500/20 animate-bounce">
-                        DESCUENTO <span id="prize-value"></span> ✨
+                <div id="prize-display" class="hidden mt-10 text-center relative z-10">
+                    <div class="text-blue-400 font-black text-2xl italic bg-blue-500/10 px-10 py-5 rounded-[2rem] border-2 border-blue-500/30 shadow-[0_0_30px_rgba(37,99,235,0.1)]">
+                        GANASTE: -S/ <span id="prize-value"></span>
                     </div>
                 </div>
 
-                <button id="spin-btn" onclick="spinWheel()" class="btn-primary flex items-center gap-3 px-10 py-5 rounded-[2rem] font-black text-[11px] uppercase text-white tracking-[0.2em] italic transition-all">
-                    <i class="fa-solid fa-rotate"></i> Probar Suerte
+                <button id="spin-btn" onclick="spinWheel()" class="mt-10 bg-white hover:bg-blue-600 px-14 py-6 rounded-3xl font-black text-[11px] uppercase text-black tracking-[0.3em] transition-all hover:text-white hover:scale-105 active:scale-95 shadow-2xl">
+                    Girar Ahora
                 </button>
             </div>
         </section>
 
-        <!-- 3. Planes -->
-        <section class="space-y-6">
-            <h3 class="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mb-4">3. Elige tu Plan</h3>
-            <div id="services-container" class="space-y-4">
-                <!-- Servicios generados por JS -->
+        <!-- Servicios Principales -->
+        <section class="space-y-8">
+            <div class="flex items-center gap-4 justify-center">
+                <div class="h-[1px] w-12 bg-slate-800"></div>
+                <h3 class="text-[11px] font-black text-slate-400 uppercase tracking-[0.5em] italic">Protocolos Disponibles</h3>
+                <div class="h-[1px] w-12 bg-slate-800"></div>
+            </div>
+            <div id="services-container" class="space-y-5"></div>
+        </section>
+
+        <!-- Upgrades de Protección -->
+        <section class="space-y-8">
+             <h3 class="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] text-center italic">Upgrades de Protección</h3>
+            <div id="extras-container" class="grid grid-cols-1 gap-5"></div>
+        </section>
+
+        <!-- Formulario Agendamiento -->
+        <section class="space-y-10">
+            <div class="glass-card p-12 rounded-[4rem] space-y-8 border-t-4 border-t-turq shadow-2xl relative">
+                <h3 class="text-[12px] font-black text-white uppercase tracking-[0.5em] text-center">Datos de Agendamiento</h3>
+                
+                <div class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <input type="text" id="firstName" placeholder="Nombre" class="w-full rounded-2xl p-6 text-sm outline-none font-bold">
+                        <input type="text" id="lastName" placeholder="Apellido" class="w-full rounded-2xl p-6 text-sm outline-none font-bold">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="date" id="date" class="w-full rounded-2xl p-6 text-sm outline-none font-bold">
+                        <input type="time" id="time" class="w-full rounded-2xl p-6 text-sm outline-none font-bold">
+                    </div>
+                </div>
+
+                <!-- Requisitos del Cliente -->
+                <div class="pt-8 border-t border-white/5 space-y-4">
+                    <div class="flex items-start gap-4 p-5 rounded-3xl bg-blue-500/5 border border-blue-500/10">
+                        <div class="text-blue-500 text-lg mt-1"><i class="fa-solid fa-plug-circle-bolt"></i></div>
+                        <div>
+                            <h5 class="text-[10px] font-black text-white uppercase mb-1 tracking-wider italic">Requerimientos del Servicio</h5>
+                            <p class="text-[11px] text-slate-400 font-medium leading-relaxed">
+                                Como servicio a domicilio, el cliente deberá facilitar un punto de <span class="text-white font-bold">Agua y Luz</span>, además de contar con entrada o espacio suficiente para trabajar.
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <!-- 4. Extras -->
-        <section>
-            <h3 class="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] mb-6">4. Extras Premium</h3>
-            <div id="extras-container" class="grid grid-cols-2 gap-4">
-                <!-- Extras generados por JS -->
+        <!-- Footer Logo -->
+        <section class="pb-20 opacity-30 flex flex-col items-center grayscale">
+            <div class="flex items-baseline italic uppercase">
+                <span class="text-xl font-[900] tracking-tighter text-white">DETAIL</span>
+                <span class="text-xl font-[900] tracking-tighter text-blue-600 ml-1">2GO</span>
             </div>
-        </section>
-
-        <!-- 5. Datos -->
-        <section class="mb-20">
-            <h3 class="text-[10px] font-black text-blue-400 uppercase tracking-[0.3em] mb-6 text-center">5. Tus Datos de Contacto</h3>
-            <div class="bg-slate-900/50 p-8 rounded-[3rem] border border-white/5 space-y-4">
-                <div class="grid grid-cols-2 gap-4">
-                    <input type="text" id="firstName" placeholder="Nombre" class="w-full bg-slate-950 border border-white/10 rounded-2xl p-5 text-sm outline-none focus:border-blue-500 font-bold transition-all">
-                    <input type="text" id="lastName" placeholder="Apellido" class="w-full bg-slate-950 border border-white/10 rounded-2xl p-5 text-sm outline-none focus:border-blue-500 font-bold transition-all">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <input type="date" id="date" class="w-full bg-slate-950 border border-white/10 rounded-2xl p-5 text-sm outline-none focus:border-blue-500 font-bold">
-                    <input type="time" id="time" class="w-full bg-slate-950 border border-white/10 rounded-2xl p-5 text-sm outline-none focus:border-blue-500 font-bold">
-                </div>
-            </div>
+            <span class="text-[8px] font-black mt-2 tracking-[0.5em] text-slate-500 uppercase">Servicio a Domicilio Arequipa</span>
         </section>
 
     </main>
 
-    <!-- Footer Flotante -->
-    <div class="fixed bottom-0 left-0 w-full p-6 z-[150] bg-gradient-to-t from-slate-950 via-slate-950/90 to-transparent pt-12">
-        <div class="max-w-xl mx-auto bg-slate-900/90 backdrop-blur-3xl border border-white/10 rounded-[3.2rem] p-6 flex items-center justify-between shadow-2xl">
+    <!-- Barra de Total -->
+    <div class="fixed bottom-0 left-0 w-full p-8 z-[150] bg-gradient-to-t from-black via-black/90 to-transparent">
+        <div class="max-w-xl mx-auto glass-card rounded-[3rem] p-7 flex items-center justify-between shadow-2xl border border-white/10 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-blue-500/50 to-transparent"></div>
             <div class="pl-4">
-                <div class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">Total a Pagar</div>
-                <div id="total-display" class="text-4xl font-black text-white italic tracking-tighter">S/ 0</div>
+                <div id="old-price-container" class="hidden flex items-center gap-2 mb-1">
+                    <span id="old-price" class="price-strikethrough text-slate-500">S/ 0</span>
+                    <span class="promo-tag italic">STUDIO OFFER</span>
+                </div>
+                <div id="total-display" class="text-4xl font-[900] text-white italic tracking-tighter">S/ 0</div>
             </div>
-            <button onclick="sendWhatsApp()" class="btn-primary px-12 py-6 rounded-[2.2rem] font-black text-xs uppercase italic text-white flex items-center gap-2">
-                RESERVAR CUPO <i class="fa-solid fa-chevron-right text-[10px]"></i>
+            <button onclick="sendWhatsApp()" class="btn-gradient px-14 py-6 rounded-[2.2rem] font-black text-[12px] uppercase italic text-white flex items-center gap-3 transition-all active:scale-90 hover:brightness-110">
+                Confirmar Cita <i class="fa-solid fa-chevron-right text-[10px]"></i>
             </button>
         </div>
     </div>
 
     <script>
-        // Configuración y Estado
         let state = {
-            vehicle: 'SUV',
+            vehicle: 'Auto',
             baseService: null,
             selectedExtras: [],
             prize: null,
@@ -215,82 +290,77 @@
         };
 
         const prizes = [
-            { label: "S/ 5", value: 5, color: "#1e293b" },
+            { label: "S/ 3", value: 3, color: "#0f172a" },
+            { label: "S/ 7", value: 7, color: "#1e293b" },
+            { label: "S/ 5", value: 5, color: "#0f172a" },
             { label: "S/ 10", value: 10, color: "#2563eb" },
-            { label: "S/ 6", value: 6, color: "#0f172a" },
-            { label: "S/ 8", value: 8, color: "#3b82f6" },
-            { label: "S/ 5", value: 5, color: "#1e293b" },
-            { label: "S/ 7", value: 7, color: "#1d4ed8" },
+            { label: "S/ 4", value: 4, color: "#0f172a" },
+            { label: "S/ 8", value: 8, color: "#1d4ed8" },
         ];
 
         const services = [
-            { id: 'ext', name: 'Solo Exterior', Auto: 40, SUV: 50, icon: 'fa-car' },
-            { id: 'int', name: 'Solo Interior', Auto: 40, SUV: 50, icon: 'fa-table-cells-large' },
-            { id: 'full', name: 'Combo Full (Int + Ext)', Auto: 70, SUV: 80, icon: 'fa-star' }
+            { id: 'ext', name: 'Exterior Premium', desc: 'Lavado técnico detallado + Sellado Hidrofóbico.', Auto: 30, SUV: 40, oldAuto: 50, oldSUV: 60, icon: 'fa-droplet' },
+            { id: 'int', name: 'Interior Detail Pro', desc: 'Limpieza técnica profunda de plásticos, ranuras y conductos.', Auto: 50, SUV: 60, oldAuto: 80, oldSUV: 90, icon: 'fa-soap' },
+            { id: 'full', name: 'Combo Full Studio', desc: 'Protocolo completo (Interior + Exterior).', Auto: 75, SUV: 90, oldAuto: 120, oldSUV: 145, icon: 'fa-star' }
         ];
 
         const extras = [
-            { id: 'cera', name: 'Cera Premium', price: 25, icon: 'fa-sun' },
-            { id: 'motor', name: 'Lavado de Motor', price: 20, icon: 'fa-bolt' },
-            { id: 'nutri', name: 'Nutrición Cuero', price: 15, icon: 'fa-droplet' },
-            { id: 'ranura', name: 'Detallado Ranuras', price: 15, icon: 'fa-shield' }
+            { 
+                id: 'cera', 
+                name: 'Cera Premium Hybrid', 
+                price: 20, 
+                oldPrice: 40, 
+                icon: 'fa-gem', 
+                floro: 'Alta repelencia (hidrofóbica), facilita las limpiezas futuras y otorga un brillo espejo profundo.' 
+            },
+            { 
+                id: 'motor', 
+                name: 'Detallado Motor', 
+                price: 15, 
+                oldPrice: 35, 
+                icon: 'fa-bolt', 
+                floro: 'Limpieza técnica segura y acondicionamiento estético de plásticos.' 
+            }
         ];
 
-        // Inicializar Ruleta
         function initWheel() {
             const wheel = document.getElementById('wheel');
             const angle = 360 / prizes.length;
             let gradient = "conic-gradient(";
-            
             prizes.forEach((p, i) => {
                 gradient += `${p.color} ${i * angle}deg ${(i + 1) * angle}deg${i === prizes.length - 1 ? "" : ", "}`;
-                
                 const textDiv = document.createElement('div');
                 textDiv.className = 'prize-text';
                 textDiv.style.transform = `rotate(${i * angle + (angle/2)}deg)`;
                 textDiv.innerHTML = `<span>${p.label}</span>`;
                 wheel.appendChild(textDiv);
             });
-            
-            gradient += ")";
             wheel.style.background = gradient;
         }
 
         function spinWheel() {
             if (state.isSpinning || state.prize) return;
             state.isSpinning = true;
-            
             const spinBtn = document.getElementById('spin-btn');
-            spinBtn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> Girando...';
-            spinBtn.style.opacity = "0.5";
-
-            const sectorAngle = 360 / prizes.length;
+            spinBtn.innerText = 'PROCESANDO...';
             const winningIndex = Math.floor(Math.random() * prizes.length);
-            const extraSpins = 360 * 8; 
-            const targetAngle = (winningIndex * sectorAngle);
-            const finalRotation = state.rotation + extraSpins + (360 - (state.rotation % 360)) - targetAngle;
-            
+            const finalRotation = state.rotation + (360 * 10) + (360 - (state.rotation % 360)) - (winningIndex * (360 / prizes.length));
             state.rotation = finalRotation;
             document.getElementById('wheel').style.transform = `rotate(${finalRotation}deg)`;
-
             setTimeout(() => {
                 state.isSpinning = false;
                 state.prize = prizes[winningIndex];
-                
                 spinBtn.classList.add('hidden');
                 document.getElementById('prize-display').classList.remove('hidden');
-                document.getElementById('prize-value').innerText = state.prize.label;
+                document.getElementById('prize-value').innerText = state.prize.value;
                 calculateTotal();
-            }, 4000);
+            }, 5000);
         }
 
-        // UI Helpers
         function selectVehicle(v) {
             state.vehicle = v;
-            document.getElementById('btn-auto').classList.toggle('card-active', v === 'Auto');
-            document.getElementById('btn-auto').classList.toggle('text-white', v === 'Auto');
-            document.getElementById('btn-suv').classList.toggle('card-active', v === 'SUV');
-            document.getElementById('btn-suv').classList.toggle('text-white', v === 'SUV');
+            document.getElementById('btn-auto').className = `glass-card cursor-pointer p-10 rounded-[2.5rem] flex flex-col items-center gap-4 ${v === 'Auto' ? 'card-active' : ''}`;
+            document.getElementById('btn-suv').className = `glass-card cursor-pointer p-10 rounded-[2.5rem] flex flex-col items-center gap-4 ${v === 'SUV' ? 'card-active' : ''}`;
             renderServices();
             calculateTotal();
         }
@@ -298,15 +368,23 @@
         function renderServices() {
             const container = document.getElementById('services-container');
             container.innerHTML = services.map(s => `
-                <div onclick="selectService('${s.id}')" class="p-6 rounded-[2.5rem] border-2 cursor-pointer transition-all ${state.baseService?.id === s.id ? 'bg-blue-600/5 border-blue-500' : 'bg-slate-900 border-transparent'}">
-                    <div class="flex justify-between items-center">
-                        <div class="flex items-center gap-4">
-                            <div class="p-4 rounded-2xl ${state.baseService?.id === s.id ? 'bg-blue-600 text-white' : 'bg-slate-950 text-slate-500'}">
-                                <i class="fa-solid ${s.icon}"></i>
+                <div onclick="selectService('${s.id}')" class="p-8 rounded-[3rem] border-2 cursor-pointer transition-all ${state.baseService?.id === s.id ? 'card-active' : 'glass-card border-transparent'}">
+                    <div class="flex justify-between items-center gap-4">
+                        <div class="flex items-center gap-5 min-w-0">
+                            <div class="w-14 h-14 shrink-0 rounded-2xl flex items-center justify-center ${state.baseService?.id === s.id ? 'bg-blue-600 text-white shadow-lg' : 'bg-slate-900 text-slate-600'}">
+                                <i class="fa-solid ${s.icon} text-lg"></i>
                             </div>
-                            <span class="font-black text-lg italic uppercase tracking-tighter ${state.baseService?.id === s.id ? 'text-white' : 'text-slate-300'}">${s.name}</span>
+                            <div class="min-w-0">
+                                <h4 class="font-black text-sm uppercase tracking-tight truncate ${state.baseService?.id === s.id ? 'text-white' : 'text-slate-300'}">${s.name}</h4>
+                                <p class="text-[10px] text-slate-500 font-bold uppercase mt-1 leading-tight line-clamp-2">${s.desc}</p>
+                            </div>
                         </div>
-                        <span class="font-black italic text-xl text-white">S/ ${s[state.vehicle]}</span>
+                        <div class="text-right flex flex-col items-end">
+                            <div class="price-row">
+                                ${state.baseService?.id === s.id ? `<span class="price-strikethrough">S/ ${s['old'+state.vehicle]}</span>` : ''}
+                                <span class="font-black text-2xl text-white italic">S/ ${s[state.vehicle]}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             `).join('');
@@ -323,32 +401,45 @@
             container.innerHTML = extras.map(e => {
                 const isActive = state.selectedExtras.find(ex => ex.id === e.id);
                 return `
-                    <div onclick="toggleExtra('${e.id}')" class="p-5 rounded-[2.5rem] border-2 transition-all cursor-pointer h-32 flex flex-col justify-between ${isActive ? 'bg-blue-600 border-blue-400 text-white shadow-xl' : 'bg-slate-900 border-transparent text-slate-400'}">
-                        <div class="flex justify-between items-start">
-                            <div class="p-3 rounded-2xl bg-slate-950/50">
-                                <i class="fa-solid ${e.icon}"></i>
+                    <div onclick="toggleExtra('${e.id}')" class="p-8 rounded-[3rem] border-2 transition-all cursor-pointer ${isActive ? 'card-active' : 'glass-card border-transparent text-slate-400'}">
+                        <div class="flex items-start gap-5">
+                            <div class="w-14 h-14 shrink-0 rounded-2xl bg-slate-950/50 flex items-center justify-center text-blue-400 border border-white/5">
+                                <i class="fa-solid ${e.icon} text-xl"></i>
                             </div>
-                            <span class="text-[11px] font-black italic">+ S/ ${e.price}</span>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex justify-between items-start mb-2 gap-2">
+                                    <h5 class="text-[11px] font-black uppercase text-white tracking-widest truncate">${e.name}</h5>
+                                    <span class="text-base font-black text-white italic whitespace-nowrap">S/ ${e.price}</span>
+                                </div>
+                                <p class="text-[10px] text-slate-500 leading-relaxed font-semibold italic">${e.floro}</p>
+                            </div>
                         </div>
-                        <div class="text-[10px] font-black uppercase tracking-widest">${e.name}</div>
                     </div>
                 `;
             }).join('');
         }
 
         function toggleExtra(id) {
-            const extra = extras.find(e => e.id === id);
             const index = state.selectedExtras.findIndex(e => e.id === id);
             if (index > -1) state.selectedExtras.splice(index, 1);
-            else state.selectedExtras.push(extra);
+            else state.selectedExtras.push(extras.find(e => e.id === id));
             renderExtras();
             calculateTotal();
         }
 
         function calculateTotal() {
             let total = state.baseService ? state.baseService[state.vehicle] : 0;
+            let oldTotal = state.baseService ? state.baseService['old' + state.vehicle] : 0;
             total += state.selectedExtras.reduce((acc, curr) => acc + curr.price, 0);
+            oldTotal += state.selectedExtras.reduce((acc, curr) => acc + curr.oldPrice, 0);
             if (state.prize) total = Math.max(0, total - state.prize.value);
+            const oldContainer = document.getElementById('old-price-container');
+            if (state.baseService) {
+                oldContainer.classList.remove('hidden');
+                document.getElementById('old-price').innerText = `S/ ${oldTotal}`;
+            } else {
+                oldContainer.classList.add('hidden');
+            }
             document.getElementById('total-display').innerText = `S/ ${total}`;
         }
 
@@ -357,27 +448,24 @@
             const lName = document.getElementById('lastName').value;
             const date = document.getElementById('date').value;
             const time = document.getElementById('time').value;
-
             if (!fName || !lName || !date || !time || !state.baseService) {
-                alert("Por favor completa todos los campos y elige un plan.");
+                alert("Completa todos los datos para la reserva.");
                 return;
             }
-
-            let message = `*NUEVA RESERVA DETAIL2GO*%0A`;
+            let message = `*⚡ RESERVA DETAIL2GO (A DOMICILIO)*%0A`;
             message += `*Cliente:* ${fName} ${lName}%0A`;
-            message += `*Fecha:* ${date}%0A`;
-            message += `*Hora:* ${time}%0A`;
+            message += `*Fecha:* ${date} | *Hora:* ${time}%0A`;
             message += `*--------------------------*%0A`;
             message += `*Vehículo:* ${state.vehicle}%0A`;
             message += `*Servicio:* ${state.baseService.name}%0A`;
-            if (state.selectedExtras.length > 0) message += `*Extras:* ${state.selectedExtras.map(e => e.name).join(', ')}%0A`;
-            if (state.prize) message += `*🎁 DESCUENTO:* S/ ${state.prize.value}%0A`;
-            message += `*Total Final:* ${document.getElementById('total-display').innerText}`;
-
+            if (state.selectedExtras.length > 0) message += `*Add-ons:* ${state.selectedExtras.map(e => e.name).join(', ')}%0A`;
+            if (state.prize) message += `*🎁 Bonus:* -S/ ${state.prize.value}%0A`;
+            message += `*--------------------------*%0A`;
+            message += `*TOTAL:* ${document.getElementById('total-display').innerText}%0A%0A`;
+            message += `_Nota: Se dispone de agua y luz en el domicilio._`;
             window.open(`https://wa.me/51937631302?text=${message}`, '_blank');
         }
 
-        // Iniciar
         window.onload = () => {
             initWheel();
             renderServices();
