@@ -23,6 +23,7 @@
                 radial-gradient(circle at 0% 0%, rgba(37, 99, 235, 0.08) 0%, transparent 25%),
                 radial-gradient(circle at 100% 100%, rgba(6, 182, 212, 0.05) 0%, transparent 25%);
             background-attachment: fixed;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .carbon-bg {
@@ -36,8 +37,8 @@
 
         .wheel-container {
             position: relative;
-            width: 280px;
-            height: 280px;
+            width: 260px;
+            height: 260px;
             margin: 20px auto;
         }
 
@@ -45,10 +46,10 @@
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            border: 8px solid #111827;
+            border: 6px solid #111827;
             position: relative;
             transition: transform 5s cubic-bezier(0.1, 0, 0.1, 1);
-            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -57,15 +58,15 @@
 
         .wheel-marker {
             position: absolute;
-            top: -15px;
+            top: -10px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 40;
-            width: 35px;
-            height: 40px;
+            width: 30px;
+            height: 35px;
             background: var(--accent);
             clip-path: polygon(50% 100%, 0 0, 100% 0);
-            filter: drop-shadow(0 0 10px rgba(37, 99, 235, 0.5));
+            filter: drop-shadow(0 0 8px rgba(37, 99, 235, 0.5));
         }
 
         .prize-text {
@@ -76,9 +77,9 @@
             justify-content: center;
             font-weight: 800;
             text-transform: uppercase;
-            font-size: 13px;
+            font-size: 11px;
             color: white;
-            padding-top: 35px;
+            padding-top: 30px;
             pointer-events: none;
         }
 
@@ -86,24 +87,24 @@
             background: rgba(15, 23, 42, 0.6);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.4s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .card-active {
             border-color: var(--accent) !important;
-            background: rgba(37, 99, 235, 0.08);
-            box-shadow: 0 0 40px rgba(37, 99, 235, 0.15);
+            background: rgba(37, 99, 235, 0.12);
+            box-shadow: 0 0 30px rgba(37, 99, 235, 0.15);
         }
 
         .price-strikethrough {
             text-decoration: line-through;
             color: #64748b;
-            font-size: 0.85em;
+            font-size: 0.75em;
         }
 
         .btn-gradient {
             background: linear-gradient(135deg, var(--accent), #1d4ed8);
-            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
         }
 
         input {
@@ -111,101 +112,120 @@
             border: 1px solid rgba(255,255,255,0.1) !important;
             color: white !important;
         }
+
+        /* Alineación Forzada de Precios */
+        .service-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            gap: 12px;
+        }
+
+        .service-info {
+            flex: 1;
+            min-width: 0; /* Permite que el texto se trunque si es necesario */
+        }
     </style>
 </head>
-<body class="pb-44 carbon-bg">
+<body class="pb-48 carbon-bg">
 
-    <nav class="px-8 py-10 sticky top-0 z-[100] bg-slate-950/80 backdrop-blur-xl border-b border-white/5">
+    <nav class="px-6 py-8 sticky top-0 z-[100] bg-slate-950/80 backdrop-blur-xl border-b border-white/5">
         <div class="max-w-xl mx-auto flex flex-col items-center">
             <div class="flex flex-col items-center select-none">
                 <div class="flex items-baseline italic uppercase">
-                    <span class="text-4xl font-[900] tracking-tighter text-white">DETAIL</span>
-                    <span class="text-4xl font-[900] tracking-tighter text-blue-600 ml-1">2GO</span>
+                    <span class="text-3xl font-[900] tracking-tighter text-white">DETAIL</span>
+                    <span class="text-3xl font-[900] tracking-tighter text-blue-600 ml-1">2GO</span>
                 </div>
                 <div class="flex items-center gap-3 mt-1">
-                    <span class="text-[8px] font-black tracking-[0.6em] text-slate-400 uppercase">Arequipa Mobile Studio</span>
+                    <span class="text-[7px] font-black tracking-[0.5em] text-slate-400 uppercase">Arequipa Mobile Studio</span>
                 </div>
             </div>
         </div>
     </nav>
 
-    <main class="max-w-xl mx-auto px-6 pt-12 space-y-20">
+    <main class="max-w-xl mx-auto px-5 pt-8 space-y-16">
 
         <!-- Categoría -->
-        <section class="space-y-6">
-            <h3 class="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] text-center italic">Categoría de Vehículo</h3>
-            <div class="grid grid-cols-2 gap-5">
-                <div onclick="selectVehicle('Auto')" id="btn-auto" class="glass-card cursor-pointer p-10 rounded-[2.5rem] flex flex-col items-center gap-4 card-active">
-                    <i class="fa-solid fa-car text-3xl text-blue-500"></i>
-                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-white">Sedán</span>
+        <section class="space-y-5">
+            <h3 class="text-[9px] font-black text-slate-500 uppercase tracking-[0.3em] text-center italic">Tipo de Vehículo</h3>
+            <div class="grid grid-cols-2 gap-4">
+                <div onclick="selectVehicle('Auto')" id="btn-auto" class="glass-card cursor-pointer p-6 rounded-[2rem] flex flex-col items-center gap-3 card-active">
+                    <i class="fa-solid fa-car text-2xl text-blue-500"></i>
+                    <span class="text-[9px] font-black uppercase tracking-[0.1em] text-white">Sedán / Hatch</span>
                 </div>
-                <div onclick="selectVehicle('SUV')" id="btn-suv" class="glass-card cursor-pointer p-10 rounded-[2.5rem] flex flex-col items-center gap-4">
-                    <i class="fa-solid fa-truck-pickup text-3xl text-slate-600"></i>
-                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">SUV / 4x4</span>
+                <div onclick="selectVehicle('SUV')" id="btn-suv" class="glass-card cursor-pointer p-6 rounded-[2rem] flex flex-col items-center gap-3">
+                    <i class="fa-solid fa-truck-pickup text-2xl text-slate-600"></i>
+                    <span class="text-[9px] font-black uppercase tracking-[0.1em] text-slate-500">SUV / 4x4</span>
                 </div>
             </div>
         </section>
 
         <!-- Ruleta -->
-        <section class="bg-slate-900/50 rounded-[4rem] p-12 border border-white/5 flex flex-col items-center">
-            <h3 class="text-[11px] font-black text-white uppercase tracking-[0.5em] mb-12 text-center italic">Desbloquea tu descuento</h3>
+        <section class="bg-slate-900/40 rounded-[3rem] p-8 border border-white/5 flex flex-col items-center relative overflow-hidden">
+            <h3 class="text-[10px] font-black text-white uppercase tracking-[0.4em] mb-8 text-center italic">Sorteo de Cortesía</h3>
             <div class="wheel-marker"></div>
             <div class="wheel-container">
                 <div id="wheel"></div>
             </div>
-            <div id="prize-display" class="hidden mt-10 text-center">
-                <div class="text-blue-400 font-black text-2xl italic bg-blue-500/10 px-10 py-5 rounded-[2rem] border-2 border-blue-500/30">
+            <div id="prize-display" class="hidden mt-8 text-center">
+                <div class="text-blue-400 font-black text-xl italic bg-blue-500/10 px-8 py-4 rounded-2xl border border-blue-500/30">
                     GANASTE: -S/ <span id="prize-value"></span>
                 </div>
             </div>
-            <button id="spin-btn" onclick="spinWheel()" class="mt-10 bg-white px-14 py-6 rounded-3xl font-black text-[11px] uppercase text-black tracking-[0.3em] transition-all hover:scale-105 active:scale-95">
+            <button id="spin-btn" onclick="spinWheel()" class="mt-8 bg-white px-10 py-5 rounded-2xl font-black text-[10px] uppercase text-black tracking-[0.2em] active:scale-95 transition-transform">
                 Girar Ruleta
             </button>
         </section>
 
         <!-- Protocolos -->
-        <section class="space-y-8">
-            <h3 class="text-[11px] font-black text-slate-400 uppercase tracking-[0.5em] italic text-center">Protocolos de Detallado</h3>
-            <div id="services-container" class="space-y-5"></div>
+        <section class="space-y-6">
+            <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em] italic text-center">Protocolos Disponibles</h3>
+            <div id="services-container" class="space-y-4"></div>
         </section>
 
         <!-- Upgrades -->
-        <section class="space-y-8">
-            <h3 class="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] text-center italic">Upgrades de Protección</h3>
-            <div id="extras-container" class="grid grid-cols-1 gap-5"></div>
+        <section class="space-y-6">
+            <h3 class="text-[9px] font-black text-slate-500 uppercase tracking-[0.3em] text-center italic">Upgrades de Protección</h3>
+            <div id="extras-container" class="space-y-4"></div>
         </section>
 
         <!-- Agendamiento -->
-        <section class="glass-card p-12 rounded-[4rem] space-y-8 border-t-4 border-t-blue-500">
-            <h3 class="text-[12px] font-black text-white uppercase tracking-[0.5em] text-center">Agendamiento</h3>
-            <div class="space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input type="text" id="firstName" placeholder="Nombre" class="w-full rounded-2xl p-6 text-sm font-bold">
-                    <input type="text" id="lastName" placeholder="Apellido" class="w-full rounded-2xl p-6 text-sm font-bold">
+        <section class="glass-card p-8 rounded-[3rem] space-y-6 border-t-2 border-t-blue-500">
+            <h3 class="text-[11px] font-black text-white uppercase tracking-[0.4em] text-center">Reservar Cita</h3>
+            <div class="space-y-3">
+                <div class="grid grid-cols-1 gap-3">
+                    <input type="text" id="firstName" placeholder="Nombre" class="w-full rounded-xl p-5 text-xs font-bold outline-none focus:border-blue-500">
+                    <input type="text" id="lastName" placeholder="Apellido" class="w-full rounded-xl p-5 text-xs font-bold outline-none focus:border-blue-500">
                 </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <input type="date" id="date" class="w-full rounded-2xl p-6 text-sm font-bold">
-                    <input type="time" id="time" class="w-full rounded-2xl p-6 text-sm font-bold">
+                <div class="grid grid-cols-2 gap-3">
+                    <input type="date" id="date" class="w-full rounded-xl p-5 text-xs font-bold outline-none focus:border-blue-500">
+                    <input type="time" id="time" class="w-full rounded-xl p-5 text-xs font-bold outline-none focus:border-blue-500">
                 </div>
             </div>
-            <div class="p-5 rounded-3xl bg-blue-500/5 border border-blue-500/10 text-[11px]">
-                <p class="text-slate-400"><i class="fa-solid fa-circle-info mr-2"></i> El cliente debe facilitar punto de <strong>agua y luz</strong> en el lugar del servicio.</p>
+            <div class="p-4 rounded-2xl bg-blue-500/5 border border-blue-500/10 text-[10px] leading-relaxed">
+                <p class="text-slate-400 italic"><i class="fa-solid fa-circle-info mr-2 text-blue-500"></i> Se requiere acceso a punto de <strong>agua y luz</strong> en el domicilio.</p>
             </div>
         </section>
 
+        <footer class="pb-10 opacity-20 flex flex-col items-center">
+            <span class="text-[7px] font-black tracking-[0.4em] text-slate-500 uppercase">Detail2Go Arequipa 2024</span>
+        </footer>
+
     </main>
 
-    <!-- Barra Total -->
-    <div class="fixed bottom-0 left-0 w-full p-8 z-[150] bg-gradient-to-t from-black via-black/80 to-transparent">
-        <div class="max-w-xl mx-auto glass-card rounded-[3rem] p-7 flex items-center justify-between shadow-2xl">
-            <div class="pl-4">
-                <div id="old-price-container" class="hidden flex items-center gap-2 mb-1">
-                    <span id="old-price" class="price-strikethrough">S/ 0</span>
+    <!-- Barra Total Fija -->
+    <div class="fixed bottom-0 left-0 w-full px-4 pb-6 pt-2 z-[150] bg-gradient-to-t from-black via-black/90 to-transparent">
+        <div class="max-w-xl mx-auto glass-card rounded-[2.5rem] p-5 flex items-center justify-between shadow-2xl border border-white/10">
+            <div class="pl-2">
+                <div id="old-price-container" class="hidden flex items-center gap-2 mb-0.5">
+                    <span id="old-price" class="price-strikethrough text-[10px]">S/ 0</span>
+                    <span class="text-[8px] bg-blue-600 px-1.5 py-0.5 rounded-full font-black text-white italic uppercase">Oferta</span>
                 </div>
-                <div id="total-display" class="text-4xl font-[900] text-white italic tracking-tighter">S/ 0</div>
+                <div id="total-display" class="text-3xl font-[900] text-white italic tracking-tighter">S/ 0</div>
             </div>
-            <button onclick="sendWhatsApp()" class="btn-gradient px-12 py-6 rounded-[2.2rem] font-black text-[12px] uppercase italic text-white flex items-center gap-3 transition-all active:scale-95">
-                Confirmar <i class="fa-solid fa-chevron-right text-[10px]"></i>
+            <button onclick="sendWhatsApp()" class="btn-gradient px-8 py-5 rounded-2xl font-black text-[10px] uppercase italic text-white flex items-center gap-2 active:scale-90 transition-transform">
+                Agendar <i class="fa-solid fa-chevron-right text-[8px]"></i>
             </button>
         </div>
     </div>
@@ -229,16 +249,15 @@
             { label: "S/ 8", value: 8, color: "#1d4ed8" },
         ];
 
-        // PRECIOS ACTUALIZADOS SEGUN TU PEDIDO: Sedan 75, SUV 90 para el combo full
         const services = [
-            { id: 'ext', name: 'Exterior Premium', desc: 'Lavado técnico detallado + Sellado Hidrofóbico.', Auto: 30, SUV: 40, oldAuto: 50, oldSUV: 60, icon: 'fa-droplet' },
-            { id: 'int', name: 'Interior Detail Pro', desc: 'Limpieza profunda de plásticos, ranuras y conductos.', Auto: 50, SUV: 60, oldAuto: 80, oldSUV: 90, icon: 'fa-soap' },
-            { id: 'full', name: 'Combo Full Studio', desc: 'Protocolo completo (Interior + Exterior).', Auto: 75, SUV: 90, oldAuto: 120, oldSUV: 145, icon: 'fa-star' }
+            { id: 'ext', name: 'Exterior Premium', desc: 'Lavado técnico detallado.', Auto: 30, SUV: 40, oldAuto: 50, oldSUV: 60, icon: 'fa-droplet' },
+            { id: 'int', name: 'Interior Detail Pro', desc: 'Limpieza técnica profunda.', Auto: 50, SUV: 60, oldAuto: 80, oldSUV: 90, icon: 'fa-soap' },
+            { id: 'full', name: 'Combo Full Studio', desc: 'Protocolo completo int/ext.', Auto: 75, SUV: 90, oldAuto: 120, oldSUV: 145, icon: 'fa-star' }
         ];
 
         const extras = [
-            { id: 'cera', name: 'Cera Premium Hybrid', price: 20, oldPrice: 40, icon: 'fa-gem', desc: 'Brillo espejo y repelencia.' },
-            { id: 'motor', name: 'Detallado Motor', price: 15, oldPrice: 35, icon: 'fa-bolt', desc: 'Limpieza técnica segura.' }
+            { id: 'cera', name: 'Cera Premium Hybrid', price: 20, oldPrice: 40, icon: 'fa-gem', desc: 'Protección hidrofóbica.' },
+            { id: 'motor', name: 'Detallado Motor', price: 15, oldPrice: 35, icon: 'fa-bolt', desc: 'Acondicionamiento estético.' }
         ];
 
         function initWheel() {
@@ -284,19 +303,19 @@
         function renderServices() {
             const container = document.getElementById('services-container');
             container.innerHTML = services.map(s => `
-                <div onclick="selectService('${s.id}')" class="p-8 rounded-[3rem] border-2 cursor-pointer transition-all ${state.baseService?.id === s.id ? 'card-active' : 'glass-card border-transparent'}">
-                    <div class="flex justify-between items-center">
-                        <div class="flex items-center gap-5">
-                            <div class="w-12 h-12 rounded-xl flex items-center justify-center ${state.baseService?.id === s.id ? 'bg-blue-600' : 'bg-slate-900'}">
-                                <i class="fa-solid ${s.icon}"></i>
+                <div onclick="selectService('${s.id}')" class="p-6 rounded-[2rem] border-2 cursor-pointer transition-all ${state.baseService?.id === s.id ? 'card-active' : 'glass-card border-transparent'}">
+                    <div class="service-row">
+                        <div class="flex items-center gap-4 service-info">
+                            <div class="w-10 h-10 shrink-0 rounded-xl flex items-center justify-center ${state.baseService?.id === s.id ? 'bg-blue-600 text-white' : 'bg-slate-900 text-slate-600'}">
+                                <i class="fa-solid ${s.icon} text-sm"></i>
                             </div>
-                            <div>
-                                <h4 class="font-black text-sm uppercase">${s.name}</h4>
-                                <p class="text-[9px] text-slate-500 font-bold uppercase">${s.desc}</p>
+                            <div class="min-w-0">
+                                <h4 class="font-black text-[11px] uppercase tracking-tight text-white truncate">${s.name}</h4>
+                                <p class="text-[8px] text-slate-500 font-bold uppercase truncate">${s.desc}</p>
                             </div>
                         </div>
-                        <div class="text-right">
-                            <span class="font-black text-xl italic">S/ ${s[state.vehicle]}</span>
+                        <div class="text-right shrink-0">
+                            <span class="font-black text-lg italic text-white whitespace-nowrap">S/ ${s[state.vehicle]}</span>
                         </div>
                     </div>
                 </div>
@@ -314,16 +333,20 @@
             container.innerHTML = extras.map(e => {
                 const isActive = state.selectedExtras.find(ex => ex.id === e.id);
                 return `
-                    <div onclick="toggleExtra('${e.id}')" class="p-6 rounded-[2.5rem] border-2 transition-all cursor-pointer ${isActive ? 'card-active' : 'glass-card border-transparent'}">
-                        <div class="flex justify-between items-center">
-                            <div class="flex items-center gap-4">
-                                <i class="fa-solid ${e.icon} text-blue-500"></i>
-                                <div>
-                                    <h5 class="text-[10px] font-black uppercase text-white">${e.name}</h5>
-                                    <p class="text-[9px] text-slate-500">${e.desc}</p>
+                    <div onclick="toggleExtra('${e.id}')" class="p-5 rounded-[2rem] border-2 transition-all cursor-pointer ${isActive ? 'card-active' : 'glass-card border-transparent'}">
+                        <div class="service-row">
+                            <div class="flex items-center gap-4 service-info">
+                                <div class="w-10 h-10 shrink-0 rounded-xl bg-slate-950 flex items-center justify-center text-blue-500 border border-white/5">
+                                    <i class="fa-solid ${e.icon} text-sm"></i>
+                                </div>
+                                <div class="min-w-0">
+                                    <h5 class="text-[10px] font-black uppercase text-white truncate">${e.name}</h5>
+                                    <p class="text-[8px] text-slate-500 truncate">${e.desc}</p>
                                 </div>
                             </div>
-                            <span class="font-black italic">S/ ${e.price}</span>
+                            <div class="text-right shrink-0">
+                                <span class="font-black text-base italic text-white">S/ ${e.price}</span>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -359,18 +382,19 @@
             const date = document.getElementById('date').value;
             const time = document.getElementById('time').value;
             if (!fName || !lName || !date || !time || !state.baseService) {
-                alert("Completa todos los datos del formulario.");
+                alert("Por favor, completa los datos del formulario y selecciona un servicio.");
                 return;
             }
-            let message = `*⚡ RESERVA DETAIL2GO*%0A`;
+            let message = `*⚡ RESERVA DETAIL2GO (A DOMICILIO)*%0A`;
             message += `*Cliente:* ${fName} ${lName}%0A`;
             message += `*Fecha:* ${date} | *Hora:* ${time}%0A`;
             message += `*Vehículo:* ${state.vehicle}%0A`;
             message += `*Servicio:* ${state.baseService.name}%0A`;
             if (state.selectedExtras.length > 0) message += `*Add-ons:* ${state.selectedExtras.map(e => e.name).join(', ')}%0A`;
-            if (state.prize) message += `*Bonus:* -S/ ${state.prize.value}%0A`;
+            if (state.prize) message += `*🎁 Bonus Ruleta:* -S/ ${state.prize.value}%0A`;
+            message += `*--------------------------*%0A`;
             message += `*TOTAL:* ${document.getElementById('total-display').innerText}%0A%0A`;
-            message += `_Confirmo que cuento con punto de agua y luz._`;
+            message += `_Confirmo punto de agua y luz disponible._`;
             window.open(`https://wa.me/51937631302?text=${message}`, '_blank');
         }
 
