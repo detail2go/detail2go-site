@@ -84,12 +84,19 @@
         .extra-badge {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
         }
         
         .extra-badge.active {
             background: #2563eb;
             border-color: #3b82f6;
             color: white;
+        }
+
+        .extra-badge.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            filter: grayscale(1);
         }
     </style>
 </head>
@@ -101,7 +108,6 @@
             <span class="heading-font text-xl font-black italic">DETAIL<span class="text-brand">2GO</span></span>
             
             <div class="flex items-center gap-6 md:gap-10">
-                <!-- Social Links Desktop -->
                 <div class="hidden md:flex items-center gap-5 text-slate-400">
                     <a href="https://www.instagram.com/detail2.go/" target="_blank" class="hover:text-brand transition-colors"><i class="fa-brands fa-instagram text-lg"></i></a>
                     <a href="https://www.tiktok.com/@detail2go_?" target="_blank" class="hover:text-brand transition-colors"><i class="fa-brands fa-tiktok text-lg"></i></a>
@@ -177,7 +183,7 @@
                                                 <p class="text-brand font-black">EXTERIOR:</p>
                                                 <p><i class="fa-solid fa-check mr-2 text-brand"></i>Lavado Snow Foam</p>
                                                 <p><i class="fa-solid fa-check mr-2 text-brand"></i>Descontaminado de Pintura</p>
-                                                <p><i class="fa-solid fa-check mr-2 text-brand"></i>Sellado Cerámico Express</p>
+                                                <p><i class="fa-solid fa-check mr-2 text-brand"></i>Lavado de Motor <span class="bg-brand/20 px-1 rounded text-white font-black text-[8px]">INC</span></p>
                                             </div>
                                             <div class="space-y-3">
                                                 <p class="text-brand font-black">INTERIOR:</p>
@@ -206,7 +212,6 @@
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <!-- Solo Interior -->
                                 <div onclick="setService('interior')" id="s-interior" class="glass-card p-6 rounded-[2.5rem] cursor-pointer group">
                                     <div class="flex justify-between items-start mb-4">
                                         <h5 class="heading-font text-sm text-white italic">INTERIOR DETAIL</h5>
@@ -214,7 +219,6 @@
                                     </div>
                                     <p class="text-[9px] text-slate-400 leading-relaxed uppercase font-medium">Aspirado industrial, limpieza técnica de cinturones y eliminación de manchas.</p>
                                 </div>
-                                <!-- Solo Exterior -->
                                 <div onclick="setService('exterior')" id="s-exterior" class="glass-card p-6 rounded-[2.5rem] cursor-pointer group">
                                     <div class="flex justify-between items-start mb-4">
                                         <h5 class="heading-font text-sm text-white italic">EXTERIOR GLOSS</h5>
@@ -227,10 +231,10 @@
                     </div>
 
                     <!-- 3. Extras -->
-                    <div>
+                    <div id="extras-section">
                         <h3 class="heading-font text-xs text-brand mb-8 tracking-[0.3em] font-bold uppercase">03. Añade Extras Premium</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="extras-grid">
-                            <!-- JS renderiza motor y cera con precios dinámicos por tipo de vehículo -->
+                            <!-- JS renderiza motor y cera con precios dinámicos -->
                         </div>
                     </div>
                 </div>
@@ -256,7 +260,6 @@
                             </div>
                         </div>
 
-                        <!-- Resumen -->
                         <div class="bg-dark rounded-[2.5rem] p-8 border border-brand/10 shadow-inner">
                             <div class="flex justify-between items-center mb-6">
                                 <div>
@@ -297,7 +300,6 @@
             SUV: { premium: { p: 100, o: 150 }, interior: { p: 40, o: 65 }, exterior: { p: 30, o: 50 }, combo: { p: 65 } }
         };
 
-        // Definición base de extras
         const EXTRAS_DEF = [
             { id: 'motor', name: 'Lavado de Motor', icon: 'fa-engine' },
             { id: 'cera', name: 'Cera Premium', icon: 'fa-shield-halved' }
@@ -313,7 +315,6 @@
             document.getElementById('v-suv').className = `glass-card p-4 rounded-[2.5rem] cursor-pointer ${v==='SUV'?'active-card':''}`;
             document.getElementById('sum-vehicle').innerText = v === 'Auto' ? 'AUTO SEDÁN' : 'SUV / CAMIONETA';
             
-            // Re-renderizar extras porque el precio cambia según el vehículo
             renderExtras();
             updateUI();
         }
@@ -326,12 +327,22 @@
             });
             document.getElementById('s-premium').className = `glass-card p-8 rounded-[3rem] cursor-pointer ${currentService === 'premium' ? 'active-card' : ''}`;
             
+            // Si selecciona premium, deshabilitamos extras activos (ya incluidos o no seleccionables)
+            if (s === 'premium') {
+                activeExtras = []; 
+            }
+
             const names = { premium: 'FULL DETAIL PREMIUM', interior: 'INTERIOR DETAIL', exterior: 'EXTERIOR GLOSS', combo: 'COMBO INT + EXT' };
             document.getElementById('sum-service').innerText = names[s];
+            
+            renderExtras();
             updateUI();
         }
 
         function toggleExtra(id) {
+            // No permitir selección si el servicio es premium
+            if (currentService === 'premium') return;
+
             if(activeExtras.includes(id)) {
                 activeExtras = activeExtras.filter(x => x !== id);
             } else {
@@ -341,20 +352,28 @@
             updateUI();
         }
 
-        // Obtener precio del extra basado en el vehículo actual
         function getExtraPrice(id) {
-            // SUV: S/ 20, Auto: S/ 15
             return currentVehicle === 'SUV' ? 20 : 15;
         }
 
         function renderExtras() {
             const grid = document.getElementById('extras-grid');
+            const isPremium = currentService === 'premium';
+            
             grid.innerHTML = EXTRAS_DEF.map(e => {
                 const price = getExtraPrice(e.id);
+                const isActive = activeExtras.includes(e.id);
+                const disabledClass = isPremium ? 'disabled' : '';
+                const activeClass = isActive ? 'active' : '';
+
                 return `
-                    <div onclick="toggleExtra('${e.id}')" class="extra-badge p-6 rounded-[2rem] cursor-pointer flex justify-between items-center transition-all ${activeExtras.includes(e.id) ? 'active' : ''}">
-                        <span class="text-[10px] font-black uppercase tracking-widest">${e.name}</span>
-                        <span class="heading-font text-sm">+ S/${price}</span>
+                    <div onclick="toggleExtra('${e.id}')" 
+                         class="extra-badge p-6 rounded-[2rem] cursor-pointer flex justify-between items-center ${activeClass} ${disabledClass}">
+                        <div class="flex flex-col">
+                            <span class="text-[10px] font-black uppercase tracking-widest">${e.name}</span>
+                            ${isPremium ? '<span class="text-[7px] text-brand/70 font-bold uppercase mt-1">Incluido en Premium</span>' : ''}
+                        </div>
+                        <span class="heading-font text-sm">${isPremium ? '---' : '+ S/' + price}</span>
                     </div>
                 `;
             }).join('');
@@ -387,7 +406,7 @@
             if (!name) return alert("Por favor, ingresa tu nombre");
             const date = document.getElementById('form-date').value;
             const time = document.getElementById('form-time').value;
-            const extrasTxt = activeExtras.length ? `*Extras:* ${activeExtras.map(id => EXTRAS_DEF.find(x => x.id === id).name).join(', ')}` : '';
+            const extrasTxt = activeExtras.length ? `*Extras:* ${activeExtras.map(id => EXTRAS_DEF.find(x => x.id === id).name).join(', ')}` : (currentService === 'premium' ? '*Incluye Detallado de Motor*' : '');
             
             const msg = `*RESERVA DETAIL2GO*%0A%0A*Cliente:* ${name}%0A*Servicio:* ${document.getElementById('sum-service').innerText}%0A*Vehículo:* ${currentVehicle}%0A${extrasTxt}%0A*Total:* ${document.getElementById('final-total').innerText}%0A*Fecha:* ${date}%0A*Turno:* ${time}`;
             window.open(`https://wa.me/51937631302?text=${msg}`, '_blank');
