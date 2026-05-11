@@ -3,27 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detail2Go Arequipa - App de Reservas</title>
+    <title>Detail2Go | Premium Detailing Arequipa</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        brand: {
-                            blue: '#2563eb',     /* Azul Detail2Go */
-                            dark: '#0f172a',     /* Slate 900 */
-                            deeper: '#020617',   /* Slate 950 */
-                            gold: '#D4AF37'      /* Dorado VIP */
-                        }
+                        brand: '#2563eb',
+                        dark: '#0f172a',
+                        surface: '#1e293b',
+                        accent: '#3b82f6'
                     },
                     fontFamily: {
-                        sans: ['Montserrat', 'sans-serif'],
+                        heading: ['Orbitron', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
                     }
                 }
             }
@@ -31,421 +29,362 @@
     </script>
 
     <style>
-        body {
-            background-color: #020617; 
-            color: #E4E4E7;
-            -webkit-tap-highlight-color: transparent;
-            scroll-behavior: smooth;
+        :root { scroll-behavior: smooth; }
+        body { 
+            background-color: #0f172a; 
+            color: #f8fafc; 
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
-        .bg-pattern {
-            background-image: 
-                radial-gradient(circle at 15% 50%, rgba(37, 99, 235, 0.08), transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(212, 175, 55, 0.03), transparent 25%);
-            background-attachment: fixed;
-        }
-
+        .heading-font { font-family: 'Orbitron', sans-serif; letter-spacing: 0.05em; }
+        
         .glass-card {
-            background: rgba(15, 23, 42, 0.7); 
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s ease;
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .light-card {
-            background: #ffffff;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        .active-card {
+            background: rgba(37, 99, 235, 0.1);
+            border-color: #3b82f6 !important;
+            box-shadow: 0 10px 40px rgba(37, 99, 235, 0.15);
+            transform: translateY(-5px);
         }
 
-        .card-active {
-            border-color: #2563eb !important;
-            background: rgba(37, 99, 235, 0.05) !important;
-            box-shadow: 0 10px 30px -10px rgba(37, 99, 235, 0.3);
+        .hero-bg {
+            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.4), #0f172a), 
+                        url('https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&q=80&w=2000');
+            background-size: cover;
+            background-position: center;
         }
 
-        .vip-active {
-            border-color: #D4AF37 !important;
-            background: rgba(212, 175, 55, 0.05) !important;
-            box-shadow: 0 10px 40px -10px rgba(212, 175, 55, 0.2);
+        .img-overlay {
+            background: linear-gradient(to top, rgba(15, 23, 42, 0.9) 0%, transparent 100%);
         }
 
-        .vip-badge {
-            background: linear-gradient(135deg, #FDE08B 0%, #D4AF37 50%, #AA8C2C 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .service-img-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1.5rem;
+            height: 180px;
         }
 
-        .light-input {
-            background: #f8fafc !important;
-            border: 1px solid #e2e8f0 !important;
-            color: #0f172a !important;
-            transition: border-color 0.3s, box-shadow 0.3s;
+        .service-img-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .active-card .service-img-card img {
+            transform: scale(1.1);
+        }
+
+        .extra-badge {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        .light-input:focus {
-            border-color: #2563eb !important;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-            outline: none;
-            background: #ffffff !important;
-        }
-
-        .light-input::placeholder {
-            color: #94a3b8 !important;
-        }
-
-        .light-input::-webkit-calendar-picker-indicator {
-            filter: invert(0);
-            opacity: 0.6;
-            cursor: pointer;
+        .extra-badge.active {
+            background: #2563eb;
+            border-color: #3b82f6;
+            color: white;
         }
     </style>
 </head>
-<body class="bg-pattern min-h-screen flex flex-col">
+<body class="overflow-x-hidden">
 
-    <nav class="sticky top-0 z-[100] bg-brand-deeper/90 backdrop-blur-xl border-b border-white/5 shadow-lg">
-        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-            <div class="flex flex-col select-none">
-                <div class="flex items-baseline uppercase tracking-tighter">
-                    <span class="text-2xl font-black text-white italic">DETAIL</span>
-                    <span class="text-2xl font-black text-brand-blue ml-1 italic">2GO</span>
+    <!-- Nav -->
+    <nav class="fixed top-0 w-full z-[100] bg-dark/95 backdrop-blur-md border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <span class="heading-font text-xl font-black italic">DETAIL<span class="text-brand">2GO</span></span>
+            
+            <div class="flex items-center gap-6 md:gap-10">
+                <!-- Social Links Desktop -->
+                <div class="hidden md:flex items-center gap-5 text-slate-400">
+                    <a href="https://www.instagram.com/detail2.go/" target="_blank" class="hover:text-brand transition-colors"><i class="fa-brands fa-instagram text-lg"></i></a>
+                    <a href="https://www.tiktok.com/@detail2go_?" target="_blank" class="hover:text-brand transition-colors"><i class="fa-brands fa-tiktok text-lg"></i></a>
                 </div>
-                <span class="text-[8px] font-bold tracking-[0.3em] text-slate-400 uppercase ml-1">Arequipa Studio</span>
-            </div>
-            <div class="flex gap-4">
-                <a href="https://www.instagram.com/detail2.go/" target="_blank" class="text-slate-400 hover:text-brand-blue transition-colors">
-                    <i class="fa-brands fa-instagram text-xl"></i>
-                </a>
-                <a href="https://www.tiktok.com/@detail2go_?lang=es-419" target="_blank" class="text-slate-400 hover:text-white transition-colors">
-                    <i class="fa-brands fa-tiktok text-xl"></i>
-                </a>
+                
+                <div class="flex items-center gap-8">
+                    <a href="#servicios" class="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white transition-colors">Servicios</a>
+                    <a href="#reserva" class="bg-brand text-white px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg shadow-brand/20 hover:scale-105 transition-transform">Reservar Ahora</a>
+                </div>
             </div>
         </div>
     </nav>
 
-    <main class="max-w-6xl mx-auto w-full px-4 sm:px-6 py-10 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-
-        <!-- LADO OSCURO: SERVICIOS -->
-        <div class="lg:col-span-7 space-y-10">
-            <section class="space-y-4">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-blue/10 border border-brand-blue/20 text-brand-blue">
-                    <i class="fa-solid fa-droplet text-[10px]"></i>
-                    <span class="text-[10px] font-bold uppercase tracking-widest">Detailing a Domicilio</span>
-                </div>
-                <h1 class="text-3xl sm:text-4xl font-black text-white tracking-tight leading-tight">
-                    Devuélvele a tu auto el <br/>
-                    <span class="text-brand-blue italic">brillo de agencia.</span>
-                </h1>
-                <p class="text-sm text-slate-400 font-medium leading-relaxed max-w-lg">
-                    No es un lavado convencional. Aplicamos procesos técnicos de detallado, químicos pH Neutro y materiales premium para cuidar la pintura de tu vehículo.
-                </p>
-            </section>
-
-            <section class="space-y-4">
-                <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                    <span class="bg-brand-blue text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px]">1</span>
-                    Tipo de Vehículo
-                </h3>
-                <div class="grid grid-cols-2 gap-4">
-                    <div onclick="selectVehicle('Auto')" id="btn-auto" class="glass-card cursor-pointer p-6 rounded-2xl flex flex-col items-center gap-3 card-active group">
-                        <i class="fa-solid fa-car-side text-3xl text-brand-blue"></i>
-                        <span class="text-xs font-bold uppercase tracking-widest text-white">Auto Sedán</span>
-                    </div>
-                    <div onclick="selectVehicle('SUV')" id="btn-suv" class="glass-card cursor-pointer p-6 rounded-2xl flex flex-col items-center gap-3 group">
-                        <i class="fa-solid fa-truck-pickup text-3xl text-slate-600"></i>
-                        <span class="text-xs font-bold uppercase tracking-widest text-slate-400">SUV / 4x4</span>
-                    </div>
-                </div>
-            </section>
-
-            <section class="space-y-6">
-                <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                    <span class="bg-brand-blue text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px]">2</span>
-                    Elige tu Paquete
-                </h3>
-                <div class="space-y-4">
-                    <div id="premium-container"></div>
-                    <div class="relative py-4">
-                        <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-white/10"></div></div>
-                        <div class="relative flex justify-center"><span class="bg-brand-deeper px-3 text-[10px] uppercase font-bold tracking-widest text-slate-500">Mantenimiento</span></div>
-                    </div>
-                    <div id="basic-container" class="space-y-3"></div>
-                </div>
-            </section>
-
-            <section class="space-y-4 pb-8">
-                <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                    <span class="bg-brand-blue text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px]">3</span>
-                    Añade Protección
-                </h3>
-                <div id="extras-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
-            </section>
+    <!-- Hero -->
+    <header class="hero-bg min-h-screen flex items-center pt-20">
+        <div class="max-w-7xl mx-auto px-6 w-full" data-aos="fade-up">
+            <h1 class="heading-font text-5xl md:text-8xl font-black text-white leading-none mb-6 italic">
+                ESTÉTICA<br><span class="text-brand">AUTOMOTRIZ</span>
+            </h1>
+            <p class="text-slate-300 text-lg mb-10 max-w-xl font-light">
+                No lavamos autos, restauramos su valor. Detallado profesional con productos premium en el corazón de Arequipa.
+            </p>
+            <div class="flex flex-col md:flex-row gap-6 items-start md:items-center">
+                <a href="#servicios" class="bg-white text-dark px-10 py-5 rounded-2xl text-xs font-bold uppercase tracking-widest hover:bg-brand hover:text-white transition-all">Explorar Servicios</a>
+                <span class="text-brand font-black italic text-sm tracking-widest uppercase py-2 px-4 border-l-2 border-brand/30">Nosotros limpiamos hasta lo que no ves</span>
+            </div>
         </div>
+    </header>
 
-        <!-- LADO BLANCO: RESERVA -->
-        <div class="lg:col-span-5 relative">
-            <div class="sticky top-28 space-y-6">
-                <div class="light-card rounded-[2rem] p-6 sm:p-8 border-t-4 border-t-brand-blue">
-                    <h3 class="text-lg font-black text-slate-900 italic mb-6">Datos de Reserva</h3>
+    <!-- Configurador -->
+    <section id="servicios" class="py-32 bg-dark">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+                
+                <!-- Columna Izquierda: Selección -->
+                <div class="lg:col-span-7 space-y-16">
                     
-                    <div class="space-y-4 mb-8">
-                        <div class="grid grid-cols-2 gap-3">
-                            <input type="text" id="firstName" placeholder="Nombre" class="light-input w-full rounded-xl p-3.5 text-sm font-medium">
-                            <input type="text" id="lastName" placeholder="Apellido" class="light-input w-full rounded-xl p-3.5 text-sm font-medium">
-                        </div>
-                        <input type="text" id="address" placeholder="Dirección exacta" class="light-input w-full rounded-xl p-3.5 text-sm font-medium">
-                        <div class="grid grid-cols-2 gap-3">
-                            <input type="date" id="date" class="light-input w-full rounded-xl p-3.5 text-sm font-medium">
-                            <input type="time" id="time" class="light-input w-full rounded-xl p-3.5 text-sm font-medium">
-                        </div>
-                    </div>
-
-                    <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200 space-y-3">
-                        <div class="flex justify-between items-center text-sm">
-                            <span class="text-slate-400 font-bold" id="summary-service-name">Selecciona un plan...</span>
-                            <span class="text-slate-900 font-black" id="summary-service-price">S/ 0</span>
-                        </div>
-                        <div id="summary-extras" class="space-y-2 text-xs text-slate-600 font-medium"></div>
-                        <div class="border-t border-slate-200 pt-4 flex justify-between items-end mt-2">
-                            <div>
-                                <span class="text-[10px] text-slate-500 uppercase tracking-widest font-black">Total Estimado</span>
-                                <div id="discount-badge" class="hidden text-[9px] bg-green-100 text-green-700 px-2 py-0.5 rounded mt-1 w-max font-bold">
-                                    Descuento Aplicado S/ <span id="save-amount">0</span>
+                    <!-- 1. Vehículo -->
+                    <div>
+                        <h3 class="heading-font text-xs text-brand mb-8 tracking-[0.3em] font-bold uppercase">01. Selecciona tu Vehículo</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div onclick="setVehicle('Auto')" id="v-auto" class="glass-card p-4 rounded-[2.5rem] cursor-pointer active-card group">
+                                <div class="service-img-card mb-4">
+                                    <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&q=80&w=600" alt="Sedan Premium">
+                                    <div class="absolute inset-0 img-overlay flex items-end p-6">
+                                        <span class="heading-font text-sm text-white italic">SEDÁN / HATCHBACK</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="flex items-baseline gap-1">
-                                <span class="text-sm font-black text-brand-blue">S/</span>
-                                <span id="total-display" class="text-4xl font-black text-slate-900 italic tracking-tighter">0</span>
+                            <div onclick="setVehicle('SUV')" id="v-suv" class="glass-card p-4 rounded-[2.5rem] cursor-pointer group">
+                                <div class="service-img-card mb-4">
+                                    <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=600" alt="SUV Premium">
+                                    <div class="absolute inset-0 img-overlay flex items-end p-6">
+                                        <span class="heading-font text-sm text-white italic">SUV / CAMIONETA</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="mt-5 flex items-start gap-3 p-4 rounded-xl bg-blue-50 border border-blue-100">
-                        <i class="fa-solid fa-plug-circle-bolt text-brand-blue mt-0.5"></i>
-                        <p class="text-[10px] text-slate-600 leading-relaxed font-medium">
-                            Solo requerimos acceso a un punto de <strong class="text-slate-900">agua y luz</strong> en el lugar de la visita.
-                        </p>
+                    <!-- 2. Detalle de Servicios -->
+                    <div>
+                        <h3 class="heading-font text-xs text-brand mb-8 tracking-[0.3em] font-bold uppercase">02. Elige el Nivel de Detallado</h3>
+                        <div class="space-y-6">
+                            
+                            <!-- Full Detail -->
+                            <div onclick="setService('premium')" id="s-premium" class="glass-card p-8 rounded-[3rem] cursor-pointer active-card relative overflow-hidden group">
+                                <div class="flex flex-col md:flex-row justify-between items-start gap-6 relative z-10">
+                                    <div class="flex-1">
+                                        <h4 class="heading-font text-2xl text-white italic mb-4">FULL DETAIL PREMIUM</h4>
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-[10px] text-slate-300 uppercase tracking-wider font-semibold">
+                                            <div class="space-y-3">
+                                                <p class="text-brand font-black">EXTERIOR:</p>
+                                                <p><i class="fa-solid fa-check mr-2 text-brand"></i>Lavado Snow Foam</p>
+                                                <p><i class="fa-solid fa-check mr-2 text-brand"></i>Descontaminado de Pintura</p>
+                                                <p><i class="fa-solid fa-check mr-2 text-brand"></i>Sellado Cerámico Express</p>
+                                            </div>
+                                            <div class="space-y-3">
+                                                <p class="text-brand font-black">INTERIOR:</p>
+                                                <p><i class="fa-solid fa-check mr-2 text-brand"></i>Lavado de Salón Completo</p>
+                                                <p><i class="fa-solid fa-check mr-2 text-brand"></i>Nutrición de Plásticos/Cueros</p>
+                                                <p><i class="fa-solid fa-check mr-2 text-brand"></i>Detallado de Ranuras</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="block text-slate-500 line-through text-xs" id="p-premium-old">S/130</span>
+                                        <span class="heading-font text-4xl text-white font-black" id="p-premium-price">S/90</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Combo Int + Ext -->
+                            <div onclick="setService('combo')" id="s-combo" class="glass-card p-6 rounded-[2.5rem] cursor-pointer group border-brand/20">
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <h5 class="heading-font text-sm text-white italic uppercase tracking-widest">Combo Interior + Exterior</h5>
+                                        <p class="text-[9px] text-slate-400 mt-1 font-medium">LAVADO COMPLETO NIVEL ESTÁNDAR</p>
+                                    </div>
+                                    <span class="heading-font text-xl text-brand" id="p-combo-price">S/60</span>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Solo Interior -->
+                                <div onclick="setService('interior')" id="s-interior" class="glass-card p-6 rounded-[2.5rem] cursor-pointer group">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <h5 class="heading-font text-sm text-white italic">INTERIOR DETAIL</h5>
+                                        <span class="heading-font text-lg text-brand" id="p-interior-price">S/35</span>
+                                    </div>
+                                    <p class="text-[9px] text-slate-400 leading-relaxed uppercase font-medium">Aspirado industrial, limpieza técnica de cinturones y eliminación de manchas.</p>
+                                </div>
+                                <!-- Solo Exterior -->
+                                <div onclick="setService('exterior')" id="s-exterior" class="glass-card p-6 rounded-[2.5rem] cursor-pointer group">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <h5 class="heading-font text-sm text-white italic">EXTERIOR GLOSS</h5>
+                                        <span class="heading-font text-lg text-brand" id="p-exterior-price">S/25</span>
+                                    </div>
+                                    <p class="text-[9px] text-slate-400 leading-relaxed uppercase font-medium">Lavado Snow Foam, limpieza de aros e hidratación de neumáticos.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <button onclick="sendWhatsApp()" class="w-full mt-6 bg-brand-blue hover:bg-blue-600 text-white font-black text-sm uppercase tracking-widest py-4 sm:py-5 rounded-2xl transition-all shadow-[0_10px_20px_rgba(37,99,235,0.2)] flex justify-center items-center gap-2">
-                        Confirmar por WhatsApp <i class="fa-brands fa-whatsapp text-lg"></i>
-                    </button>
+                    <!-- 3. Extras -->
+                    <div>
+                        <h3 class="heading-font text-xs text-brand mb-8 tracking-[0.3em] font-bold uppercase">03. Añade Extras Premium</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="extras-grid">
+                            <!-- JS renderiza motor y cera -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Reserva -->
+                <div class="lg:col-span-5" id="reserva">
+                    <div class="sticky top-32 glass-card p-8 rounded-[3.5rem] bg-surface/50 border-brand/10">
+                        <h3 class="heading-font text-center text-sm text-white mb-10 tracking-[0.4em] italic uppercase">Cita de Detallado</h3>
+                        
+                        <div class="space-y-4 mb-8">
+                            <div class="relative">
+                                <i class="fa-solid fa-user absolute left-5 top-5 text-slate-500"></i>
+                                <input type="text" id="form-name" class="w-full bg-dark/50 border border-white/10 rounded-2xl p-5 pl-14 text-sm focus:border-brand outline-none text-white font-bold" placeholder="NOMBRE COMPLETO">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <input type="date" id="form-date" class="w-full bg-dark/50 border border-white/10 rounded-2xl p-5 text-xs text-white outline-none font-bold">
+                                <select id="form-time" class="w-full bg-dark/50 border border-white/10 rounded-2xl p-5 text-xs text-white outline-none font-bold">
+                                    <option>08:30 AM</option>
+                                    <option>10:30 AM</option>
+                                    <option>02:30 PM</option>
+                                    <option>04:30 PM</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Resumen -->
+                        <div class="bg-dark rounded-[2.5rem] p-8 border border-brand/10 shadow-inner">
+                            <div class="flex justify-between items-center mb-6">
+                                <div>
+                                    <span class="text-[9px] font-black text-slate-500 uppercase tracking-widest block mb-1" id="sum-vehicle">AUTO SEDÁN</span>
+                                    <h4 class="heading-font text-xs text-white italic" id="sum-service">FULL DETAIL PREMIUM</h4>
+                                </div>
+                                <span class="heading-font text-3xl text-brand font-black" id="final-total">S/90</span>
+                            </div>
+                            <div id="sum-extras" class="text-[9px] text-slate-500 uppercase tracking-wider mb-4 flex flex-wrap gap-2"></div>
+                            <p class="text-[8px] text-slate-600 uppercase border-t border-white/5 pt-4 font-bold">Reserva sujeta a disponibilidad de espacio.</p>
+                        </div>
+
+                        <button onclick="sendWhatsApp()" class="w-full mt-8 bg-brand text-white py-6 rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:scale-[1.02] transition-all shadow-xl shadow-brand/30">
+                            RESERVAR POR WHATSAPP <i class="fa-brands fa-whatsapp ml-2"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </main>
+    </section>
 
-    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-800 border border-white/10 text-white px-6 py-3 rounded-full text-xs font-bold shadow-2xl transition-all duration-300 transform translate-y-24 opacity-0 z-[200] flex items-center gap-3">
-        <i class="fa-solid fa-circle-exclamation text-brand-blue"></i>
-        <span id="toast-message">Notificación</span>
-    </div>
+    <!-- Footer -->
+    <footer class="py-20 bg-dark border-t border-white/5 text-center">
+        <span class="heading-font text-xl font-black italic text-white">DETAIL<span class="text-brand">2GO</span></span>
+        <div class="flex justify-center gap-8 mt-10">
+            <a href="https://www.instagram.com/detail2.go/" target="_blank" class="text-slate-400 hover:text-brand text-2xl transition-colors"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://www.tiktok.com/@detail2go_?" target="_blank" class="text-slate-400 hover:text-brand text-2xl transition-colors"><i class="fa-brands fa-tiktok"></i></a>
+        </div>
+        <p class="text-[9px] text-slate-600 uppercase tracking-[0.5em] mt-10 font-black">Nosotros limpiamos hasta lo que no ves</p>
+    </footer>
 
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        let state = {
-            vehicle: 'Auto',
-            baseService: null,
-            selectedExtras: []
+        AOS.init();
+
+        const PRICES = {
+            Auto: { premium: { p: 90, o: 130 }, interior: { p: 35, o: 55 }, exterior: { p: 25, o: 45 }, combo: { p: 55 } },
+            SUV: { premium: { p: 100, o: 150 }, interior: { p: 40, o: 65 }, exterior: { p: 30, o: 50 }, combo: { p: 65 } }
         };
 
-        const services = [
-            { 
-                category: 'premium',
-                id: 'premium', 
-                name: 'El Combo Detallado', 
-                badge: 'Lavado Integral',
-                desc: 'Lavado de motor, encerado protector, limpieza profunda de interiores y lavado exterior técnico.', 
-                price: { Auto: 90, SUV: 100 }, 
-                oldPrice: { Auto: 120, SUV: 130 }, 
-                icon: 'fa-gem'
-            },
-            { 
-                category: 'basic',
-                id: 'basico', 
-                name: 'Combo Básico', 
-                desc: 'Limpieza completa interior y exterior.', 
-                price: { Auto: 50, SUV: 60 }, 
-                oldPrice: { Auto: 70, SUV: 80 }, 
-                icon: 'fa-hands-bubbles' 
-            },
-            { 
-                category: 'basic',
-                id: 'int', 
-                name: 'Limpieza Interior', 
-                desc: 'Aspirado profundo y detallado de cabina.', 
-                price: { Auto: 35, SUV: 40 }, 
-                oldPrice: { Auto: 55, SUV: 60 }, 
-                icon: 'fa-couch' 
-            },
-            { 
-                category: 'basic',
-                id: 'ext', 
-                name: 'Plan Exterior', 
-                desc: 'Lavado técnico detallado de carrocería.', 
-                price: { Auto: 25, SUV: 30 }, 
-                oldPrice: { Auto: 45, SUV: 50 }, 
-                icon: 'fa-shower' 
-            }
+        const EXTRAS = [
+            { id: 'motor', name: 'Lavado de Motor', p: 15, icon: 'fa-engine' },
+            { id: 'cera', name: 'Cera Premium', p: 15, icon: 'fa-shield-halved' }
         ];
 
-        const extrasData = [
-            { id: 'cera', name: 'Encerado', price: 15, oldPrice: 25, icon: 'fa-shield-halved', desc: 'Protección y brillo intenso.' },
-            { id: 'motor', name: 'Lavado Motor', price: 15, oldPrice: 25, icon: 'fa-bolt', desc: 'Limpieza técnica con productos seguros.' }
-        ];
+        let currentVehicle = 'Auto';
+        let currentService = 'premium';
+        let activeExtras = [];
 
-        function selectVehicle(v) {
-            state.vehicle = v;
-            document.getElementById('btn-auto').className = `glass-card cursor-pointer p-6 rounded-2xl flex flex-col items-center gap-3 group ${v === 'Auto' ? 'card-active' : ''}`;
-            document.getElementById('btn-suv').className = `glass-card cursor-pointer p-6 rounded-2xl flex flex-col items-center gap-3 group ${v === 'SUV' ? 'card-active' : ''}`;
-            
-            document.getElementById('btn-auto').querySelector('i').className = `fa-solid fa-car-side text-3xl ${v === 'Auto' ? 'text-brand-blue' : 'text-slate-600'}`;
-            document.getElementById('btn-auto').querySelector('span').className = `text-xs font-bold uppercase tracking-widest ${v === 'Auto' ? 'text-white' : 'text-slate-400'}`;
-            document.getElementById('btn-suv').querySelector('i').className = `fa-solid fa-truck-pickup text-3xl ${v === 'SUV' ? 'text-brand-blue' : 'text-slate-600'}`;
-            document.getElementById('btn-suv').querySelector('span').className = `text-xs font-bold uppercase tracking-widest ${v === 'SUV' ? 'text-white' : 'text-slate-400'}`;
-
-            renderServices();
-            renderExtras();
-            updateSummary();
+        function setVehicle(v) {
+            currentVehicle = v;
+            document.getElementById('v-auto').className = `glass-card p-4 rounded-[2.5rem] cursor-pointer ${v==='Auto'?'active-card':''}`;
+            document.getElementById('v-suv').className = `glass-card p-4 rounded-[2.5rem] cursor-pointer ${v==='SUV'?'active-card':''}`;
+            document.getElementById('sum-vehicle').innerText = v === 'Auto' ? 'AUTO SEDÁN' : 'SUV / CAMIONETA';
+            updateUI();
         }
 
-        function renderServices() {
-            const premiumContainer = document.getElementById('premium-container');
-            const basicContainer = document.getElementById('basic-container');
-            const v = state.vehicle;
+        function setService(s) {
+            currentService = s;
+            ['premium', 'interior', 'exterior', 'combo'].forEach(id => {
+                const el = document.getElementById(`s-${id}`);
+                if(el) el.className = `glass-card p-6 rounded-[2.5rem] cursor-pointer ${id === s ? 'active-card' : ''}`;
+            });
+            document.getElementById('s-premium').className = `glass-card p-8 rounded-[3rem] cursor-pointer ${currentService === 'premium' ? 'active-card' : ''}`;
             
-            const pSrv = services.find(s => s.category === 'premium');
-            const isPActive = state.baseService?.id === pSrv.id;
-            
-            premiumContainer.innerHTML = `
-                <div onclick="selectService('${pSrv.id}')" class="p-6 sm:p-8 rounded-3xl cursor-pointer transition-all border ${isPActive ? 'vip-active' : 'glass-card border-brand-gold/30'} relative overflow-hidden group">
-                    <div class="absolute top-0 right-0 bg-brand-gold text-brand-deeper text-[9px] font-black uppercase tracking-widest px-4 py-1.5 rounded-bl-2xl">RECOMENDADO</div>
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h4 class="font-black text-xl sm:text-2xl text-white italic tracking-tight vip-badge">${pSrv.name}</h4>
-                            <span class="text-[10px] text-brand-gold uppercase tracking-[0.2em] font-bold block mt-1">${pSrv.badge}</span>
-                            <p class="text-[11px] text-slate-300 mt-3 max-w-sm">${pSrv.desc}</p>
-                        </div>
-                        <div class="text-right">
-                            <span class="text-xs text-slate-500 line-through block">S/ ${pSrv.oldPrice[v]}</span>
-                            <span class="font-black text-3xl text-white italic">S/ ${pSrv.price[v]}</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            basicContainer.innerHTML = services.filter(s => s.category === 'basic').map(s => {
-                const isActive = state.baseService?.id === s.id;
-                return `
-                <div onclick="selectService('${s.id}')" class="p-5 rounded-2xl cursor-pointer transition-all ${isActive ? 'card-active' : 'glass-card'}">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-xl flex items-center justify-center ${isActive ? 'bg-brand-blue text-white' : 'bg-brand-dark text-slate-400'}">
-                                <i class="fa-solid ${s.icon} text-lg"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-sm text-white">${s.name}</h4>
-                                <p class="text-[10px] text-slate-500">${s.desc}</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <span class="text-[10px] text-slate-600 line-through block">S/ ${s.oldPrice[v]}</span>
-                            <span class="font-black text-xl text-white">S/ ${s.price[v]}</span>
-                        </div>
-                    </div>
-                </div>
-            `}).join('');
-        }
-
-        function selectService(id) {
-            state.baseService = services.find(s => s.id === id);
-            if (id === 'premium') state.selectedExtras = state.selectedExtras.filter(e => e.id !== 'cera' && e.id !== 'motor');
-            renderServices();
-            renderExtras();
-            updateSummary();
-        }
-
-        function renderExtras() {
-            const container = document.getElementById('extras-container');
-            const isP = state.baseService?.id === 'premium';
-            container.innerHTML = extrasData.map(e => {
-                const isInc = isP && (e.id === 'cera' || e.id === 'motor');
-                const isAct = state.selectedExtras.find(ex => ex.id === e.id) && !isInc;
-                return `
-                    <div onclick="${isInc ? '' : `toggleExtra('${e.id}')`}" class="p-4 rounded-2xl transition-all ${isInc ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'} ${isAct ? 'card-active' : 'glass-card'}">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl flex items-center justify-center ${isAct ? 'bg-brand-blue/20 text-brand-blue' : 'bg-brand-dark text-slate-500'}">
-                                <i class="fa-solid ${e.icon}"></i>
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <div class="flex justify-between items-center">
-                                    <h5 class="text-xs font-bold text-white">${e.name}</h5>
-                                    <span class="font-bold text-xs text-slate-300">${isInc ? 'Gratis' : `+S/${e.price}`}</span>
-                                </div>
-                                <p class="text-[9px] text-slate-500 truncate">${e.desc}</p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
+            const names = { premium: 'FULL DETAIL PREMIUM', interior: 'INTERIOR DETAIL', exterior: 'EXTERIOR GLOSS', combo: 'COMBO INT + EXT' };
+            document.getElementById('sum-service').innerText = names[s];
+            updateUI();
         }
 
         function toggleExtra(id) {
-            const idx = state.selectedExtras.findIndex(e => e.id === id);
-            if (idx > -1) state.selectedExtras.splice(idx, 1);
-            else state.selectedExtras.push(extrasData.find(e => e.id === id));
-            renderExtras();
-            updateSummary();
-        }
-
-        function updateSummary() {
-            const v = state.vehicle;
-            let total = 0, oldTotal = 0;
-            const nameEl = document.getElementById('summary-service-name');
-            const priceEl = document.getElementById('summary-service-price');
-            const extraEl = document.getElementById('summary-extras');
-
-            if (state.baseService) {
-                total += state.baseService.price[v];
-                oldTotal += state.baseService.oldPrice[v];
-                nameEl.innerText = state.baseService.name;
-                nameEl.classList.replace('text-slate-400', 'text-slate-900');
-                priceEl.innerText = `S/ ${state.baseService.price[v]}`;
+            if(activeExtras.includes(id)) {
+                activeExtras = activeExtras.filter(x => x !== id);
             } else {
-                nameEl.innerText = 'Selecciona un plan...';
-                nameEl.classList.replace('text-slate-900', 'text-slate-400');
-                priceEl.innerText = 'S/ 0';
+                activeExtras.push(id);
             }
-
-            extraEl.innerHTML = state.selectedExtras.map(e => {
-                total += e.price; oldTotal += e.oldPrice;
-                return `<div class="flex justify-between"><span>+ ${e.name}</span><span class="font-bold">S/ ${e.price}</span></div>`;
-            }).join('');
-
-            const badge = document.getElementById('discount-badge');
-            if (state.baseService) {
-                badge.classList.remove('hidden');
-                document.getElementById('save-amount').innerText = (oldTotal - total);
-            } else badge.classList.add('hidden');
-
-            document.getElementById('total-display').innerText = total;
+            renderExtras();
+            updateUI();
         }
 
-        function showToast(msg) {
-            const t = document.getElementById('toast');
-            document.getElementById('toast-message').innerText = msg;
-            t.classList.remove('translate-y-24', 'opacity-0');
-            setTimeout(() => t.classList.add('translate-y-24', 'opacity-0'), 3000);
+        function renderExtras() {
+            const grid = document.getElementById('extras-grid');
+            grid.innerHTML = EXTRAS.map(e => `
+                <div onclick="toggleExtra('${e.id}')" class="extra-badge p-6 rounded-[2rem] cursor-pointer flex justify-between items-center transition-all ${activeExtras.includes(e.id) ? 'active' : ''}">
+                    <span class="text-[10px] font-black uppercase tracking-widest">${e.name}</span>
+                    <span class="heading-font text-sm">+ S/${e.p}</span>
+                </div>
+            `).join('');
+
+            const sumDiv = document.getElementById('sum-extras');
+            sumDiv.innerHTML = activeExtras.map(id => {
+                const e = EXTRAS.find(x => x.id === id);
+                return `<span class="bg-brand/10 text-brand px-3 py-1 rounded-full font-black">+ ${e.name}</span>`;
+            }).join('');
+        }
+
+        function updateUI() {
+            const data = PRICES[currentVehicle];
+            document.getElementById('p-premium-price').innerText = `S/${data.premium.p}`;
+            document.getElementById('p-premium-old').innerText = `S/${data.premium.o}`;
+            document.getElementById('p-interior-price').innerText = `S/${data.interior.p}`;
+            document.getElementById('p-exterior-price').innerText = `S/${data.exterior.p}`;
+            document.getElementById('p-combo-price').innerText = `S/${data.combo.p}`;
+            
+            let total = data[currentService].p;
+            activeExtras.forEach(id => {
+                total += EXTRAS.find(x => x.id === id).p;
+            });
+            
+            document.getElementById('final-total').innerText = `S/${total}`;
         }
 
         function sendWhatsApp() {
-            const f = document.getElementById('firstName').value, d = document.getElementById('date').value, t = document.getElementById('time').value, a = document.getElementById('address').value;
-            if (!f || !d || !t || !a || !state.baseService) return showToast("Completa el formulario y selecciona un plan.");
+            const name = document.getElementById('form-name').value;
+            if (!name) return alert("Por favor, ingresa tu nombre");
+            const date = document.getElementById('form-date').value;
+            const time = document.getElementById('form-time').value;
+            const extrasTxt = activeExtras.length ? `*Extras:* ${activeExtras.map(id => EXTRAS.find(x => x.id === id).name).join(', ')}` : '';
             
-            let m = `*🚙 RESERVA DETAIL2GO*%0A*Cliente:* ${f}%0A*Dirección:* ${a}%0A*Cita:* ${d} - ${t}%0A*Vehículo:* ${state.vehicle}%0A*Paquete:* ${state.baseService.name}%0A`;
-            if (state.selectedExtras.length > 0) m += `*Extras:* ${state.selectedExtras.map(e => e.name).join(', ')}%0A`;
-            m += `*TOTAL:* S/ ${document.getElementById('total-display').innerText}%0A%0A_Nota: Cuento con agua y luz._`;
-            window.open(`https://wa.me/51937631302?text=${m}`, '_blank');
+            const msg = `*RESERVA DETAIL2GO*%0A%0A*Cliente:* ${name}%0A*Servicio:* ${document.getElementById('sum-service').innerText}%0A*Vehículo:* ${currentVehicle}%0A${extrasTxt}%0A*Total:* ${document.getElementById('final-total').innerText}%0A*Fecha:* ${date}%0A*Turno:* ${time}`;
+            window.open(`https://wa.me/51937631302?text=${msg}`, '_blank');
         }
 
-        window.onload = () => { renderServices(); renderExtras(); };
+        window.onload = () => {
+            renderExtras();
+            setVehicle('Auto');
+            setService('premium');
+        };
     </script>
 </body>
 </html>
