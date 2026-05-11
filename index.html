@@ -230,7 +230,7 @@
                     <div>
                         <h3 class="heading-font text-xs text-brand mb-8 tracking-[0.3em] font-bold uppercase">03. Añade Extras Premium</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="extras-grid">
-                            <!-- JS renderiza motor y cera -->
+                            <!-- JS renderiza motor y cera con precios dinámicos por tipo de vehículo -->
                         </div>
                     </div>
                 </div>
@@ -297,9 +297,10 @@
             SUV: { premium: { p: 100, o: 150 }, interior: { p: 40, o: 65 }, exterior: { p: 30, o: 50 }, combo: { p: 65 } }
         };
 
-        const EXTRAS = [
-            { id: 'motor', name: 'Lavado de Motor', p: 15, icon: 'fa-engine' },
-            { id: 'cera', name: 'Cera Premium', p: 15, icon: 'fa-shield-halved' }
+        // Definición base de extras
+        const EXTRAS_DEF = [
+            { id: 'motor', name: 'Lavado de Motor', icon: 'fa-engine' },
+            { id: 'cera', name: 'Cera Premium', icon: 'fa-shield-halved' }
         ];
 
         let currentVehicle = 'Auto';
@@ -311,6 +312,9 @@
             document.getElementById('v-auto').className = `glass-card p-4 rounded-[2.5rem] cursor-pointer ${v==='Auto'?'active-card':''}`;
             document.getElementById('v-suv').className = `glass-card p-4 rounded-[2.5rem] cursor-pointer ${v==='SUV'?'active-card':''}`;
             document.getElementById('sum-vehicle').innerText = v === 'Auto' ? 'AUTO SEDÁN' : 'SUV / CAMIONETA';
+            
+            // Re-renderizar extras porque el precio cambia según el vehículo
+            renderExtras();
             updateUI();
         }
 
@@ -337,18 +341,27 @@
             updateUI();
         }
 
+        // Obtener precio del extra basado en el vehículo actual
+        function getExtraPrice(id) {
+            // SUV: S/ 20, Auto: S/ 15
+            return currentVehicle === 'SUV' ? 20 : 15;
+        }
+
         function renderExtras() {
             const grid = document.getElementById('extras-grid');
-            grid.innerHTML = EXTRAS.map(e => `
-                <div onclick="toggleExtra('${e.id}')" class="extra-badge p-6 rounded-[2rem] cursor-pointer flex justify-between items-center transition-all ${activeExtras.includes(e.id) ? 'active' : ''}">
-                    <span class="text-[10px] font-black uppercase tracking-widest">${e.name}</span>
-                    <span class="heading-font text-sm">+ S/${e.p}</span>
-                </div>
-            `).join('');
+            grid.innerHTML = EXTRAS_DEF.map(e => {
+                const price = getExtraPrice(e.id);
+                return `
+                    <div onclick="toggleExtra('${e.id}')" class="extra-badge p-6 rounded-[2rem] cursor-pointer flex justify-between items-center transition-all ${activeExtras.includes(e.id) ? 'active' : ''}">
+                        <span class="text-[10px] font-black uppercase tracking-widest">${e.name}</span>
+                        <span class="heading-font text-sm">+ S/${price}</span>
+                    </div>
+                `;
+            }).join('');
 
             const sumDiv = document.getElementById('sum-extras');
             sumDiv.innerHTML = activeExtras.map(id => {
-                const e = EXTRAS.find(x => x.id === id);
+                const e = EXTRAS_DEF.find(x => x.id === id);
                 return `<span class="bg-brand/10 text-brand px-3 py-1 rounded-full font-black">+ ${e.name}</span>`;
             }).join('');
         }
@@ -363,7 +376,7 @@
             
             let total = data[currentService].p;
             activeExtras.forEach(id => {
-                total += EXTRAS.find(x => x.id === id).p;
+                total += getExtraPrice(id);
             });
             
             document.getElementById('final-total').innerText = `S/${total}`;
@@ -374,14 +387,13 @@
             if (!name) return alert("Por favor, ingresa tu nombre");
             const date = document.getElementById('form-date').value;
             const time = document.getElementById('form-time').value;
-            const extrasTxt = activeExtras.length ? `*Extras:* ${activeExtras.map(id => EXTRAS.find(x => x.id === id).name).join(', ')}` : '';
+            const extrasTxt = activeExtras.length ? `*Extras:* ${activeExtras.map(id => EXTRAS_DEF.find(x => x.id === id).name).join(', ')}` : '';
             
             const msg = `*RESERVA DETAIL2GO*%0A%0A*Cliente:* ${name}%0A*Servicio:* ${document.getElementById('sum-service').innerText}%0A*Vehículo:* ${currentVehicle}%0A${extrasTxt}%0A*Total:* ${document.getElementById('final-total').innerText}%0A*Fecha:* ${date}%0A*Turno:* ${time}`;
             window.open(`https://wa.me/51937631302?text=${msg}`, '_blank');
         }
 
         window.onload = () => {
-            renderExtras();
             setVehicle('Auto');
             setService('premium');
         };
