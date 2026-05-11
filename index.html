@@ -184,6 +184,7 @@
                                                 <p><i class="fa-solid fa-check mr-2 text-brand"></i>Lavado Snow Foam</p>
                                                 <p><i class="fa-solid fa-check mr-2 text-brand"></i>Descontaminado de Pintura</p>
                                                 <p><i class="fa-solid fa-check mr-2 text-brand"></i>Lavado de Motor <span class="bg-brand/20 px-1 rounded text-white font-black text-[8px]">INC</span></p>
+                                                <p><i class="fa-solid fa-check mr-2 text-brand"></i>Encerado de Protección <span class="bg-brand/20 px-1 rounded text-white font-black text-[8px]">INC</span></p>
                                             </div>
                                             <div class="space-y-3">
                                                 <p class="text-brand font-black">INTERIOR:</p>
@@ -302,7 +303,7 @@
 
         const EXTRAS_DEF = [
             { id: 'motor', name: 'Lavado de Motor', icon: 'fa-engine' },
-            { id: 'cera', name: 'Cera Premium', icon: 'fa-shield-halved' }
+            { id: 'cera', name: 'Encerado Premium', icon: 'fa-shield-halved' }
         ];
 
         let currentVehicle = 'Auto';
@@ -327,7 +328,7 @@
             });
             document.getElementById('s-premium').className = `glass-card p-8 rounded-[3rem] cursor-pointer ${currentService === 'premium' ? 'active-card' : ''}`;
             
-            // Si selecciona premium, deshabilitamos extras activos (ya incluidos o no seleccionables)
+            // Si selecciona premium, deshabilitamos extras activos
             if (s === 'premium') {
                 activeExtras = []; 
             }
@@ -340,7 +341,6 @@
         }
 
         function toggleExtra(id) {
-            // No permitir selección si el servicio es premium
             if (currentService === 'premium') return;
 
             if(activeExtras.includes(id)) {
@@ -369,9 +369,9 @@
                 return `
                     <div onclick="toggleExtra('${e.id}')" 
                          class="extra-badge p-6 rounded-[2rem] cursor-pointer flex justify-between items-center ${activeClass} ${disabledClass}">
-                        <div class="flex flex-col">
+                        <div class="flex flex-col text-left">
                             <span class="text-[10px] font-black uppercase tracking-widest">${e.name}</span>
-                            ${isPremium ? '<span class="text-[7px] text-brand/70 font-bold uppercase mt-1">Incluido en Premium</span>' : ''}
+                            ${isPremium ? '<span class="text-[7px] text-brand/70 font-bold uppercase mt-1">Ya incluido en Premium</span>' : ''}
                         </div>
                         <span class="heading-font text-sm">${isPremium ? '---' : '+ S/' + price}</span>
                     </div>
@@ -406,9 +406,15 @@
             if (!name) return alert("Por favor, ingresa tu nombre");
             const date = document.getElementById('form-date').value;
             const time = document.getElementById('form-time').value;
-            const extrasTxt = activeExtras.length ? `*Extras:* ${activeExtras.map(id => EXTRAS_DEF.find(x => x.id === id).name).join(', ')}` : (currentService === 'premium' ? '*Incluye Detallado de Motor*' : '');
             
-            const msg = `*RESERVA DETAIL2GO*%0A%0A*Cliente:* ${name}%0A*Servicio:* ${document.getElementById('sum-service').innerText}%0A*Vehículo:* ${currentVehicle}%0A${extrasTxt}%0A*Total:* ${document.getElementById('final-total').innerText}%0A*Fecha:* ${date}%0A*Turno:* ${time}`;
+            let includeInfo = "";
+            if (currentService === 'premium') {
+                includeInfo = "*Incluye:* Detallado de Motor y Encerado Premium%0A";
+            } else if (activeExtras.length) {
+                includeInfo = `*Extras:* ${activeExtras.map(id => EXTRAS_DEF.find(x => x.id === id).name).join(', ')}%0A`;
+            }
+            
+            const msg = `*RESERVA DETAIL2GO*%0A%0A*Cliente:* ${name}%0A*Servicio:* ${document.getElementById('sum-service').innerText}%0A*Vehículo:* ${currentVehicle}%0A${includeInfo}*Total:* ${document.getElementById('final-total').innerText}%0A*Fecha:* ${date}%0A*Turno:* ${time}`;
             window.open(`https://wa.me/51937631302?text=${msg}`, '_blank');
         }
 
