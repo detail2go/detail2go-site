@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detail2Go | Premium Detailing Arequipa</title>
+    <title>Detail2Go | Tratamientos Cerámicos & Estética Automotriz Arequipa</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <script>
@@ -15,8 +15,11 @@
                 extend: {
                     colors: {
                         brand: '#2563eb',
-                        dark: '#0f172a',
+                        brandDark: '#1d4ed8',
+                        gold: '#f59e0b',
+                        dark: '#0b1120',
                         surface: '#1e293b',
+                        surfaceLight: '#334155',
                         accent: '#3b82f6'
                     },
                     fontFamily: {
@@ -31,7 +34,7 @@
     <style>
         :root { scroll-behavior: smooth; }
         body { 
-            background-color: #0f172a; 
+            background-color: #0b1120; 
             color: #f8fafc; 
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
@@ -39,28 +42,42 @@
         .heading-font { font-family: 'Orbitron', sans-serif; letter-spacing: 0.05em; }
         
         .glass-card {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
+            background: rgba(30, 41, 59, 0.65);
+            backdrop-filter: blur(14px);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card-ceramic {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .active-card {
-            background: rgba(37, 99, 235, 0.1);
+            background: rgba(37, 99, 235, 0.15) !important;
             border-color: #3b82f6 !important;
-            box-shadow: 0 10px 40px rgba(37, 99, 235, 0.15);
-            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.25);
+            transform: translateY(-3px);
+        }
+
+        .active-ceramic-card {
+            background: rgba(245, 158, 11, 0.1) !important;
+            border-color: #f59e0b !important;
+            box-shadow: 0 12px 35px rgba(245, 158, 11, 0.2);
+            transform: translateY(-4px);
         }
 
         .hero-bg {
-            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.4), #0f172a), 
+            background: linear-gradient(to bottom, rgba(11, 17, 32, 0.5), #0b1120), 
                         url('https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&q=80&w=2000');
             background-size: cover;
             background-position: center;
         }
 
         .img-overlay {
-            background: linear-gradient(to top, rgba(15, 23, 42, 0.9) 0%, transparent 100%);
+            background: linear-gradient(to top, rgba(11, 17, 32, 0.95) 0%, transparent 100%);
         }
 
         .service-img-card {
@@ -78,12 +95,12 @@
         }
 
         .active-card .service-img-card img {
-            transform: scale(1.1);
+            transform: scale(1.08);
         }
 
         .extra-badge {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             transition: all 0.3s ease;
         }
         
@@ -94,211 +111,544 @@
         }
 
         .extra-badge.disabled {
-            opacity: 0.3;
+            opacity: 0.35;
             cursor: not-allowed;
             filter: grayscale(1);
         }
+
+        .tab-btn {
+            transition: all 0.3s ease;
+        }
+        .tab-btn.active-tab {
+            background-color: #2563eb;
+            color: #ffffff;
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0b1120; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
     </style>
 </head>
 <body class="overflow-x-hidden">
 
     <!-- Nav -->
-    <nav class="fixed top-0 w-full z-[100] bg-dark/95 backdrop-blur-md border-b border-white/5">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            <span class="heading-font text-xl font-black italic">DETAIL<span class="text-brand">2GO</span></span>
+    <nav class="fixed top-0 w-full z-[100] bg-dark/90 backdrop-blur-lg border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-2">
+                <span class="heading-font text-xl md:text-2xl font-black italic tracking-wider text-white">DETAIL<span class="text-brand">2GO</span></span>
+                <span class="hidden sm:inline-block text-[9px] bg-brand/20 text-brand font-black px-2 py-0.5 rounded border border-brand/30 uppercase">Arequipa</span>
+            </a>
             
-            <div class="flex items-center gap-6 md:gap-10">
+            <div class="flex items-center gap-4 sm:gap-8">
                 <div class="hidden md:flex items-center gap-5 text-slate-400">
                     <a href="https://www.instagram.com/detail2.go/" target="_blank" class="hover:text-brand transition-colors"><i class="fa-brands fa-instagram text-lg"></i></a>
                     <a href="https://www.tiktok.com/@detail2go_?" target="_blank" class="hover:text-brand transition-colors"><i class="fa-brands fa-tiktok text-lg"></i></a>
                 </div>
                 
-                <div class="flex items-center gap-8">
-                    <a href="#servicios" class="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white transition-colors">Servicios</a>
-                    <a href="#reserva" class="bg-brand text-white px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg shadow-brand/20 hover:scale-105 transition-transform">Reservar Ahora</a>
+                <div class="flex items-center gap-3 sm:gap-6">
+                    <a href="#servicios" class="text-[10px] font-black uppercase tracking-widest text-slate-300 hover:text-white transition-colors">Servicios</a>
+                    <a href="#proceso" class="hidden sm:inline-block text-[10px] font-black uppercase tracking-widest text-slate-300 hover:text-white transition-colors">Proceso Cerámico</a>
+                    <a href="#reserva" class="bg-brand text-white px-5 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg shadow-brand/25 hover:scale-105 transition-all">Reservar Cita</a>
                 </div>
             </div>
         </div>
     </nav>
 
     <!-- Hero -->
-    <header class="hero-bg min-h-screen flex items-center pt-20">
+    <header class="hero-bg min-h-screen flex items-center pt-24 pb-16">
         <div class="max-w-7xl mx-auto px-6 w-full" data-aos="fade-up">
-            <h1 class="heading-font text-5xl md:text-8xl font-black text-white leading-none mb-6 italic">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/30 text-brand text-[10px] font-black tracking-widest uppercase mb-6">
+                <i class="fa-solid fa-gem text-gold animate-pulse"></i> Tratamientos Cerámicos Vonixx® A Domicilio
+            </div>
+            <h1 class="heading-font text-4xl sm:text-6xl md:text-8xl font-black text-white leading-none mb-6 italic">
                 ESTÉTICA<br><span class="text-brand">AUTOMOTRIZ</span>
             </h1>
-            <p class="text-slate-300 text-lg mb-10 max-w-xl font-light">
-                No lavamos autos, restauramos su valor. Detallado profesional con productos premium en el corazón de Arequipa.
+            <p class="text-slate-300 text-base md:text-xl mb-8 max-w-2xl font-light leading-relaxed">
+                Protección extrema, brillo vitrificado profundo y detallado técnico profesional directo en la comodidad de tu cochera en Arequipa.
             </p>
-            <div class="flex flex-col md:flex-row gap-6 items-start md:items-center">
-                <a href="#servicios" class="bg-white text-dark px-10 py-5 rounded-2xl text-xs font-bold uppercase tracking-widest hover:bg-brand hover:text-white transition-all">Explorar Servicios</a>
-                <span class="text-brand font-black italic text-sm tracking-widest uppercase py-2 px-4 border-l-2 border-brand/30">Nosotros limpiamos hasta lo que no ves</span>
+            
+            <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center mb-10">
+                <a href="#servicios" class="w-full sm:w-auto text-center bg-brand text-white px-8 py-4 rounded-2xl text-xs font-bold uppercase tracking-widest hover:bg-brandDark shadow-xl shadow-brand/20 transition-all">
+                    Ver Tratamientos y Tarifas
+                </a>
+                <a href="#proceso" class="w-full sm:w-auto text-center glass-card text-white px-8 py-4 rounded-2xl text-xs font-bold uppercase tracking-widest hover:bg-white/10 transition-all">
+                    Conocer Proceso Técnico
+                </a>
+            </div>
+
+            <!-- Highlights -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl pt-6 border-t border-white/10">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-house-chimney-crack text-brand text-xl"></i>
+                    <span class="text-[11px] text-slate-300 font-bold uppercase leading-tight">100% A Domicilio en Cochera</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-shield-halved text-brand text-xl"></i>
+                    <span class="text-[11px] text-slate-300 font-bold uppercase leading-tight">Garantía hasta 3 Años</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-flask text-brand text-xl"></i>
+                    <span class="text-[11px] text-slate-300 font-bold uppercase leading-tight">Insumos Originales Vonixx®</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-warehouse text-brand text-xl"></i>
+                    <span class="text-[11px] text-slate-300 font-bold uppercase leading-tight">Opción Taller Aliado FirstStop</span>
+                </div>
             </div>
         </div>
     </header>
 
-    <!-- Configurador -->
-    <section id="servicios" class="py-32 bg-dark">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+    <!-- Main Configurator -->
+    <section id="servicios" class="py-24 bg-dark relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            
+            <!-- Selector de Tipo de Servicio (Tabs principal) -->
+            <div class="text-center mb-16" data-aos="fade-up">
+                <span class="text-brand heading-font text-xs font-bold uppercase tracking-[0.3em] block mb-2">Configurador de Servicios</span>
+                <h2 class="heading-font text-2xl sm:text-4xl font-black italic text-white mb-6">SELECCIONA TU EXPERIENCIA</h2>
                 
-                <!-- Columna Izquierda: Selección -->
-                <div class="lg:col-span-7 space-y-16">
+                <div class="inline-flex p-1.5 rounded-2xl bg-surface border border-white/10 max-w-full overflow-x-auto">
+                    <button onclick="switchCategory('ceramic')" id="tab-ceramic" class="tab-btn active-tab px-6 py-3 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-2 whitespace-nowrap">
+                        <i class="fa-solid fa-gem text-gold"></i> Tratamientos Cerámicos High-End
+                    </button>
+                    <button onclick="switchCategory('standard')" id="tab-standard" class="tab-btn text-slate-400 px-6 py-3 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-2 whitespace-nowrap">
+                        <i class="fa-solid fa-car-wash"></i> Detallado Mantenimiento & Express
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                
+                <!-- Columna Izquierda: Opciones de Selección -->
+                <div class="lg:col-span-7 space-y-12">
                     
                     <!-- 1. Vehículo -->
-                    <div>
-                        <h3 class="heading-font text-xs text-brand mb-8 tracking-[0.3em] font-bold uppercase">01. Selecciona tu Vehículo</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div onclick="setVehicle('Auto')" id="v-auto" class="glass-card p-4 rounded-[2.5rem] cursor-pointer active-card group">
-                                <div class="service-img-card mb-4">
+                    <div data-aos="fade-up">
+                        <h3 class="heading-font text-xs text-brand mb-6 tracking-[0.3em] font-bold uppercase flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-full bg-brand/20 text-brand flex items-center justify-center text-[10px]">01</span>
+                            Selecciona tu Tipo de Vehículo
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div onclick="setVehicle('Auto')" id="v-auto" class="glass-card p-4 rounded-[2rem] cursor-pointer active-card group">
+                                <div class="service-img-card mb-3">
                                     <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&q=80&w=600" alt="Sedan Premium">
-                                    <div class="absolute inset-0 img-overlay flex items-end p-6">
-                                        <span class="heading-font text-sm text-white italic">SEDÁN / HATCHBACK</span>
+                                    <div class="absolute inset-0 img-overlay flex items-end p-4">
+                                        <span class="heading-font text-xs text-white italic">SEDÁN / HATCHBACK</span>
                                     </div>
                                 </div>
                             </div>
-                            <div onclick="setVehicle('SUV')" id="v-suv" class="glass-card p-4 rounded-[2.5rem] cursor-pointer group">
-                                <div class="service-img-card mb-4">
+                            <div onclick="setVehicle('SUV')" id="v-suv" class="glass-card p-4 rounded-[2rem] cursor-pointer group">
+                                <div class="service-img-card mb-3">
                                     <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=600" alt="SUV Premium">
-                                    <div class="absolute inset-0 img-overlay flex items-end p-6">
-                                        <span class="heading-font text-sm text-white italic">SUV / CAMIONETA</span>
+                                    <div class="absolute inset-0 img-overlay flex items-end p-4">
+                                        <span class="heading-font text-xs text-white italic">SUV / CAMIONETA</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- 2. Detalle de Servicios -->
-                    <div>
-                        <h3 class="heading-font text-xs text-brand mb-8 tracking-[0.3em] font-bold uppercase">02. Elige el Nivel de Detallado</h3>
-                        <div class="space-y-6">
-                            
-                            <!-- Full Detail -->
-                            <div onclick="setService('premium')" id="s-premium" class="glass-card p-8 rounded-[3rem] cursor-pointer active-card relative overflow-hidden group">
-                                <div class="flex flex-col md:flex-row justify-between items-start gap-6 relative z-10">
-                                    <div class="flex-1">
-                                        <h4 class="heading-font text-2xl text-white italic mb-4">FULL DETAIL PREMIUM</h4>
-                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-[10px] text-slate-300 uppercase tracking-wider font-semibold">
-                                            <div class="space-y-3">
-                                                <p class="text-brand font-black">EXTERIOR:</p>
-                                                <p><i class="fa-solid fa-check mr-2 text-brand"></i>Lavado Snow Foam</p>
-                                                <p><i class="fa-solid fa-check mr-2 text-brand"></i>Descontaminado de Pintura</p>
-                                                <p><i class="fa-solid fa-check mr-2 text-brand"></i>Lavado de Motor <span class="bg-brand/20 px-1 rounded text-white font-black text-[8px]">INC</span></p>
-                                                <p><i class="fa-solid fa-check mr-2 text-brand"></i>Encerado de Protección <span class="bg-brand/20 px-1 rounded text-white font-black text-[8px]">INC</span></p>
-                                            </div>
-                                            <div class="space-y-3">
-                                                <p class="text-brand font-black">INTERIOR:</p>
-                                                <p><i class="fa-solid fa-check mr-2 text-brand"></i>Lavado de Salón Completo</p>
-                                                <p><i class="fa-solid fa-check mr-2 text-brand"></i>Nutrición de Plásticos/Cueros</p>
-                                                <p><i class="fa-solid fa-check mr-2 text-brand"></i>Detallado de Ranuras</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="text-right">
-                                        <span class="block text-slate-500 line-through text-xs" id="p-premium-old">S/130</span>
-                                        <span class="heading-font text-4xl text-white font-black" id="p-premium-price">S/90</span>
-                                    </div>
+                    <!-- 2. CAT 1: SERVICIOS CERÁMICOS HIGH-END -->
+                    <div id="cat-ceramic-container" class="space-y-6" data-aos="fade-up">
+                        <h3 class="heading-font text-xs text-gold mb-6 tracking-[0.3em] font-bold uppercase flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-full bg-gold/20 text-gold flex items-center justify-center text-[10px]">02</span>
+                            Elige tu Plan de Tratamiento Cerámico
+                        </h3>
+
+                        <!-- Ceramic Pro 3Y (DESTACADO / MÁS VENDIDO) -->
+                        <div onclick="setService('ceramic_pro3y')" id="s-ceramic_pro3y" class="glass-card-ceramic p-6 sm:p-8 rounded-[2.5rem] cursor-pointer active-ceramic-card relative overflow-hidden group">
+                            <div class="absolute -right-12 -top-12 bg-gold/20 text-gold text-[9px] font-black uppercase tracking-widest py-8 px-14 rotate-45 border border-gold/30">
+                                MÁS VENDIDO
+                            </div>
+
+                            <div class="flex flex-col sm:flex-row justify-between items-start gap-4 mb-4">
+                                <div>
+                                    <span class="text-[9px] font-black uppercase text-gold tracking-widest block mb-1"><i class="fa-solid fa-crown mr-1"></i> Vitrificado Certificado 3 Años</span>
+                                    <h4 class="heading-font text-2xl text-white italic">CERAMIC PRO 3Y</h4>
+                                </div>
+                                <div class="text-right">
+                                    <span class="heading-font text-3xl sm:text-4xl text-gold font-black">S/ 1,050</span>
                                 </div>
                             </div>
 
-                            <!-- Combo Int + Ext -->
-                            <div onclick="setService('combo')" id="s-combo" class="glass-card p-6 rounded-[2.5rem] cursor-pointer group border-brand/20">
-                                <div class="flex justify-between items-center">
-                                    <div>
-                                        <h5 class="heading-font text-sm text-white italic uppercase tracking-widest">Combo Interior + Exterior</h5>
-                                        <p class="text-[9px] text-slate-400 mt-1 font-medium">LAVADO COMPLETO NIVEL ESTÁNDAR</p>
-                                    </div>
-                                    <span class="heading-font text-xl text-brand" id="p-combo-price">S/60</span>
+                            <div class="space-y-3 text-xs text-slate-300 mb-6">
+                                <p><i class="fa-solid fa-shield-halved text-gold mr-2"></i><strong>Corrección de Pintura en 2 Pasos:</strong> Corte intermedio + Refino Vonixx V40 (elimina 70-80% de micro-rayas).</p>
+                                <p><i class="fa-solid fa-flask text-gold mr-2"></i><strong>Preparación Química:</strong> Desengrasado profundo con Vonixx Revelax para anclaje molecular perfecto.</p>
+                                <p><i class="fa-solid fa-spray-can text-gold mr-2"></i><strong>Protección Cerámica:</strong> Recubrimiento cerámico líquido vitrificado <strong>Vonixx V-Paint Pro</strong>.</p>
+                                <p><i class="fa-solid fa-circle-check text-gold mr-2"></i><strong>Incluye:</strong> Estándar Detail2Go completo (Motor, interior con Verse, ranuras y descontaminado).</p>
+                            </div>
+
+                            <div class="flex items-center gap-2 pt-4 border-t border-white/10 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                <span class="bg-gold/10 text-gold px-2.5 py-1 rounded-md border border-gold/20">Vonixx V-Paint Pro</span>
+                                <span class="bg-white/5 px-2.5 py-1 rounded-md">Curado seguro libre de polvo</span>
+                            </div>
+                        </div>
+
+                        <!-- Ceramic Start -->
+                        <div onclick="setService('ceramic_start')" id="s-ceramic_start" class="glass-card-ceramic p-6 sm:p-8 rounded-[2.5rem] cursor-pointer group">
+                            <div class="flex flex-col sm:flex-row justify-between items-start gap-4 mb-4">
+                                <div>
+                                    <span class="text-[9px] font-black uppercase text-brand tracking-widest block mb-1">Protección 12 Meses</span>
+                                    <h4 class="heading-font text-xl text-white italic">CERAMIC START</h4>
+                                </div>
+                                <div class="text-right">
+                                    <span class="heading-font text-3xl text-white font-black">S/ 900</span>
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div onclick="setService('interior')" id="s-interior" class="glass-card p-6 rounded-[2.5rem] cursor-pointer group">
-                                    <div class="flex justify-between items-start mb-4">
-                                        <h5 class="heading-font text-sm text-white italic">INTERIOR DETAIL</h5>
-                                        <span class="heading-font text-lg text-brand" id="p-interior-price">S/35</span>
-                                    </div>
-                                    <p class="text-[9px] text-slate-400 leading-relaxed uppercase font-medium">Aspirado industrial, limpieza técnica de cinturones y eliminación de manchas.</p>
+                            <div class="space-y-2 text-xs text-slate-300 mb-4">
+                                <p><i class="fa-solid fa-check text-brand mr-2"></i><strong>Corrección Intermedia 1 Paso:</strong> Pulidora Rankor + Vonixx V40.</p>
+                                <p><i class="fa-solid fa-check text-brand mr-2"></i><strong>Protección:</strong> Recubrimiento cerámico en spray <strong>Vonixx Sinergy Paint</strong>.</p>
+                                <p><i class="fa-solid fa-check text-brand mr-2"></i><strong>Duración:</strong> Hasta 12 meses de alta hidrofobia contra polvo y UV de Arequipa.</p>
+                            </div>
+
+                            <div class="pt-3 border-t border-white/5 text-[10px] font-bold text-slate-400 uppercase">
+                                Incluye Estándar Detail2Go completo
+                            </div>
+                        </div>
+
+                        <!-- Ceramic Elite -->
+                        <div onclick="setService('ceramic_elite')" id="s-ceramic_elite" class="glass-card-ceramic p-6 sm:p-8 rounded-[2.5rem] cursor-pointer group">
+                            <div class="flex flex-col sm:flex-row justify-between items-start gap-4 mb-4">
+                                <div>
+                                    <span class="text-[9px] font-black uppercase text-purple-400 tracking-widest block mb-1"><i class="fa-solid fa-star mr-1"></i> Acabado de Nivel Internacional</span>
+                                    <h4 class="heading-font text-xl text-white italic">CERAMIC ELITE</h4>
                                 </div>
-                                <div onclick="setService('exterior')" id="s-exterior" class="glass-card p-6 rounded-[2.5rem] cursor-pointer group">
-                                    <div class="flex justify-between items-start mb-4">
-                                        <h5 class="heading-font text-sm text-white italic">EXTERIOR GLOSS</h5>
-                                        <span class="heading-font text-lg text-brand" id="p-exterior-price">S/25</span>
-                                    </div>
-                                    <p class="text-[9px] text-slate-400 leading-relaxed uppercase font-medium">Lavado Snow Foam, limpieza de aros e hidratación de neumáticos.</p>
+                                <div class="text-right">
+                                    <span class="heading-font text-3xl text-purple-400 font-black">S/ 1,200</span>
                                 </div>
+                            </div>
+
+                            <div class="space-y-2 text-xs text-slate-300 mb-4">
+                                <p><i class="fa-solid fa-check text-purple-400 mr-2"></i><strong>Corrección 3 Pasos:</strong> Corte pesado, Refino y Lustre para brillo espejo total.</p>
+                                <p><i class="fa-solid fa-check text-purple-400 mr-2"></i><strong>Doble Capa de Protección:</strong> Vonixx V-Paint Pro (Base 3Y) + Top Coat Vonixx Sinergy Paint.</p>
+                                <p><i class="fa-solid fa-check text-purple-400 mr-2"></i><strong>Protección Extra:</strong> Sellado cerámico dedicado en plásticos exteriores contra radiación solar.</p>
+                            </div>
+
+                            <div class="pt-3 border-t border-white/5 text-[10px] font-bold text-slate-400 uppercase">
+                                Máxima suavidad al tacto y la mayor repelencia al barro y tierra
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- 2. CAT 2: SERVICIOS ESTÁNDAR / MANTENIMIENTO -->
+                    <div id="cat-standard-container" class="space-y-6 hidden" data-aos="fade-up">
+                        <h3 class="heading-font text-xs text-brand mb-6 tracking-[0.3em] font-bold uppercase flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-full bg-brand/20 text-brand flex items-center justify-center text-[10px]">02</span>
+                            Elige el Servicio Express o Detallado Estándar
+                        </h3>
+                        
+                        <!-- Full Detail -->
+                        <div onclick="setService('premium')" id="s-premium" class="glass-card p-6 sm:p-8 rounded-[2.5rem] cursor-pointer group">
+                            <div class="flex flex-col sm:flex-row justify-between items-start gap-4 mb-4">
+                                <div>
+                                    <h4 class="heading-font text-xl text-white italic">FULL DETAIL PREMIUM</h4>
+                                    <p class="text-[10px] text-brand font-black uppercase tracking-wider mt-1">RESTAURACIÓN Y LIMPIEZA PROFUNDA</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="block text-slate-500 line-through text-xs" id="p-premium-old">S/130</span>
+                                    <span class="heading-font text-3xl text-white font-black" id="p-premium-price">S/90</span>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[11px] text-slate-300">
+                                <div>
+                                    <p class="text-brand font-black text-[9px] uppercase mb-1">EXTERIOR:</p>
+                                    <p><i class="fa-solid fa-check text-brand mr-1"></i> Lavado Snow Foam & Motor</p>
+                                    <p><i class="fa-solid fa-check text-brand mr-1"></i> Descontaminado & Encerado</p>
+                                </div>
+                                <div>
+                                    <p class="text-brand font-black text-[9px] uppercase mb-1">INTERIOR:</p>
+                                    <p><i class="fa-solid fa-check text-brand mr-1"></i> Limpieza Completa Salón</p>
+                                    <p><i class="fa-solid fa-check text-brand mr-1"></i> Nutrición Plásticos/Cueros</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Combo Interior + Exterior -->
+                        <div onclick="setService('combo')" id="s-combo" class="glass-card p-6 rounded-[2rem] cursor-pointer group">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h5 class="heading-font text-sm text-white italic uppercase">Combo Interior + Exterior</h5>
+                                    <p class="text-[10px] text-slate-400 mt-1 font-medium">LAVADO COMPLETO NIVEL ESTÁNDAR</p>
+                                </div>
+                                <span class="heading-font text-2xl text-brand" id="p-combo-price">S/55</span>
+                            </div>
+                        </div>
+
+                        <!-- Interior / Exterior Individuales -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div onclick="setService('interior')" id="s-interior" class="glass-card p-6 rounded-[2rem] cursor-pointer group">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h5 class="heading-font text-xs text-white italic">INTERIOR DETAIL</h5>
+                                    <span class="heading-font text-lg text-brand" id="p-interior-price">S/35</span>
+                                </div>
+                                <p class="text-[10px] text-slate-400 font-medium">Aspirado industrial, limpieza técnica y desinfección de plásticos.</p>
+                            </div>
+                            <div onclick="setService('exterior')" id="s-exterior" class="glass-card p-6 rounded-[2rem] cursor-pointer group">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h5 class="heading-font text-xs text-white italic">EXTERIOR GLOSS</h5>
+                                    <span class="heading-font text-lg text-brand" id="p-exterior-price">S/25</span>
+                                </div>
+                                <p class="text-[10px] text-slate-400 font-medium">Lavado Snow Foam, aros e hidratación de neumáticos.</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- 3. Extras -->
+                    <!-- 3. Extras (Solo activos para servicios estándar) -->
                     <div id="extras-section">
-                        <h3 class="heading-font text-xs text-brand mb-8 tracking-[0.3em] font-bold uppercase">03. Añade Extras Premium</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="extras-grid">
-                            <!-- JS renderiza motor y cera con precios dinámicos -->
+                        <h3 class="heading-font text-xs text-brand mb-6 tracking-[0.3em] font-bold uppercase flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-full bg-brand/20 text-brand flex items-center justify-center text-[10px]">03</span>
+                            Añade Extras Adicionales
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="extras-grid">
+                            <!-- JS dinamico -->
                         </div>
                     </div>
+
+                    <!-- 4. Modalidad de Atención -->
+                    <div data-aos="fade-up">
+                        <h3 class="heading-font text-xs text-brand mb-6 tracking-[0.3em] font-bold uppercase flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-full bg-brand/20 text-brand flex items-center justify-center text-[10px]">04</span>
+                            ¿Dónde realizar el servicio?
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div onclick="setLocationModality('domicilio')" id="loc-domicilio" class="glass-card p-5 rounded-[2rem] cursor-pointer active-card flex items-start gap-4">
+                                <div class="w-10 h-10 rounded-xl bg-brand/20 text-brand flex items-center justify-center text-lg shrink-0 mt-1">
+                                    <i class="fa-solid fa-house"></i>
+                                </div>
+                                <div>
+                                    <h5 class="heading-font text-xs text-white italic">A Domicilio (En tu Cochera)</h5>
+                                    <p class="text-[10px] text-slate-400 mt-1 font-medium">Atención cómoda sin salir de casa. Requiere punto de agua y energía eléctrica.</p>
+                                </div>
+                            </div>
+
+                            <div onclick="setLocationModality('taller')" id="loc-taller" class="glass-card p-5 rounded-[2rem] cursor-pointer flex items-start gap-4">
+                                <div class="w-10 h-10 rounded-xl bg-white/10 text-slate-300 flex items-center justify-center text-lg shrink-0 mt-1">
+                                    <i class="fa-solid fa-warehouse"></i>
+                                </div>
+                                <div>
+                                    <h5 class="heading-font text-xs text-white italic">Taller Aliado FirstStop</h5>
+                                    <p class="text-[10px] text-slate-400 mt-1 font-medium">Mecánica Express El Chaval. Ideal si prefieres dejar el auto en local físico.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
-                <!-- Columna Derecha: Reserva -->
+                <!-- Columna Derecha: Formulario y Resumen -->
                 <div class="lg:col-span-5" id="reserva">
-                    <div class="sticky top-32 glass-card p-8 rounded-[3.5rem] bg-surface/50 border-brand/10">
-                        <h3 class="heading-font text-center text-sm text-white mb-10 tracking-[0.4em] italic uppercase">Cita de Detallado</h3>
+                    <div class="sticky top-28 glass-card p-6 sm:p-8 rounded-[3rem] bg-surface/60 border-brand/20 shadow-2xl">
+                        <h3 class="heading-font text-center text-sm text-white mb-8 tracking-[0.3em] italic uppercase flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-calendar-check text-brand"></i> Reserva tu Experiencia
+                        </h3>
                         
-                        <div class="space-y-4 mb-8">
+                        <div class="space-y-4 mb-6">
                             <div class="relative">
-                                <i class="fa-solid fa-user absolute left-5 top-5 text-slate-500"></i>
-                                <input type="text" id="form-name" class="w-full bg-dark/50 border border-white/10 rounded-2xl p-5 pl-14 text-sm focus:border-brand outline-none text-white font-bold" placeholder="NOMBRE COMPLETO">
+                                <i class="fa-solid fa-user absolute left-4 top-4 text-slate-500 text-xs"></i>
+                                <input type="text" id="form-name" class="w-full bg-dark/70 border border-white/10 rounded-2xl p-4 pl-11 text-xs focus:border-brand outline-none text-white font-bold tracking-wider" placeholder="TU NOMBRE COMPLETO">
                             </div>
-                            <div class="grid grid-cols-2 gap-4">
-                                <input type="date" id="form-date" class="w-full bg-dark/50 border border-white/10 rounded-2xl p-5 text-xs text-white outline-none font-bold">
-                                <select id="form-time" class="w-full bg-dark/50 border border-white/10 rounded-2xl p-5 text-xs text-white outline-none font-bold">
-                                    <option>08:30 AM</option>
-                                    <option>10:30 AM</option>
-                                    <option>02:30 PM</option>
-                                    <option>04:30 PM</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="bg-dark rounded-[2.5rem] p-8 border border-brand/10 shadow-inner">
-                            <div class="flex justify-between items-center mb-6">
+                            <div class="grid grid-cols-2 gap-3">
                                 <div>
-                                    <span class="text-[9px] font-black text-slate-500 uppercase tracking-widest block mb-1" id="sum-vehicle">AUTO SEDÁN</span>
-                                    <h4 class="heading-font text-xs text-white italic" id="sum-service">FULL DETAIL PREMIUM</h4>
+                                    <label class="text-[8px] font-black uppercase text-slate-400 tracking-widest block mb-1">Fecha</label>
+                                    <input type="date" id="form-date" class="w-full bg-dark/70 border border-white/10 rounded-2xl p-3.5 text-xs text-white outline-none font-bold">
                                 </div>
-                                <span class="heading-font text-3xl text-brand font-black" id="final-total">S/90</span>
+                                <div>
+                                    <label class="text-[8px] font-black uppercase text-slate-400 tracking-widest block mb-1">Turno Hora</label>
+                                    <select id="form-time" class="w-full bg-dark/70 border border-white/10 rounded-2xl p-3.5 text-xs text-white outline-none font-bold">
+                                        <option>08:30 AM</option>
+                                        <option>10:30 AM</option>
+                                        <option>02:30 PM</option>
+                                        <option>04:30 PM</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div id="sum-extras" class="text-[9px] text-slate-500 uppercase tracking-wider mb-4 flex flex-wrap gap-2"></div>
-                            <p class="text-[8px] text-slate-600 uppercase border-t border-white/5 pt-4 font-bold">Reserva sujeta a disponibilidad de espacio.</p>
                         </div>
 
-                        <button onclick="sendWhatsApp()" class="w-full mt-8 bg-brand text-white py-6 rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:scale-[1.02] transition-all shadow-xl shadow-brand/30">
-                            RESERVAR POR WHATSAPP <i class="fa-brands fa-whatsapp ml-2"></i>
+                        <!-- Resumen Dinámico -->
+                        <div class="bg-dark/90 rounded-[2rem] p-6 border border-white/10 shadow-inner">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <span class="text-[9px] font-black text-brand uppercase tracking-widest block mb-1" id="sum-vehicle">AUTO SEDÁN</span>
+                                    <h4 class="heading-font text-sm text-white italic" id="sum-service">CERAMIC PRO 3Y</h4>
+                                    <span class="text-[9px] text-slate-400 font-bold block mt-1" id="sum-modality"><i class="fa-solid fa-house mr-1"></i> A Domicilio</span>
+                                </div>
+                                <span class="heading-font text-3xl text-gold font-black" id="final-total">S/1,050</span>
+                            </div>
+                            <div id="sum-extras" class="text-[9px] text-slate-400 uppercase tracking-wider mb-4 flex flex-wrap gap-1.5"></div>
+                            
+                            <div class="border-t border-white/10 pt-4 font-bold text-[9px] text-slate-400 space-y-1">
+                                <p><i class="fa-solid fa-shield-check text-brand mr-1"></i> Confirma disponibilidad en tiempo real vía WhatsApp.</p>
+                                <p><i class="fa-solid fa-bolt text-gold mr-1"></i> Asesoría técnica directa con el especialista.</p>
+                            </div>
+                        </div>
+
+                        <button onclick="sendWhatsApp()" class="w-full mt-6 bg-brand hover:bg-brandDark text-white py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:scale-[1.02] transition-all shadow-xl shadow-brand/30 flex items-center justify-center gap-2">
+                            RESERVAR POR WHATSAPP <i class="fa-brands fa-whatsapp text-lg"></i>
                         </button>
+
+                        <div class="mt-6 pt-4 border-t border-white/5 flex items-center justify-center gap-4 text-[9px] text-slate-400 font-bold uppercase">
+                            <span><i class="fa-solid fa-phone text-brand mr-1"></i> 937 631 302</span>
+                            <span>•</span>
+                            <span><i class="fa-solid fa-phone text-brand mr-1"></i> 946 638 348</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="py-20 bg-dark border-t border-white/5 text-center">
-        <span class="heading-font text-xl font-black italic text-white">DETAIL<span class="text-brand">2GO</span></span>
-        <div class="flex justify-center gap-8 mt-10">
-            <a href="https://www.instagram.com/detail2.go/" target="_blank" class="text-slate-400 hover:text-brand text-2xl transition-colors"><i class="fa-brands fa-instagram"></i></a>
-            <a href="https://www.tiktok.com/@detail2go_?" target="_blank" class="text-slate-400 hover:text-brand text-2xl transition-colors"><i class="fa-brands fa-tiktok"></i></a>
+    <!-- Proceso Técnico Cerámico -->
+    <section id="proceso" class="py-24 bg-surface/30 border-y border-white/5 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center max-w-3xl mx-auto mb-16" data-aos="fade-up">
+                <span class="text-gold heading-font text-xs font-bold uppercase tracking-[0.3em] block mb-2">El Corazón de Nuestro Servicio</span>
+                <h2 class="heading-font text-3xl sm:text-5xl font-black italic text-white mb-4">EL ESTÁNDAR DETAIL2GO</h2>
+                <p class="text-slate-400 text-sm font-light">
+                    Un tratamiento cerámico mal aplicado se cae a los pocos meses. En Arequipa usamos la línea de productos líderes a nivel mundial para una preparación de superficie rigurosa y perfecta.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Paso 1 -->
+                <div class="glass-card p-6 rounded-[2rem] relative" data-aos="fade-up" data-aos-delay="100">
+                    <span class="heading-font text-4xl text-brand/20 font-black absolute top-4 right-6">01</span>
+                    <div class="w-12 h-12 rounded-2xl bg-brand/10 text-brand flex items-center justify-center text-xl mb-4">
+                        <i class="fa-solid fa-shower"></i>
+                    </div>
+                    <h4 class="heading-font text-sm text-white italic mb-2">Lavado Técnico & Ranuras</h4>
+                    <p class="text-xs text-slate-400 font-medium leading-relaxed">
+                        Eliminación manual de suciedad en emblemas y rejillas usando brochas de precisión y shampoos de pH neutro.
+                    </p>
+                </div>
+
+                <!-- Paso 2 -->
+                <div class="glass-card p-6 rounded-[2rem] relative" data-aos="fade-up" data-aos-delay="200">
+                    <span class="heading-font text-4xl text-brand/20 font-black absolute top-4 right-6">02</span>
+                    <div class="w-12 h-12 rounded-2xl bg-brand/10 text-brand flex items-center justify-center text-xl mb-4">
+                        <i class="fa-solid fa-hand-sparkles"></i>
+                    </div>
+                    <h4 class="heading-font text-sm text-white italic mb-2">Descontaminado Profundo</h4>
+                    <p class="text-xs text-slate-400 font-medium leading-relaxed">
+                        Descontaminado físico con <strong>MaxShine Clay Bar</strong> y lubricante especial <strong>CarPro Claylube</strong> para remover hollín y minerales incrustados.
+                    </p>
+                </div>
+
+                <!-- Paso 3 -->
+                <div class="glass-card p-6 rounded-[2rem] relative" data-aos="fade-up" data-aos-delay="300">
+                    <span class="heading-font text-4xl text-brand/20 font-black absolute top-4 right-6">03</span>
+                    <div class="w-12 h-12 rounded-2xl bg-brand/10 text-brand flex items-center justify-center text-xl mb-4">
+                        <i class="fa-solid fa-droplet-slash"></i>
+                    </div>
+                    <h4 class="heading-font text-sm text-white italic mb-2">Corrección Gota Seca</h4>
+                    <p class="text-xs text-slate-400 font-medium leading-relaxed">
+                        Eliminación de marcas de agua dura y lluvia ácida en cristales e insignias usando <strong>Vonixx Acidus Pro</strong>.
+                    </p>
+                </div>
+
+                <!-- Paso 4 -->
+                <div class="glass-card p-6 rounded-[2rem] relative" data-aos="fade-up" data-aos-delay="400">
+                    <span class="heading-font text-4xl text-brand/20 font-black absolute top-4 right-6">04</span>
+                    <div class="w-12 h-12 rounded-2xl bg-brand/10 text-brand flex items-center justify-center text-xl mb-4">
+                        <i class="fa-solid fa-engine"></i>
+                    </div>
+                    <h4 class="heading-font text-sm text-white italic mb-2">Motor & Interior Verse</h4>
+                    <p class="text-xs text-slate-400 font-medium leading-relaxed">
+                        Limpieza profunda de motor y acondicionado protector de tableros/cuero con <strong>Vonixx Verse</strong> (acabado mate no grasoso).
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- Productos usables -->
+            <div class="mt-16 p-8 glass-card rounded-[2.5rem] flex flex-col md:flex-row items-center justify-between gap-8 border-gold/20">
+                <div class="space-y-2 text-center md:text-left">
+                    <span class="text-gold heading-font text-[10px] font-bold uppercase tracking-widest">Respaldo Internacional</span>
+                    <h3 class="heading-font text-xl text-white italic">TECNOLOGÍA VONIXX® & CARPRO®</h3>
+                    <p class="text-slate-400 text-xs font-light max-w-xl">
+                        Formulaciones de nivel profesional con tecnología CarboSiloxy® creadas para soportar el clima árido y el fuerte sol radiante de Arequipa.
+                    </p>
+                </div>
+                <div class="flex items-center gap-6 flex-wrap justify-center">
+                    <div class="px-4 py-2 bg-dark/60 rounded-xl border border-white/10 text-center">
+                        <span class="block text-white font-black text-xs">V-PAINT PRO</span>
+                        <span class="text-[8px] text-gold uppercase font-bold">Vitrificado 3 Años</span>
+                    </div>
+                    <div class="px-4 py-2 bg-dark/60 rounded-xl border border-white/10 text-center">
+                        <span class="block text-white font-black text-xs">SINERGY PAINT</span>
+                        <span class="text-[8px] text-brand uppercase font-bold">Coating Spray 12M</span>
+                    </div>
+                    <div class="px-4 py-2 bg-dark/60 rounded-xl border border-white/10 text-center">
+                        <span class="block text-white font-black text-xs">REVELAX & VERSE</span>
+                        <span class="text-[8px] text-slate-400 uppercase font-bold">Prep & Acondicionador</span>
+                    </div>
+                </div>
+            </div>
         </div>
-        <p class="text-[9px] text-slate-600 uppercase tracking-[0.5em] mt-10 font-black">Nosotros limpiamos hasta lo que no ves</p>
+    </section>
+
+    <!-- Alianza FIRSTSTOP / Ubicaciones -->
+    <section class="py-20 bg-dark">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="glass-card p-10 rounded-[3rem] border-brand/20 grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                <div class="md:col-span-8 space-y-4">
+                    <span class="bg-brand/20 text-brand text-[9px] font-black px-3 py-1 rounded-full uppercase tracking-widest border border-brand/30">Alianza Estratégica</span>
+                    <h3 class="heading-font text-2xl sm:text-3xl text-white italic">¿PREFIERES ATENCIÓN EN UN TALLER FÍSICO?</h3>
+                    <p class="text-slate-300 text-xs sm:text-sm font-light leading-relaxed">
+                        Además de nuestro servicio insignia 100% a domicilio en la comodidad de tu cochera, contamos con un espacio técnico especializado gracias a nuestra alianza estratégica con <strong>FIRSTSTOP - Mecánica Express El Chaval</strong> en Arequipa.
+                    </p>
+                </div>
+                <div class="md:col-span-4 flex flex-col items-center md:items-end justify-center gap-3">
+                    <a href="#reserva" onclick="setLocationModality('taller')" class="bg-white text-dark hover:bg-brand hover:text-white px-8 py-4 rounded-2xl text-xs font-black uppercase tracking-widest transition-all">
+                        Reservar en Taller
+                    </a>
+                    <span class="text-[10px] text-slate-500 font-bold uppercase"><i class="fa-solid fa-location-dot text-brand mr-1"></i> Arequipa, Perú</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-16 bg-dark border-t border-white/5 text-center">
+        <div class="max-w-7xl mx-auto px-6">
+            <a href="#" class="heading-font text-2xl font-black italic text-white inline-block">DETAIL<span class="text-brand">2GO</span></a>
+            <p class="text-[10px] text-slate-400 uppercase tracking-[0.4em] mt-2 font-bold">Estética Automotriz A Domicilio • Arequipa</p>
+            
+            <div class="flex justify-center gap-6 mt-8">
+                <a href="https://www.instagram.com/detail2.go/" target="_blank" class="w-12 h-12 rounded-full glass-card flex items-center justify-center text-slate-300 hover:text-brand hover:scale-110 transition-all text-xl"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://www.tiktok.com/@detail2go_?" target="_blank" class="w-12 h-12 rounded-full glass-card flex items-center justify-center text-slate-300 hover:text-brand hover:scale-110 transition-all text-xl"><i class="fa-brands fa-tiktok"></i></a>
+                <a href="https://wa.me/51937631302" target="_blank" class="w-12 h-12 rounded-full glass-card flex items-center justify-center text-slate-300 hover:text-brand hover:scale-110 transition-all text-xl"><i class="fa-brands fa-whatsapp"></i></a>
+            </div>
+
+            <div class="mt-10 pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between text-[10px] text-slate-500 font-bold uppercase gap-4">
+                <p>Contacto: Alejandro Benavides (937 631 302) | Luis Alcázar (946 638 348)</p>
+                <p class="italic">"Nosotros limpiamos hasta lo que no ves"</p>
+            </div>
+        </div>
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init();
+        AOS.init({
+            duration: 800,
+            once: true
+        });
 
-        const PRICES = {
+        // Precios base por categoría y tipo de vehículo
+        const STANDARD_PRICES = {
             Auto: { premium: { p: 90, o: 130 }, interior: { p: 35, o: 55 }, exterior: { p: 25, o: 45 }, combo: { p: 55 } },
             SUV: { premium: { p: 100, o: 150 }, interior: { p: 40, o: 65 }, exterior: { p: 30, o: 50 }, combo: { p: 65 } }
+        };
+
+        const CERAMIC_PRICES = {
+            ceramic_pro3y: { name: 'Ceramic Pro 3Y (3 Años)', price: 1050 },
+            ceramic_start: { name: 'Ceramic Start (12 Meses)', price: 900 },
+            ceramic_elite: { name: 'Ceramic Elite (3+ Años High-End)', price: 1200 }
         };
 
         const EXTRAS_DEF = [
@@ -306,15 +656,40 @@
             { id: 'cera', name: 'Encerado Premium', icon: 'fa-shield-halved' }
         ];
 
-        let currentVehicle = 'Auto';
-        let currentService = 'premium';
+        let currentCategory = 'ceramic'; // 'ceramic' | 'standard'
+        let currentVehicle = 'Auto'; // 'Auto' | 'SUV'
+        let currentService = 'ceramic_pro3y';
+        let locationModality = 'domicilio'; // 'domicilio' | 'taller'
         let activeExtras = [];
+
+        function switchCategory(cat) {
+            currentCategory = cat;
+            
+            const tabCeramic = document.getElementById('tab-ceramic');
+            const tabStandard = document.getElementById('tab-standard');
+            const catCeramicContainer = document.getElementById('cat-ceramic-container');
+            const catStandardContainer = document.getElementById('cat-standard-container');
+
+            if (cat === 'ceramic') {
+                tabCeramic.className = 'tab-btn active-tab px-6 py-3 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-2 whitespace-nowrap';
+                tabStandard.className = 'tab-btn text-slate-400 px-6 py-3 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-2 whitespace-nowrap';
+                catCeramicContainer.classList.remove('hidden');
+                catStandardContainer.classList.add('hidden');
+                setService('ceramic_pro3y');
+            } else {
+                tabStandard.className = 'tab-btn active-tab px-6 py-3 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-2 whitespace-nowrap';
+                tabCeramic.className = 'tab-btn text-slate-400 px-6 py-3 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-2 whitespace-nowrap';
+                catStandardContainer.classList.remove('hidden');
+                catCeramicContainer.classList.add('hidden');
+                setService('premium');
+            }
+        }
 
         function setVehicle(v) {
             currentVehicle = v;
-            document.getElementById('v-auto').className = `glass-card p-4 rounded-[2.5rem] cursor-pointer ${v==='Auto'?'active-card':''}`;
-            document.getElementById('v-suv').className = `glass-card p-4 rounded-[2.5rem] cursor-pointer ${v==='SUV'?'active-card':''}`;
-            document.getElementById('sum-vehicle').innerText = v === 'Auto' ? 'AUTO SEDÁN' : 'SUV / CAMIONETA';
+            document.getElementById('v-auto').className = `glass-card p-4 rounded-[2rem] cursor-pointer ${v==='Auto'?'active-card':''}`;
+            document.getElementById('v-suv').className = `glass-card p-4 rounded-[2rem] cursor-pointer ${v==='SUV'?'active-card':''}`;
+            document.getElementById('sum-vehicle').innerText = v === 'Auto' ? 'AUTO SEDÁN / HATCHBACK' : 'SUV / CAMIONETA';
             
             renderExtras();
             updateUI();
@@ -322,28 +697,68 @@
 
         function setService(s) {
             currentService = s;
+
+            // Reset de tarjetas estándar
             ['premium', 'interior', 'exterior', 'combo'].forEach(id => {
                 const el = document.getElementById(`s-${id}`);
-                if(el) el.className = `glass-card p-6 rounded-[2.5rem] cursor-pointer ${id === s ? 'active-card' : ''}`;
+                if (el) el.className = `glass-card p-6 rounded-[2rem] cursor-pointer ${id === s ? 'active-card' : ''}`;
             });
-            document.getElementById('s-premium').className = `glass-card p-8 rounded-[3rem] cursor-pointer ${currentService === 'premium' ? 'active-card' : ''}`;
-            
-            // Si selecciona premium, deshabilitamos extras activos
-            if (s === 'premium') {
-                activeExtras = []; 
+            const sPremium = document.getElementById('s-premium');
+            if (sPremium) sPremium.className = `glass-card p-6 sm:p-8 rounded-[2.5rem] cursor-pointer ${currentService === 'premium' ? 'active-card' : ''}`;
+
+            // Reset de tarjetas cerámicas
+            ['ceramic_pro3y', 'ceramic_start', 'ceramic_elite'].forEach(id => {
+                const el = document.getElementById(`s-${id}`);
+                if (el) {
+                    if (id === s) {
+                        el.className = 'glass-card-ceramic p-6 sm:p-8 rounded-[2.5rem] cursor-pointer active-ceramic-card relative overflow-hidden group';
+                    } else {
+                        el.className = 'glass-card-ceramic p-6 sm:p-8 rounded-[2.5rem] cursor-pointer group';
+                    }
+                }
+            });
+
+            // Si es cerámico o premium, los extras simples quedan deshabilitados/incluidos
+            if (currentCategory === 'ceramic' || s === 'premium') {
+                activeExtras = [];
             }
 
-            const names = { premium: 'FULL DETAIL PREMIUM', interior: 'INTERIOR DETAIL', exterior: 'EXTERIOR GLOSS', combo: 'COMBO INT + EXT' };
+            const names = { 
+                ceramic_pro3y: 'CERAMIC PRO 3Y (3 AÑOS)',
+                ceramic_start: 'CERAMIC START (12 MESES)',
+                ceramic_elite: 'CERAMIC ELITE (3+ AÑOS)',
+                premium: 'FULL DETAIL PREMIUM', 
+                interior: 'INTERIOR DETAIL', 
+                exterior: 'EXTERIOR GLOSS', 
+                combo: 'COMBO INT + EXT' 
+            };
+            
             document.getElementById('sum-service').innerText = names[s];
             
             renderExtras();
             updateUI();
         }
 
-        function toggleExtra(id) {
-            if (currentService === 'premium') return;
+        function setLocationModality(mod) {
+            locationModality = mod;
+            const domEl = document.getElementById('loc-domicilio');
+            const tallEl = document.getElementById('loc-taller');
+            
+            if (mod === 'domicilio') {
+                domEl.className = 'glass-card p-5 rounded-[2rem] cursor-pointer active-card flex items-start gap-4';
+                tallEl.className = 'glass-card p-5 rounded-[2rem] cursor-pointer flex items-start gap-4';
+                document.getElementById('sum-modality').innerHTML = '<i class="fa-solid fa-house text-brand mr-1"></i> A Domicilio (En Cochera)';
+            } else {
+                tallEl.className = 'glass-card p-5 rounded-[2rem] cursor-pointer active-card flex items-start gap-4';
+                domEl.className = 'glass-card p-5 rounded-[2rem] cursor-pointer flex items-start gap-4';
+                document.getElementById('sum-modality').innerHTML = '<i class="fa-solid fa-warehouse text-brand mr-1"></i> Local Taller FirstStop';
+            }
+        }
 
-            if(activeExtras.includes(id)) {
+        function toggleExtra(id) {
+            if (currentCategory === 'ceramic' || currentService === 'premium') return;
+
+            if (activeExtras.includes(id)) {
                 activeExtras = activeExtras.filter(x => x !== id);
             } else {
                 activeExtras.push(id);
@@ -358,22 +773,22 @@
 
         function renderExtras() {
             const grid = document.getElementById('extras-grid');
-            const isPremium = currentService === 'premium';
+            const isCeramicOrPremium = currentCategory === 'ceramic' || currentService === 'premium';
             
             grid.innerHTML = EXTRAS_DEF.map(e => {
                 const price = getExtraPrice(e.id);
                 const isActive = activeExtras.includes(e.id);
-                const disabledClass = isPremium ? 'disabled' : '';
+                const disabledClass = isCeramicOrPremium ? 'disabled' : '';
                 const activeClass = isActive ? 'active' : '';
 
                 return `
                     <div onclick="toggleExtra('${e.id}')" 
-                         class="extra-badge p-6 rounded-[2rem] cursor-pointer flex justify-between items-center ${activeClass} ${disabledClass}">
+                         class="extra-badge p-5 rounded-[1.8rem] cursor-pointer flex justify-between items-center ${activeClass} ${disabledClass}">
                         <div class="flex flex-col text-left">
                             <span class="text-[10px] font-black uppercase tracking-widest">${e.name}</span>
-                            ${isPremium ? '<span class="text-[7px] text-brand/70 font-bold uppercase mt-1">Ya incluido en Premium</span>' : ''}
+                            ${isCeramicOrPremium ? '<span class="text-[8px] text-brand/80 font-bold uppercase mt-0.5">Incluido en tu paquete</span>' : ''}
                         </div>
-                        <span class="heading-font text-sm">${isPremium ? '---' : '+ S/' + price}</span>
+                        <span class="heading-font text-xs">${isCeramicOrPremium ? 'INC' : '+ S/' + price}</span>
                     </div>
                 `;
             }).join('');
@@ -381,46 +796,62 @@
             const sumDiv = document.getElementById('sum-extras');
             sumDiv.innerHTML = activeExtras.map(id => {
                 const e = EXTRAS_DEF.find(x => x.id === id);
-                return `<span class="bg-brand/10 text-brand px-3 py-1 rounded-full font-black">+ ${e.name}</span>`;
+                return `<span class="bg-brand/10 text-brand px-2.5 py-0.5 rounded-full font-black text-[9px]">+ ${e.name}</span>`;
             }).join('');
         }
 
         function updateUI() {
-            const data = PRICES[currentVehicle];
-            document.getElementById('p-premium-price').innerText = `S/${data.premium.p}`;
-            document.getElementById('p-premium-old').innerText = `S/${data.premium.o}`;
-            document.getElementById('p-interior-price').innerText = `S/${data.interior.p}`;
-            document.getElementById('p-exterior-price').innerText = `S/${data.exterior.p}`;
-            document.getElementById('p-combo-price').innerText = `S/${data.combo.p}`;
+            // Actualizar precios de servicios estándar
+            const stdData = STANDARD_PRICES[currentVehicle];
+            document.getElementById('p-premium-price').innerText = `S/${stdData.premium.p}`;
+            document.getElementById('p-premium-old').innerText = `S/${stdData.premium.o}`;
+            document.getElementById('p-interior-price').innerText = `S/${stdData.interior.p}`;
+            document.getElementById('p-exterior-price').innerText = `S/${stdData.exterior.p}`;
+            document.getElementById('p-combo-price').innerText = `S/${stdData.combo.p}`;
             
-            let total = data[currentService].p;
-            activeExtras.forEach(id => {
-                total += getExtraPrice(id);
-            });
+            let total = 0;
+            if (currentCategory === 'ceramic') {
+                total = CERAMIC_PRICES[currentService].price;
+            } else {
+                total = stdData[currentService].p;
+                activeExtras.forEach(id => {
+                    total += getExtraPrice(id);
+                });
+            }
             
             document.getElementById('final-total').innerText = `S/${total}`;
         }
 
         function sendWhatsApp() {
             const name = document.getElementById('form-name').value;
-            if (!name) return alert("Por favor, ingresa tu nombre");
-            const date = document.getElementById('form-date').value;
-            const time = document.getElementById('form-time').value;
+            if (!name) return alert("Por favor, ingresa tu nombre completo para continuar.");
             
-            let includeInfo = "";
-            if (currentService === 'premium') {
-                includeInfo = "*Incluye:* Detallado de Motor y Encerado Premium%0A";
+            const date = document.getElementById('form-date').value || "A coordinar";
+            const time = document.getElementById('form-time').value;
+            const modalityStr = locationModality === 'domicilio' ? 'A Domicilio (En Cochera)' : 'Local Taller Aliado (FIRSTSTOP)';
+            
+            let extraInfo = "";
+            if (currentCategory === 'ceramic') {
+                extraInfo = `*Garantía & Proceso:* Estándar Detail2Go + Insumos Vonixx®%0A`;
+            } else if (currentService === 'premium') {
+                extraInfo = `*Incluye:* Detallado de Motor y Encerado Premium%0A`;
             } else if (activeExtras.length) {
-                includeInfo = `*Extras:* ${activeExtras.map(id => EXTRAS_DEF.find(x => x.id === id).name).join(', ')}%0A`;
+                extraInfo = `*Extras:* ${activeExtras.map(id => EXTRAS_DEF.find(x => x.id === id).name).join(', ')}%0A`;
             }
             
-            const msg = `*RESERVA DETAIL2GO*%0A%0A*Cliente:* ${name}%0A*Servicio:* ${document.getElementById('sum-service').innerText}%0A*Vehículo:* ${currentVehicle}%0A${includeInfo}*Total:* ${document.getElementById('final-total').innerText}%0A*Fecha:* ${date}%0A*Turno:* ${time}`;
+            const msg = `*RESERVA DETAIL2GO*%0A%0A*Cliente:* ${name}%0A*Categoría:* ${currentCategory === 'ceramic' ? 'Tratamiento Cerámico High-End' : 'Detallado Estándar'}%0A*Servicio:* ${document.getElementById('sum-service').innerText}%0A*Vehículo:* ${currentVehicle}%0A*Modalidad:* ${modalityStr}%0A${extraInfo}*Total Estimado:* ${document.getElementById('final-total').innerText}%0A*Fecha Deseada:* ${date}%0A*Turno:* ${time}`;
+            
             window.open(`https://wa.me/51937631302?text=${msg}`, '_blank');
         }
 
         window.onload = () => {
+            // Establecer fecha por defecto (mañana)
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            document.getElementById('form-date').value = tomorrow.toISOString().split('T')[0];
+
             setVehicle('Auto');
-            setService('premium');
+            switchCategory('ceramic');
         };
     </script>
 </body>
